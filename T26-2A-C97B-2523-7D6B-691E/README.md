@@ -4,7 +4,7 @@
 - **Estudante:** Eduardo Alves Teixeira
 - **Turma:** 2A
 - **Chave Única:** `T26-2A-C97B-2523-7D6B-691E`
-- **URL_CLOUDFLARE:** `https://t26-2a-c97b-2523-7d6b-691e.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://t26-2a-c97b-2523-7d6b-691e.pages.dev`
 
 ---
 
