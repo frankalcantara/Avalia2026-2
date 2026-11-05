@@ -32,3 +32,6 @@ A aplicação consiste em um Painel de Check-in e Diagnóstico de Entrega constr
    ```
 4. Atualize o campo **URL_CLOUDFLARE** no topo deste `README.md` com o endereço público gerado pela Cloudflare.
 5. Na raiz do repositório, execute `node validar-local.mjs T26-2A-6AC2-7174-695A-9491` para validar todos os critérios antes de fazer o commit e abrir o Pull Request.
+
+URL_CLOUDFLARE=https://pages.dev
+
