@@ -4,7 +4,7 @@
 - **Estudante:** Alexandre Salvario Sontag
 - **Turma:** 2A
 - **Chave Única:** `T26-2A-0FBF-97E7-0869-0AFA`
-- **URL_CLOUDFLARE:** `https://t26-2a-0fbf-97e7-0869-0afa.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://avalia2026-2-312.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
 
 ---
 
