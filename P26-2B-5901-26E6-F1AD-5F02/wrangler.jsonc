@@ -1,0 +1,13 @@
+{
+  "name": "flashcards-p26-2b-5901",
+  "compatibility_date": "2024-11-01",
+  "pages_build_output_dir": "public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2b-5901-26e6-f1ad-5f02",
+      "database_id": "COLE_AQUI_O_ID_DO_D1",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
