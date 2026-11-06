@@ -4,7 +4,7 @@
 - **Estudante:** Bruno Kenyu Ochiai
 - **Turma:** 2A
 - **Chave Única:** `T26-2A-B22E-3559-E0B7-6DCA`
-- **URL_CLOUDFLARE:** `https://t26-2a-b22e-3559-e0b7-6dca.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://avalia2026-2-9pg.pages.dev/` *(URL Atualizada)
 
 ---
 
