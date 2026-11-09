@@ -4,7 +4,7 @@
 - **Estudante:** Leonardo Alves Ferraz
 - **Turma:** 2A
 - **Chave Única:** `P26-2A-8B38-F96B-36DD-59E4`
-- **URL_CLOUDFLARE:** `https://p26-2a-8b38-f96b-36dd-59e4.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://avalia2026-2-oficial.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
 
 ---
 
@@ -40,7 +40,7 @@ Através da autenticação OAuth2 do Discord, o estudante salva suas referência
    - Na aba **OAuth2**:
      - Copie o **Client ID** e gere o **Client Secret**.
      - Em **Redirects**, adicione a URL exata do deploy:
-       `https://p26-2a-8b38-f96b-36dd-59e4.pages.dev/api/auth/discord/callback`
+       `https://avalia2026-2-oficial.pages.dev/api/auth/discord/callback`
    - No painel do seu projeto no Cloudflare Pages:
      - Acesse **Settings** → **Environment variables**.
      - Adicione as variáveis de ambiente:
