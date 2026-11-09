@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projeto #23 — P26-2A-8B38-F96B-36DD-59E4</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <strong>Projeto #23: Gerador e Organizador de Referências Bibliográficas</strong>
+      </div>
+      <div class="discord-badge" id="discordProfile">
+        <a id="discordLoginLink" href="/api/auth/discord" style="color:inherit;text-decoration:none;">
+          <span id="discordUserText">Entrar com Discord OAuth2</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <span class="pill">Projeto Oficial #23</span>
+      <h1>Gerador e Organizador de Referências Bibliográficas</h1>
+      <p class="desc">Construa uma ferramenta que auxilia na formatação padronizada de referências bibliográficas (padrão ABNT ou IEEE) para trabalhos acadêmicos. O usuário escolhe o tipo de mídia (livro, artigo periódico, página web) em um formulário HTML, preenche os campos de autor, título, ano e veículo, e o JavaScript vanilla aplica as regras de pontuação, caixa alta e grifo para gerar a string formatada. Através da autenticação OAuth2 do Discord, o estudante salva suas referências geradas dentro de pastas ou projetos específicos no banco de dados Cloudflare D1. O sistema deve oferecer uma funcionalidade que compila todas as referências de um projeto selecionado em ordem alfabética rigorosa, pronta para ser copiada e colada na seção final de um artigo.</p>
+
+      <div class="form-row">
+        <input class="input-text" id="recordInput" type="text" placeholder="Digite um registro para gravar na Cloudflare Function + D1...">
+        <button class="btn-primary" id="sendBtn" type="button">Registrar no Cloudflare D1</button>
+      </div>
+      <div id="statusMessage" style="font-size:0.88rem;font-weight:700;color:#166534;margin-bottom:0.75rem;"></div>
+    </section>
+
+    <section class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:0.85rem;">Registros Persistidos (Cloudflare Pages Functions + D1)</h2>
+      <ul class="records-list" id="recordsList">
+        <li>Carregando status da API serverless...</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer id="projectFooter">
+    Chave Única de Auditoria: <code>P26-2A-8B38-F96B-36DD-59E4</code> · Turma 2A · Licenciado sob MIT
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
