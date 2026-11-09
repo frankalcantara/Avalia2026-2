@@ -1,50 +1,332 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projeto #23 — P26-2A-8B38-F96B-36DD-59E4</title>
-  <link rel="stylesheet" href="/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leonardo Alves | Dev</title>
+  <link rel="stylesheet" href="estilo.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet"/>
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div>
-        <strong>Projeto #23: Gerador e Organizador de Referências Bibliográficas</strong>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">&lt;LA /&gt;</div>
+    <ul class="nav-links">
+      <li><a href="#home" data-i18n="nav_home">Início</a></li>
+      <li><a href="#sobre" data-i18n="nav_about">Sobre</a></li>
+      <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+      <li><a href="#projetos" data-i18n="nav_projects">Projetos</a></li>
+      <li><a href="#contato" data-i18n="nav_contact">Contato</a></li>
+    </ul>
+    <div class="search-bar" id="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="search" id="search-input" placeholder="Buscar seção..." autocomplete="off" />
+      <button type="button" id="search-clear" class="search-clear" title="Limpar">✕</button>
+      <div class="search-dropdown" id="search-dropdown"></div>
+    </div>
+    <div class="nav-actions">
+      <button id="lang-toggle" class="theme-btn" title="Alternar idioma">🌐 PT</button>
+      <button id="theme-toggle" class="theme-btn" title="Alternar tema">🌙</button>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+  
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="grid-lines"></div>
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+    </div>
+    <div class="hero-content">
+      <span class="hero-tag" data-i18n="hero_tag"> BUSCANDO ESTÁGIO EM ENGENHARIA DE SOFTWARE</span>
+      <h1 class="hero-title">
+        <span class="line">Leonardo</span>
+        <span class="line accent">Alves</span>
+      </h1>
+      <p class="hero-sub" data-i18n="hero_sub">Tecnico em ADS | Engenharia de Software (1º período) | Desenvolvedor Web Front-end |</p>
+      <div class="hero-btns">
+        <a href="#projetos" class="btn btn-primary" data-i18n="btn_projects">Explorar Projetos</a>
+        <a href="#contato" class="btn btn-outline" data-i18n="btn_contact">Vamos Conversar?</a>
       </div>
-      <div class="discord-badge" id="discordProfile">
-        <a id="discordLoginLink" href="/api/auth/discord" style="color:inherit;text-decoration:none;">
-          <span id="discordUserText">Entrar com Discord OAuth2</span>
+    </div>
+    <div class="hero-scroll">
+      <span data-i18n="scroll">scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="sobre" id="sobre">
+    <div class="container">
+      <div class="section-label" data-i18n="label_about">// sobre mim</div>
+      <div class="sobre-grid">
+        <div class="sobre-img-wrap">
+          <div class="sobre-img">
+            <img src="perfil.jpg.jpeg" alt="Leonardo Alves" class="foto-perfil">
+            <div class="img-border"></div>
+          </div>
+        </div>
+        <div class="sobre-text">
+          <h2 class="section-title" data-i18n="about_title">Sobre <span class="accent">Mim</span></h2>
+          <p data-i18n="about_p1">Sou estudante de Engenharia de Software, com grande interesse na área de desenvolvimento. Possuo conhecimento em HTML, CSS e JavaScript, e estou constantemente aprimorando minhas habilidades por meio de estudos e prática.</p>
+          <p data-i18n="about_p2">Tenho facilidade com lógica de programação e gosto de resolver problemas, buscando sempre escrever códigos mais organizados e eficientes. Atualmente, procuro oportunidades para adquirir experiência profissional e evoluir como desenvolvedor, com foco no crescimento contínuo.</p>
+          <div class="sobre-info">
+            <div class="info-item">
+              <span class="info-icon">🎓</span>
+              <div>
+                <strong data-i18n="info_es">Engenharia de Software</strong>
+                <small data-i18n="info_es_sub">1º Período — Em andamento</small>
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">📜</span>
+              <div>
+                <strong data-i18n="info_ads">Análise e Dev. de Sistemas</strong>
+                <small data-i18n="info_ads_sub">Formado</small>
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">📍</span>
+              <div>
+                <strong>Pinhais, PR</strong>
+                <small data-i18n="info_loc">Brasil</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="skills" id="skills">
+    <div class="container">
+      <div class="section-label" data-i18n="label_skills">// habilidades</div>
+      <h2 class="section-title" data-i18n="skills_title">Minhas <span class="accent">Skills</span></h2>
+      <div class="skills-grid">
+
+        <div class="skill-card" data-level="90">
+          <div class="skill-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="#E34F26">
+              <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622L5.412 4.41l.698 8.01h9.126l-.326 3.426-2.91.804-2.955-.81-.188-2.11H6.248l.33 4.171L12 19.351l5.379-1.443.744-8.157H8.531z"/>
+            </svg>
+          </div>
+          <h3>HTML5</h3>
+          <p data-i18n="skill_html_desc">Estruturação semântica e acessível de páginas web.</p>
+          <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+          <span class="skill-pct">90%</span>
+        </div>
+
+        <div class="skill-card" data-level="85">
+          <div class="skill-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="#1572B6">
+              <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm4.876 4.41l.135 1.536h11.94l-.245 2.715H6.648l.135 1.536h10.75l-.716 7.99-4.84 1.354-4.847-1.355-.326-3.602h-1.54l.4 4.482L12 20.922l6.511-1.813.911-10.186.132-1.477.136-1.536H6.376z"/>
+            </svg>
+          </div>
+          <h3>CSS3</h3>
+          <p data-i18n="skill_css_desc">Estilização moderna, animações e layouts responsivos.</p>
+          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+          <span class="skill-pct">85%</span>
+        </div>
+
+        <div class="skill-card" data-level="80">
+          <div class="skill-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="#F7DF1E">
+              <path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.045-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.065-2.056 0-3.419 1.141-3.419 2.866 0 1.17.765 2.055 2.671 2.895 1.43.63 1.544.885 1.724 1.44.225.645.03 1.455-1.02 1.59-.525.075-1.11-.135-1.47-.54-.315-.315-.465-.72-.51-1.2h-1.845c.03 1.86 1.29 3.105 3.045 3.105 2.445 0 3.434-1.32 3.434-3.15zM13.713 22.366h1.934v-8.4h-1.934v8.4z"/>
+            </svg>
+          </div>
+          <h3>JavaScript</h3>
+          <p data-i18n="skill_js_desc">Interatividade, lógica de programação e DOM manipulation.</p>
+          <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+          <span class="skill-pct">80%</span>
+        </div>
+
+        <div class="skill-card" data-level="50">
+          <div class="skill-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="#3776AB">
+              <path d="M11.97 0c-3.13 0-2.93 1.36-2.93 1.36l.01 1.41h3.02v.42H8.02l-.01-.01c-1.63 0-2.84 1.41-2.84 3.1s1.3 3.03 2.84 3.03h.84v-1.19c0-1.63 1.32-2.94 2.94-2.94h3.02c1.63 0 2.94 1.32 2.94 2.94v3.13c0 1.63-1.32 2.94-2.94 2.94h-3.02v-.42h4.05s1.36.03 1.36-2.93l-.01-1.41h-3.02v-.42h4.05s1.63 0 1.63-3.1-1.3-3.1-2.84-3.1H15s.01 1.19-.01 1.19c0 1.63-1.32 2.94-2.94 2.94h-3.02c-1.63 0-2.94-1.32-2.94-2.94V1.36S6.09 0 9.22 0h2.75zm-2.11 1.36c.41 0 .74.33.74.74s-.33.74-.74.74-.74-.33-.74-.74.33-.74.74-.74zm3.94 15.65c-.41 0-.74-.33-.74-.74s.33-.74.74-.74.74.33.74.74-.33.74-.74.74z"/>
+            </svg>
+          </div>
+          <h3>Python</h3>
+          <p data-i18n="skill_py_desc">Scripts, automações e lógica back-end básica.</p>
+          <div class="skill-bar"><div class="skill-fill" data-width="50"></div></div>
+          <span class="skill-pct">50%</span>
+        </div>
+
+        <div class="skill-card" data-level="45">
+          <div class="skill-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="#007396">
+              <path d="M2 8c0-1.1.9-2 2-2h13.1c1-.4 2.2-.6 3.4-.6 3.3 0 6 2.7 6 6s-2.7 6-6 6c-1.2 0-2.4-.2-3.4-.6H4c-1.1 0-2-.9-2-2V8zm16 6.4c.6.2 1.3.3 2 .3 1.1 0 2-.9 2-2s-.9-2-2-2c-.7 0-1.4.1-2 .3v3.4zM2 18h20v2H2v-2z"/>
+            </svg>
+          </div>
+          <h3>Java</h3>
+          <p data-i18n="skill_java_desc">Orientação a objetos e fundamentos de programação.</p>
+          <div class="skill-bar"><div class="skill-fill" data-width="45"></div></div>
+          <span class="skill-pct">45%</span>
+        </div>
+
+        <div class="skill-card" data-level="70">
+          <div class="skill-icon">
+            <svg role="img" viewBox="0 0 24 24" fill="#F05032" xmlns="http://www.w3.org/2000/svg">
+              <path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.187 0L8.899 2.438l3.14 3.14c.643-.215 1.385-.068 1.895.442.51.51.657 1.252.442 1.894l3.136 3.137c.642-.215 1.384-.069 1.894.441.604.604.604 1.581 0 2.185-.603.604-1.582.604-2.185 0-.511-.51-.658-1.252-.442-1.895L13.64 8.617c-.215.642-.07 1.385.441 1.895.51.51 1.252.658 1.895.442l3.14 3.14c-.605.604-.605 1.582 0 2.187.603.603 1.581.603 2.185 0 .604-.604.604-1.582 0-2.187l-3.14-3.14c.215-.643.069-1.385-.441-1.895-.511-.51-1.252-.658-1.895-.442L12.69 5.48c-.215.643-.07 1.385.441 1.895.511.51 1.252.658 1.895.442l3.14 3.14c-.604.605-.604 1.582 0 2.187.604.603 1.582.603 2.187 0 .603-.604.603-1.582 0-2.187zM4.032 10.057c-.603-.604-1.581-.604-2.185 0-.604.604-.604 1.582 0 2.187l10.479 10.478c.604.604 1.582.604 2.187 0 .603-.604.603-1.582 0-2.187L4.032 10.057z"/>
+            </svg>
+          </div>
+          <h3>Git & GitHub</h3>
+          <p data-i18n="skill_git_desc">Versionamento de código e colaboração em projetos.</p>
+          <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+          <span class="skill-pct">70%</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICADOS & CURRÍCULO -->
+  <section class="certificados" id="documentos">
+    <div class="container">
+      <div class="section-label" data-i18n="label_docs">// conquistas & documentos</div>
+      <h2 class="section-title" data-i18n="docs_title">Formação & <span class="accent">Currículo</span></h2>
+      <div class="cert-grid">
+        <div class="cert-card">
+          <img src="caminho/para/certificado-ads.jpg" alt="Diploma ADS" class="cert-image">
+          <a href="caminho/para/certificado-ads.jpg" target="_blank" class="proj-link" data-i18n="view_doc">Ver Imagem →</a>
+        </div>
+        <div class="cert-card">
+          <img src="caminho/para/certificado-es.jpg" alt="Matrícula Engenharia" class="cert-image">
+          <a href="caminho/para/certificado-es.jpg" target="_blank" class="proj-link" data-i18n="view_doc">Ver Imagem →</a>
+        </div>
+        <div class="cert-card">
+          <!-- Substitua 'caminho/para/sua-imagem.jpg' pelo caminho real da sua imagem -->
+          <!-- E 'Descrição da Imagem' pela descrição apropriada -->
+          <img src="caminho/para/sua-imagem.jpg" alt="Certificado Adicional" class="cert-image">
+          <a href="caminho/para/sua-imagem.jpg" target="_blank" class="proj-link" data-i18n="view_doc">Ver Imagem →</a>
+        </div>
+      </div>
+      <div class="cv-wrapper">
+        <a href="seu-curriculo.pdf" download class="btn btn-primary cv-btn">
+          <span data-i18n="cv_btn_text">Baixar Currículo Completo (PDF)</span>
+          <span class="icon">📥</span>
         </a>
       </div>
     </div>
-  </header>
+  </section>
 
-  <main>
-    <section class="card">
-      <span class="pill">Projeto Oficial #23</span>
-      <h1>Gerador e Organizador de Referências Bibliográficas</h1>
-      <p class="desc">Construa uma ferramenta que auxilia na formatação padronizada de referências bibliográficas (padrão ABNT ou IEEE) para trabalhos acadêmicos. O usuário escolhe o tipo de mídia (livro, artigo periódico, página web) em um formulário HTML, preenche os campos de autor, título, ano e veículo, e o JavaScript vanilla aplica as regras de pontuação, caixa alta e grifo para gerar a string formatada. Através da autenticação OAuth2 do Discord, o estudante salva suas referências geradas dentro de pastas ou projetos específicos no banco de dados Cloudflare D1. O sistema deve oferecer uma funcionalidade que compila todas as referências de um projeto selecionado em ordem alfabética rigorosa, pronta para ser copiada e colada na seção final de um artigo.</p>
+  <!-- PROJETOS -->
+  <section class="projetos" id="projetos">
+    <div class="container">
+      <div class="section-label" data-i18n="label_projects">// projetos</div>
+      <h2 class="section-title" data-i18n="projects_title">Meus <span class="accent">Projetos</span></h2>
+      <div class="projetos-grid">
 
-      <div class="form-row">
-        <input class="input-text" id="recordInput" type="text" placeholder="Digite um registro para gravar na Cloudflare Function + D1...">
-        <button class="btn-primary" id="sendBtn" type="button">Registrar no Cloudflare D1</button>
+        <div class="projeto-card">
+          <div class="projeto-header">
+            <span class="projeto-num">01</span>
+            <div class="projeto-tags">
+              <span>HTML</span><span>CSS</span><span>JS</span>
+            </div>
+          </div>
+          <h3 data-i18n="proj1_title">Landing Page Responsiva</h3>
+          <p data-i18n="proj1_desc">Página de apresentação moderna com animações CSS e JavaScript vanilla, totalmente responsiva para mobile.</p>
+          <div class="projeto-footer">
+            <a href="#" class="proj-link" data-i18n="view_proj">Ver Projeto →</a>
+            <a href="#" class="proj-link">GitHub →</a>
+          </div>
+        </div>
+
+        <div class="projeto-card destaque">
+          <div class="projeto-header">
+            <span class="projeto-num">02</span>
+            <div class="projeto-tags">
+              <span>HTML</span><span>CSS</span><span>JS</span>
+            </div>
+          </div>
+          <h3 data-i18n="proj2_title">Calculadora Interativa</h3>
+          <p data-i18n="proj2_desc">Calculadora funcional com interface dark moderna, operações básicas e avançadas, animações e sons de feedback.</p>
+          <div class="projeto-footer">
+            <a href="#" class="proj-link" data-i18n="view_proj">Ver Projeto →</a>
+            <a href="#" class="proj-link">GitHub →</a>
+          </div>
+        </div>
+
+        <div class="projeto-card">
+          <div class="projeto-header">
+            <span class="projeto-num">03</span>
+            <div class="projeto-tags">
+              <span>Python</span>
+            </div>
+          </div>
+          <h3 data-i18n="proj3_title">Script de Automação</h3>
+          <p data-i18n="proj3_desc">Script Python para automatizar tarefas repetitivas, manipulação de arquivos e extração de dados simples.</p>
+          <div class="projeto-footer">
+            <a href="#" class="proj-link" data-i18n="view_proj">Ver Projeto →</a>
+            <a href="#" class="proj-link">GitHub →</a>
+          </div>
+        </div>
+
       </div>
-      <div id="statusMessage" style="font-size:0.88rem;font-weight:700;color:#166534;margin-bottom:0.75rem;"></div>
-    </section>
+      <p class="projetos-note"></p>
+    </div>
+  </section>
 
-    <section class="card">
-      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:0.85rem;">Registros Persistidos (Cloudflare Pages Functions + D1)</h2>
-      <ul class="records-list" id="recordsList">
-        <li>Carregando status da API serverless...</li>
-      </ul>
-    </section>
-  </main>
+  <!-- CONTATO -->
+  <section class="contato" id="contato">
+    <div class="container">
+      <div class="section-label" data-i18n="label_contact">// contato</div>
+      <h2 class="section-title" data-i18n="contact_title">Vamos <span class="accent">Conversar?</span></h2>
+      <p class="contato-sub" data-i18n="contact_sub">Estou aberto a oportunidades, freelas e novos projetos. Me manda uma mensagem!</p>
+      <div class="contato-grid">
+        <div class="contato-links">
+          <a href="/cdn-cgi/l/email-protection#066a63696867746269676a70637560637474677c3631363246616b676f6a2865696b" class="contato-item">
+            <span class="contato-icon icon-email">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </span>
+            <div>
+              <strong>Email</strong>
+              <small><span class="__cf_email__" data-cfemail="a9c5ccc6c7c8dbcdc6c8c5dfccdacfccdbdbc8d3999e999de9cec4c8c0c587cac6c4">[email&#160;protected]</span></small>
+            </div>
+          </a>
+          <a href="https://github.com/leonardoalvesferraz0704-png" target="_blank" class="contato-item">
+            <span class="contato-icon icon-github">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.041-1.416-4.041-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </span>
+            <div>
+              <strong>GitHub</strong>
+              <small>github.com/leonardoalvesferraz0704-png</small>
+            </div>
+          </a>
+          <a href="https://www.linkedin.com/in/leonardoa-alves/" target="_blank" class="contato-item">
+            <span class="contato-icon icon-linkedin">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </span>
+            <div>
+              <strong>LinkedIn</strong>
+              <small>linkedin.com/in/leonardoa-alves</small>
+            </div>
+          </a>
+        </div>
+        <form class="contato-form" id="contactForm">
+          <div class="form-group">
+            <label data-i18n="contact_name">Nome</label>
+            <input type="text" placeholder="Seu nome" required />
+          </div>
+          <div class="form-group">
+            <label data-i18n="contact_email">Email</label>
+            <input type="email" placeholder="seu@email.com" required />
+          </div>
+          <div class="form-group">
+            <label data-i18n="contact_msg">Mensagem</label>
+            <textarea placeholder="Sua mensagem..." rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" data-i18n="contact_btn">Enviar Mensagem 🚀</button>
+        </form>
+      </div>
+    </div>
+  </section>
 
-  <footer id="projectFooter">
-    Chave Única de Auditoria: <code>P26-2A-8B38-F96B-36DD-59E4</code> · Turma 2A · Licenciado sob MIT
-  </footer>
-
-  <script src="/app.js"></script>
-</body>
-</html>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p data-i18n="footer_made">Feito com 💚 por <strong>Leonardo Alves</strong> — 2
