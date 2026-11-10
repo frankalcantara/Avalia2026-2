@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Calculadora e simulador de desempenho acadêmico: média parcial e nota mínima necessária para aprovação.">
+  <title>Simulador de Notas</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <div class="topo-interno">
+      <a class="marca" href="/">
+        <span class="marca-icone" aria-hidden="true">Σ</span>
+        <span>Simulador de Notas</span>
+      </a>
+      <div class="usuario" id="usuario" hidden>
+        <img class="avatar" id="avatar" alt="" width="36" height="36">
+        <div class="usuario-texto">
+          <strong id="usuarioNome"></strong>
+          <small>ID <span id="usuarioId"></span></small>
+        </div>
+        <button type="button" class="btn btn-fantasma" id="btnSair">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <!-- Deslogado -->
+    <section class="boas-vindas" id="boasVindas" hidden aria-labelledby="tituloBoasVindas">
+      <p class="sobretitulo">Calculadora e simulador de desempenho acadêmico</p>
+      <h1 id="tituloBoasVindas">Saiba exatamente quanto você precisa tirar.</h1>
+      <p class="lead">Cadastre as disciplinas do semestre com a fórmula de média de cada uma — pesos de provas, trabalhos e listas. Ao lançar as notas, a média parcial e a nota mínima nas avaliações restantes são recalculadas na hora, para aprovação direta ou para garantir o direito ao exame.</p>
+      <p class="aviso" id="avisoLogin" role="alert" hidden></p>
+      <a class="btn btn-discord" href="/api/auth/discord">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18.2 18.2 0 0 0-5.5 0L8.6 3a19.5 19.5 0 0 0-4.9 1.5C.6 9.1-.3 13.6.1 18.1a19.8 19.8 0 0 0 6 3l1.3-2.1a12.8 12.8 0 0 1-2-1l.5-.4a14 14 0 0 0 12.1 0l.5.4c-.6.4-1.3.7-2 1l1.3 2.1a19.7 19.7 0 0 0 6-3c.5-5.2-.9-9.7-3.5-13.7ZM8.3 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm7.4 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg>
+        Entrar com Discord
+      </a>
+      <ul class="passos">
+        <li><strong>1. Monte a fórmula</strong><span>Pesos de cada prova, trabalho e lista — ou use um modelo pronto.</span></li>
+        <li><strong>2. Lance as notas</strong><span>A média parcial muda enquanto você digita.</span></li>
+        <li><strong>3. Veja a meta</strong><span>Quanto falta para passar direto ou garantir o exame.</span></li>
+      </ul>
+    </section>
+
+    <!-- Logado -->
+    <div class="painel" id="painel" hidden>
+      <section class="lista" aria-labelledby="tituloLista">
+        <div class="lista-topo">
+          <h1 id="tituloLista">Minhas disciplinas <small id="contador"></small></h1>
+          <button type="button" class="btn btn-primario" id="btnNova">+ Nova</button>
+        </div>
+        <p class="aviso" id="avisoLista" role="alert" hidden></p>
+        <p class="vazio" id="listaVazia" hidden>Nenhuma disciplina ainda. Clique em <strong>+ Nova</strong> para cadastrar a primeira.</p>
+        <ul class="cards" id="listaDisciplinas"></ul>
+      </section>
+
+      <section class="detalhe" id="detalhe" aria-labelledby="tituloDetalhe">
+        <div id="detalheConteudo"></div>
+        <p class="salvamento" id="salvamento" role="status" data-estado=""></p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="rodape">
+    <p>Chave Única: P26-2C-6D8F-984C-AF8F-2CA8 · Licença MIT</p>
+  </footer>
+
+  <dialog class="editor" id="editor" aria-labelledby="tituloEditor">
+    <form id="formEditor" novalidate>
+      <header class="editor-topo">
+        <h2 id="tituloEditor">Nova disciplina</h2>
+        <button type="button" class="btn-icone" id="btnFecharEditor" aria-label="Fechar">×</button>
+      </header>
+
+      <label class="campo">
+        <span>Nome da disciplina</span>
+        <input id="edNome" maxlength="80" required autocomplete="off" placeholder="Ex.: Cálculo I">
+      </label>
+
+      <fieldset class="regras">
+        <legend>Regras de aprovação</legend>
+        <label class="campo"><span>Nota máxima</span><input id="edNotaMax" inputmode="decimal" required></label>
+        <label class="campo"><span>Média p/ aprovação direta</span><input id="edAprov" inputmode="decimal" required></label>
+        <label class="campo"><span>Média mínima p/ exame</span><input id="edExame" inputmode="decimal" required></label>
+        <label class="campo"><span>Média final pós-exame</span><input id="edFinal" inputmode="decimal" required></label>
+      </fieldset>
+
+      <div class="presets" id="presets">
+        <span id="rotuloPresets">Modelos rápidos:</span>
+        <div class="presets-botoes" role="group" aria-labelledby="rotuloPresets"></div>
+      </div>
+
+      <fieldset class="avaliacoes">
+        <legend>Avaliações <small>(nota em branco = ainda não feita)</small></legend>
+        <ol class="linhas-aval" id="linhasAval"></ol>
+        <button type="button" class="btn btn-secundario" id="btnAddAval">+ Adicionar avaliação</button>
+      </fieldset>
+
+      <p class="erro-editor" id="erroEditor" role="alert"></p>
+
+      <footer class="editor-acoes">
+        <button type="button" class="btn btn-perigo" id="btnExcluir">Excluir disciplina</button>
+        <span class="espaco"></span>
+        <button type="button" class="btn btn-fantasma" id="btnCancelar">Cancelar</button>
+        <button type="submit" class="btn btn-primario" id="btnSalvar">Salvar</button>
+      </footer>
+    </form>
+  </dialog>
+</body>
+</html>
