@@ -14,9 +14,17 @@
 <main>
   <section class="intro">
     <h1>Gerador e organizador de referências bibliográficas</h1>
-    <p>Escolha a norma e o tipo de mídia, preencha os campos e copie a referência pronta para o seu artigo.</p>
+    <p>Gere a referência na norma certa, guarde em pastas por trabalho e compile a lista final em ordem alfabética.</p>
+  </section>
+  <p id="aviso" class="aviso" role="status"></p>
+  <section class="card">
+    <h2>Pastas</h2>
+    <div class="linha"><input id="novaPasta" maxlength="60" placeholder="Nome da pasta, por exemplo TCC"><button id="criarPasta" class="btn" disabled>Criar pasta</button></div>
+    <div id="pastas" class="chips">Entre com o Discord para criar pastas e salvar referências.</div>
+    <button id="apagarPasta" class="btn ghost" hidden>Apagar pasta selecionada</button>
   </section>
   <section class="card">
+    <h2>Nova referência</h2>
     <div class="grid">
       <label>Norma
         <select id="norma"><option value="">Selecione</option><option value="abnt">ABNT</option><option value="ieee">IEEE</option></select>
@@ -39,14 +47,18 @@
       <label data-for="web">Data de acesso<input id="acesso" placeholder="9 nov. 2026"></label>
     </div>
     <p id="erro" class="erro" role="alert"></p>
+    <p id="previa" class="previa">Escolha a norma e o tipo para começar.</p>
+    <div class="linha"><button id="copiar" class="btn" disabled>Copiar referência</button><button id="salvar" class="btn ghost" disabled>Salvar na pasta</button></div>
   </section>
   <section class="card">
-    <h2>Referência formatada</h2>
-    <p id="previa" class="previa">Escolha a norma e o tipo para começar.</p>
-    <button id="copiar" class="btn" disabled>Copiar referência</button>
+    <h2>Referências da pasta <span id="pastaAtiva"></span></h2>
+    <ul id="salvas" class="salvas"></ul>
+    <button id="compilar" class="btn" disabled>Compilar em ordem alfabética</button>
+    <div id="compilado" class="previa" hidden></div>
+    <button id="copiarComp" class="btn" hidden>Copiar lista compilada</button>
   </section>
 </main>
 <footer>Chave Única de Auditoria: <code>P26-2A-8B38-F96B-36DD-59E4</code> · Turma 2A · Licenciado sob MIT</footer>
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>

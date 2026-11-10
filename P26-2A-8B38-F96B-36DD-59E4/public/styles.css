@@ -28,3 +28,20 @@ footer{text-align:center;color:var(--tx2);font-size:.85rem;padding:1.5rem 1rem;b
 code{color:var(--ac2)}
 @media (max-width:560px){.grid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.linha{display:flex;gap:.75rem;flex-wrap:wrap;margin:.5rem 0 1rem}
+.linha input{flex:1;min-width:12rem}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--tx)}
+.btn.ghost:hover:not(:disabled){background:rgba(255,255,255,.06)}
+.chips{display:flex;gap:.5rem;flex-wrap:wrap;color:var(--tx2);margin-bottom:1rem}
+.chip{padding:.4rem .8rem;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--tx);font:inherit;cursor:pointer;transition:background .15s,border-color .15s}
+.chip:hover{border-color:var(--ac2)}
+.chip.on{background:var(--ac);border-color:var(--ac)}
+.salvas{list-style:none;margin:0 0 1rem;padding:0;display:grid;gap:.6rem}
+.salvas li{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;padding:.7rem .9rem;border:1px solid var(--line);border-radius:10px;font-family:Georgia,serif;overflow-wrap:anywhere}
+.mini{flex:none;background:transparent;border:1px solid var(--line);color:var(--tx2);border-radius:8px;padding:.2rem .6rem;font:.8rem system-ui,sans-serif;cursor:pointer}
+.mini:hover{color:var(--bad);border-color:var(--bad)}
+.aviso{margin:0;min-height:1.4em;color:var(--ac2);font-size:.9rem}
+#compilado{margin-top:1rem}
+#compilado p{margin:0 0 .9rem}
+#compilado[hidden],#copiarComp[hidden],#apagarPasta[hidden]{display:none}
+.user .btn.ghost{padding:.35rem .8rem;font-size:.85rem}
