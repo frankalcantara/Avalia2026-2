@@ -25,6 +25,9 @@ export function limpar(norma, tipo, d = {}) {
   if (!["abnt", "ieee"].includes(norma) || !["livro", "artigo", "web"].includes(tipo)) return null;
   const v = { norma, tipo };
   campos.forEach((k) => (v[k] = String((d && d[k]) ?? "").trim().slice(0, 300)));
+  // Campos que não pertencem ao tipo escolhido são descartados (evita texto "escondido" aparecer na referência).
+  const usa = { livro: ["local"], artigo: ["vol", "num", "pag"], web: ["url", "acesso"] }[tipo];
+  ["local", "vol", "num", "pag", "url", "acesso"].forEach((k) => { if (!usa.includes(k)) v[k] = ""; });
   return v;
 }
 
