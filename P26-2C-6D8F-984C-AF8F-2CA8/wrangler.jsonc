@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "notas-p26-2c",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2c-6d8f-984c-af8f-2ca8",
+      "database_id": "0b250f97-61c5-4d7a-b076-e30796ac7c7c"
+    }
+  ]
+}
