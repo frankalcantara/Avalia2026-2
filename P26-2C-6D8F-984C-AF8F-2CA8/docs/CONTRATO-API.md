@@ -10,7 +10,7 @@ Regras de negócio e validação ficam em `public/js/calculo.js` (`validarDiscip
 | GET | `/api/auth/discord` | Gera `state` aleatório (cookie `oauth_state`, 10 min) e redireciona para `discord.com/oauth2/authorize`. |
 | GET | `/api/auth/discord/callback` | Confere `state`, troca `code` por token, lê `/users/@me`, faz upsert em `discord_users` (user_id, username, avatar), cria linha em `sessions` (token aleatório 32 bytes, 30 dias) e grava cookie `sid`. Redireciona para `/`. Erros → `/?auth_error=<motivo>`. |
 | POST | `/api/auth/logout` | Apaga a sessão no D1 e expira o cookie. `200 {"ok":true}` |
-| GET | `/api/me` | `200 {"user":{"userId","username","avatar"}}` ou 401. |
+| GET | `/api/me` | `200 {"user":{"userId","username","avatar"}}` ou 401. `avatar` é a **URL completa** do CDN do Discord. |
 
 ## Disciplinas
 

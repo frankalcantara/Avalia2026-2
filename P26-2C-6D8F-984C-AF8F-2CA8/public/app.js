@@ -73,6 +73,8 @@ async function api(method, path, body) {
 
 function avatarUrl(u) {
   const id = encodeURIComponent(u.userId);
+  // O backend já devolve a URL completa do CDN; o hash puro fica como fallback.
+  if (u.avatar?.startsWith("https://cdn.discordapp.com/")) return u.avatar;
   if (u.avatar) return `https://cdn.discordapp.com/avatars/${id}/${encodeURIComponent(u.avatar)}.png?size=64`;
   let i = 0;
   try { i = Number((BigInt(u.userId) >> 22n) % 6n); } catch { /* id não numérico */ }

@@ -89,6 +89,7 @@ Orquestrador (sessão principal)
   - **F4:** valores como `true` e `[]` passavam na validação como número.
   - **F5:** disciplina sem avaliações aparecia como "aprovado".
   - **F6:** faltavam cabeçalhos de segurança, resolvido com `public/_headers` (CSP).
+- **Achado no teste manual de login real (produção):** o avatar aparecia quebrado. O backend grava a URL completa, mas o frontend esperava só o hash, porque o contrato não especificava o formato. Corrigido em `public/app.js` (`avatarUrl`), e o contrato agora diz que `avatar` é a URL completa.
 
 ---
 
