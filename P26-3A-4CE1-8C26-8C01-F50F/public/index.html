@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projeto #42 — P26-3A-4CE1-8C26-8C01-F50F</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <strong>Projeto #42: Agregador e Curadoria de Links Técnicos (Bookmark Manager)</strong>
+      </div>
+      <div class="discord-badge" id="discordProfile">
+        <a id="discordLoginLink" href="/api/auth/discord" style="color:inherit;text-decoration:none;">
+          <span id="discordUserText">Entrar com Discord OAuth2</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <span class="pill">Projeto Oficial #42</span>
+      <h1>Agregador e Curadoria de Links Técnicos (Bookmark Manager)</h1>
+      <p class="desc">Desenvolva um gerenciador de favoritos na nuvem para substituir as dezenas de abas abertas no navegador durante pesquisas acadêmicas. Autenticado via Discord OAuth2, o usuário salva URLs acompanhadas de título, resumo pessoal, coleção/pasta e status de leitura ("Para Ler", "Lendo", "Concluído"). O backend na Cloudflare persiste os links no banco D1 e oferece rotas para filtragem combinada por coleção e status. O usuário também pode tornar uma coleção pública para compartilhar uma trilha de estudos (ex: "Melhores artigos sobre Compiladores") com o restante da turma através de uma listagem limpa e organizada.</p>
+
+      <div class="form-row">
+        <input class="input-text" id="recordInput" type="text" placeholder="Digite um registro para gravar na Cloudflare Function + D1...">
+        <button class="btn-primary" id="sendBtn" type="button">Registrar no Cloudflare D1</button>
+      </div>
+      <div id="statusMessage" style="font-size:0.88rem;font-weight:700;color:#166534;margin-bottom:0.75rem;"></div>
+    </section>
+
+    <section class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:0.85rem;">Registros Persistidos (Cloudflare Pages Functions + D1)</h2>
+      <ul class="records-list" id="recordsList">
+        <li>Carregando status da API serverless...</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer id="projectFooter">
+    Chave Única de Auditoria: <code>P26-3A-4CE1-8C26-8C01-F50F</code> · Turma 3A · Licenciado sob MIT
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
