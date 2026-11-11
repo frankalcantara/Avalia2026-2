@@ -4,7 +4,7 @@
 - **Estudante:** klaus albino da silva
 - **Turma:** 3A
 - **Chave Única:** `T26-3A-3A72-79D3-BDCE-4CD2`
-- **URL_CLOUDFLARE:** `https://t26-3a-3a72-79d3-bdce-4cd2.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://avalia2026-2-e46.pages.dev/` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
 
 ---
 
