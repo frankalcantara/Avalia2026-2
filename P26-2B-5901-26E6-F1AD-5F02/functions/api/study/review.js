@@ -2,7 +2,7 @@ import { getUser, json, unauthorized, sm2, now, DAY } from '../../_lib.js';
 const RATINGS = ['dificil', 'bom', 'facil'];
 export async function onRequestPost(ctx) {
   const u = await getUser(ctx); if (!u) return unauthorized();
-  const b = await ctx.request.json().catch(() => ({}));
+  const b = (await ctx.request.json().catch(() => null)) || {};
   if (!RATINGS.includes(b.rating)) return json({ error: 'Avaliação inválida' }, 400);
   const card = await ctx.env.DB.prepare(
     'SELECT id, ease, interval_days, repetitions, due_at FROM cards WHERE id = ? AND user_id = ?')

@@ -9,7 +9,7 @@ export async function onRequestGet(ctx) {
 }
 export async function onRequestPost(ctx) {
   const u = await getUser(ctx); if (!u) return unauthorized();
-  const b = await ctx.request.json().catch(() => ({}));
+  const b = (await ctx.request.json().catch(() => null)) || {};
   const front = clean(b.front, 500), back = clean(b.back, 1000);
   if (!front || !back) return json({ error: 'Preencha frente e verso' }, 400);
   const deck = await ctx.env.DB.prepare('SELECT id FROM decks WHERE id = ? AND user_id = ?')

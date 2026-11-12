@@ -10,7 +10,7 @@ export async function onRequestGet(ctx) {
 }
 export async function onRequestPost(ctx) {
   const u = await getUser(ctx); if (!u) return unauthorized();
-  const body = await ctx.request.json().catch(() => ({}));
+  const body = (await ctx.request.json().catch(() => null)) || {};
   const name = clean(body.name, 80);
   if (!name) return json({ error: 'Informe o nome do baralho' }, 400);
   const r = await ctx.env.DB.prepare('INSERT INTO decks (user_id, name, created_at) VALUES (?, ?, ?)')
