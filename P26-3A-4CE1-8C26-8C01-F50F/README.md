@@ -4,7 +4,7 @@
 - **Estudante:** klaus albino da silva
 - **Turma:** 3A
 - **Chave Única:** `P26-3A-4CE1-8C26-8C01-F50F`
-- **URL_CLOUDFLARE:** `https://p26-3a-4ce1-8c26-8c01-f50f.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://p26-3a-4ce1-8c26-8c01-f50f.pages.dev`
 
 ---
 
@@ -14,6 +14,31 @@ Desenvolva um gerenciador de favoritos na nuvem para substituir as dezenas de ab
 
 O backend na Cloudflare persiste os links no banco D1 e oferece rotas para filtragem combinada por coleção e status. O usuário também pode tornar uma coleção pública para compartilhar uma trilha de estudos (ex: "Melhores artigos sobre Compiladores") com o restante da turma através de uma listagem limpa e organizada.
 
+## O que foi implementado
+
+- Login obrigatório com Discord OAuth2 (escopo `identify`), importando `user_id`, nome de usuário e avatar. Sessão por cookie `HttpOnly`/`Secure`/`SameSite=Lax`, com `state` verificado no callback e apenas o hash do token guardado no D1.
+- Coleções e links (URL, título, resumo, coleção e status "Para Ler", "Lendo" e "Concluído"), com filtro combinado por coleção e status.
+- Coleções públicas, com página de listagem aberta sem login (`colecao.html?id=<uuid>`).
+- Validações e regras de negócio no servidor (Cloudflare Pages Functions) e persistência no Cloudflare D1.
+- Front em HTML5, CSS3 e JavaScript puro, sem frameworks.
+
+## Rotas da API
+
+| Método | Caminho | Acesso |
+|---|---|---|
+| GET | `/api/auth/discord`, `/api/auth/discord/callback` | login |
+| GET / POST | `/api/auth/me`, `/api/auth/logout` | sessão |
+| GET / POST | `/api/collections` | sessão |
+| GET / PATCH / DELETE | `/api/collections/:id` | sessão |
+| GET / POST | `/api/bookmarks` (filtros `collection_id` e `status`) | sessão |
+| GET / PATCH / DELETE | `/api/bookmarks/:id` | sessão |
+| GET | `/api/public/collections/:id` e `/api/public/collections/:id/bookmarks` | público |
+
+## Testes e agentes
+
+- Testes: `node --test tests/*.test.mjs`.
+- Agentes de IA, skills e relatório de validação: ver `AGENTS.md`, `skills/` e `RELATORIO_VALIDACAO.md`.
+- Licença: MIT (`LICENSE`).
 ---
 
 ## Como Publicar esta Subpasta no Cloudflare Pages + D1 + Discord OAuth2
