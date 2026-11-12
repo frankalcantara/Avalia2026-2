@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       turma:
-        description: 'Turma para avaliar e mesclar (ou "todas")'
+        description: 'Turma para avaliar (os merges são sempre manuais)'
         required: true
         default: 'todas'
         type: choice
@@ -25,7 +25,7 @@ permissions:
 
 jobs:
   avaliar-e-encerrar:
-    name: Avaliar com IA e Fazer Merge das Entregas
+    name: Avaliar com IA (sem merge — merge é manual)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório oficial (main)
@@ -39,7 +39,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Executar Avaliação em Lote e Merge
+      - name: Executar Avaliação em Lote (sem merge)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

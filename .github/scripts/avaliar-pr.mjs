@@ -5,15 +5,15 @@
  *
  * Etapa 1: Lê os arquivos do PR, verifica isolamento na pasta <CHAVE>/, valida a chave no endpoint
  *          de auditoria (identificando aluno, RA, turma e projeto).
- *          - Se for Projeto 0 de Treino (T26-...): Realiza o auto-merge para testar o ambiente.
- *          - Se for Projeto Oficial (P26-...): MANTÉM O PR ABERTO para permitir iterações do aluno
- *            e proteger o código da branch main até a data de encerramento da avaliação.
+ *          - Pull Requests de Teste (T26-...): são REJEITADOS e FECHADOS imediatamente.
+ *          - Pull Requests Oficiais (P26-...): são avaliados e MANTIDOS ABERTOS.
+ *          Este script NUNCA faz merge. O merge oficial é manual, feito pelo professor
+ *          somente a partir de 20/11/2026.
  * Etapa 2: Inspeciona a subpasta e publica o checklist preliminar de conformidade técnica no PR.
  */
 
 import fs from "node:fs";
 import path from "node:path";
-import { execSync } from "node:child_process";
 import { inspecionarSubpasta } from "../../validar-local.mjs";
 
 const API_BASE = (process.env.PROJETOS_API_BASE || "https://frank-active-reader.frank-alcantara.workers.dev").replace(/\/+$/, "");
@@ -61,6 +61,48 @@ async function adicionarLabelsNoPr(labels) {
     method: "POST",
     body: JSON.stringify({ labels }),
   });
+}
+
+async function fecharPr() {
+  if (!GITHUB_TOKEN || !PR_NUMBER) {
+    console.log("[Simulação] O Pull Request seria fechado sem merge.");
+    return false;
+  }
+  const { ok, status, data } = await githubApi(`/repos/${REPO}/pulls/${PR_NUMBER}`, {
+    method: "PATCH",
+    body: JSON.stringify({ state: "closed" }),
+  });
+  if (!ok) {
+    console.warn(`Falha ao fechar o PR #${PR_NUMBER} (HTTP ${status}):`, JSON.stringify(data));
+    return false;
+  }
+  console.log(`✓ Pull Request #${PR_NUMBER} fechado (sem merge).`);
+  return true;
+}
+
+async function recusarPullRequestDeTeste({ chave, student, motivo }) {
+  const nome = student?.nomeCompleto ? `**${student.nomeCompleto}**` : "estudante";
+  await comentarNoPr(
+    [
+      `## ❌ Pull Request de Teste Rejeitado e Fechado`,
+      ``,
+      `Olá, ${nome}! Este repositório **não aceita Pull Requests de teste (\`T26-...\`)**.`,
+      ``,
+      `- **Pasta/Chave detectada:** \`${chave}\``,
+      `- **Motivo:** ${motivo}`,
+      `- **Ação automática:** Pull Request fechado, sem merge e sem avaliação.`,
+      ``,
+      `O Projeto 0 é apenas um treino local/de deploy: **não abra Pull Request com a chave de teste** (\`T26-...\`).`,
+      `Quando receber a sua Chave Oficial (\`P26-...\`), abra um novo Pull Request contendo **apenas** a pasta \`P26-.../\`.`,
+      ``,
+      `> Nenhum Pull Request é mesclado antes de **20/11/2026**. O merge oficial é feito manualmente pelo professor.`,
+    ].join("\n")
+  );
+  await adicionarLabelsNoPr([
+    "status:teste-bloqueado",
+    ...(student?.turma ? [`turma:${student.turma}`] : []),
+  ]);
+  await fecharPr();
 }
 
 async function listarArquivosDoPr() {
@@ -207,6 +249,16 @@ async function main() {
     process.exit(1);
   }
 
+  // 1.1. Bloqueio imediato de qualquer entrega de teste (T26-...)
+  if (chave.startsWith("T26-")) {
+    console.log(`✗ Pull Request de teste detectado (${chave}). Rejeitando e fechando...`);
+    await recusarPullRequestDeTeste({
+      chave,
+      motivo: "Entregas com chave de teste (T26-...) não são aceitas neste repositório.",
+    });
+    process.exit(0);
+  }
+
   // 2. Validar a Chave no Endpoint do Worker (frankalcantara.com/api/projetos2026/validar)
   const headers = {
     Accept: "application/json",
@@ -247,61 +299,31 @@ async function main() {
 
   const { student, project, isTest } = valData;
 
-  // 3. Aluno e Projeto identificados com sucesso
-  console.log(`✓ Aluno identificado: ${student.nomeCompleto} (RA: ${student.ra}, Turma: ${student.turma})`);
-
-  let mergedOk = false;
+  // 2.1. Bloqueio defensivo: a API também pode classificar a entrega como teste
   if (isTest) {
-    console.log(`✓ Projeto 0 de Treino: Aceitando (merging) Pull Request de teste #${PR_NUMBER}...`);
-    try {
-      const mergeRes = await githubApi(`/repos/${REPO}/pulls/${PR_NUMBER}/merge`, {
-        method: "PUT",
-        body: JSON.stringify({
-          commit_title: `Entrega [TESTE SEM NOTA] ${chave} — ${student.nomeCompleto} (RA ${student.ra})`,
-          merge_method: "squash",
-        }),
-      });
-      mergedOk = mergeRes.ok;
-      console.log(`✓ Status do Merge REST: ${mergeRes.status} (ok=${mergedOk})`);
-      if (!mergedOk) console.warn("Detalhe do merge REST:", JSON.stringify(mergeRes.data));
-    } catch (err) {
-      console.warn("Falha no merge REST:", err.message);
-    }
-
-    if (!mergedOk) {
-      try {
-        console.log(`Tentando merge via gh CLI para PR #${PR_NUMBER}...`);
-        execSync(
-          `gh pr merge ${PR_NUMBER} --squash --repo ${REPO} --subject "Entrega [TESTE SEM NOTA] ${chave} — ${student.nomeCompleto} (RA ${student.ra})"`,
-          {
-            stdio: "inherit",
-            env: { ...process.env, GH_TOKEN: GITHUB_TOKEN },
-          }
-        );
-        mergedOk = true;
-        console.log("✓ Merge via gh CLI bem-sucedido!");
-      } catch (err) {
-        console.warn("Detalhe do merge via gh CLI:", err.message);
-      }
-    }
-  } else {
-    console.log(`✓ Projeto Oficial P26: Pull Request #${PR_NUMBER} mantido ABERTO para permitir iterações do aluno até o encerramento.`);
+    console.log(`✗ A API classificou ${chave} como Projeto 0 (teste). Rejeitando e fechando...`);
+    await recusarPullRequestDeTeste({
+      chave,
+      student,
+      motivo: "A API classificou esta entrega como Projeto 0 (teste, sem nota).",
+    });
+    process.exit(0);
   }
+
+  // 3. Aluno e Projeto identificados com sucesso — merge NUNCA é automático
+  console.log(`✓ Aluno identificado: ${student.nomeCompleto} (RA: ${student.ra}, Turma: ${student.turma})`);
+  console.log(`✓ Projeto Oficial P26: Pull Request #${PR_NUMBER} mantido ABERTO (merge manual, a partir de 20/11/2026).`);
 
   await comentarNoPr(
     [
-      `## ✅ Etapa 1 Concluída: Aluno Identificado e ${isTest ? "Pull Request Aceito (Treino)" : "Entrega Registrada com Sucesso!"}`,
+      `## ✅ Etapa 1 Concluída: Aluno Identificado e Entrega Registrada com Sucesso!`,
       ``,
       `- **Estudante:** ${student.nomeCompleto}`,
       `- **RA (Matrícula):** \`${student.ra}\``,
       `- **Turma:** \`${student.turma}\``,
-      `- **Chave Validada:** \`${chave}\` (${isTest ? "🧪 **Projeto 0 de Teste — Sem Sorteio e Sem Nota**" : "🏆 **Projeto Oficial Sorteado — Valendo 0 a 100 pontos**"})`,
+      `- **Chave Validada:** \`${chave}\` (🏆 **Projeto Oficial Sorteado — Valendo 0 a 100 pontos**)`,
       `- **Projeto Correspondente:** **#${project.id} — ${project.title}**`,
-      `- **Status do Pull Request:** ${
-        isTest
-          ? (mergedOk ? "Pull Request de teste integrado (merged) com sucesso ✅" : "Integrado no repositório ✅")
-          : "Aberto e Registrado ✅ (O merge oficial e a nota definitiva serão processados no encerramento das entregas pelo professor)"
-      }`,
+      `- **Status do Pull Request:** Aberto e Registrado ✅ (nenhum merge é feito automaticamente; o merge oficial será manual, a partir de 20/11/2026)`,
       ``,
       `⏳ *Iniciando pré-inspeção técnica da subpasta \`${chave}/\` e verificação do deploy no Cloudflare...*`,
     ].join("\n")
@@ -317,43 +339,7 @@ async function main() {
   const folderPath = path.resolve(process.cwd(), targetFolder);
   const { checks, cloudflareUrl, dossier } = await inspecionarSubpasta(folderPath, chave, { checkLiveUrl: true });
 
-  if (isTest) {
-    const externalAiEvaluation = await consultarAiEvaluation({
-      student,
-      project,
-      isTest: true,
-      checks,
-      dossier,
-    });
-
-    const evalRes = await fetch(`${API_BASE}/api/projetos2026/avaliar`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        chave,
-        prNumber: PR_NUMBER,
-        prUrl: PR_HTML_URL,
-        githubRepoUrl: PR_HEAD_REPO_URL,
-        cloudflareUrl,
-        checks,
-        dossier,
-        externalAiEvaluation,
-      }),
-    });
-
-    const evalData = await evalRes.json().catch(() => null);
-    if (!evalRes.ok || !evalData?.ok) {
-      await comentarNoPr(
-        `⚠️ **Aviso na Etapa 2:** O Pull Request foi aceito, mas houve uma falha temporária ao registrar a avaliação automática (${evalData?.message || evalRes.status}).`
-      );
-      process.exit(0);
-    }
-
-    await comentarNoPr(evalData.markdownReport);
-    const labels = [`turma:${student.turma}`, "projeto-teste-sem-nota"];
-    await adicionarLabelsNoPr(labels);
-  } else {
-    const checklistMarkdown = [
+  const checklistMarkdown = [
       `## 📋 Diagnóstico Preliminar de Entrega — Projeto #${project.id} (\`${chave}\`)`,
       ``,
       `Olá, **${student.nomeCompleto}**! Seu Pull Request foi registrado e inspecionado com sucesso.`,
@@ -370,9 +356,8 @@ async function main() {
       `💡 **Observação:** Seu Pull Request permanece **ABERTO**. Você pode continuar realizando commits e melhorias no seu repositório à vontade (o Pull Request atualizará sozinho a cada \`git push\`). A avaliação por Inteligência Artificial com atribuição de nota final (0 a 100) e o merge oficial serão executados pelo professor na data de encerramento das entregas.`,
     ].join("\n");
 
-    await comentarNoPr(checklistMarkdown);
-    await adicionarLabelsNoPr([`turma:${student.turma}`, "status:aguardando-avaliacao"]);
-  }
+  await comentarNoPr(checklistMarkdown);
+  await adicionarLabelsNoPr([`turma:${student.turma}`, "status:aguardando-avaliacao"]);
 }
 
 main();
