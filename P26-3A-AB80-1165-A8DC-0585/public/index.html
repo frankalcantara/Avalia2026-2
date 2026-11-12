@@ -1,0 +1,158 @@
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DevGratitude - Mural de reconhecimento entre desenvolvedores.">
+  <title>DevGratitude | Mural de Reconhecimento</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container header-content">
+      <a class="brand" href="/" aria-label="DevGratitude - Início">
+        <span class="brand-icon">✦</span>
+        <span>Dev<span class="brand-accent">Gratitude</span></span>
+      </a>
+
+      <div class="header-actions">
+        <span id="discordUserText" class="user-status">
+          Não autenticado
+        </span>
+        <a id="discordLoginLink" class="btn btn-discord"
+           href="/api/auth/discord">
+          Entrar com Discord
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">✦ Reconhecimento que conecta</span>
+        <h1>Grandes equipes merecem
+          <span>grandes reconhecimentos.</span>
+        </h1>
+        <p>
+          Valorize quem compartilha conhecimento, resolve
+          desafios e faz a diferença no desenvolvimento.
+          Um agradecimento pode transformar o dia de alguém.
+        </p>
+        <a href="#novo-reconhecimento" class="btn btn-primary">
+          + Enviar reconhecimento
+        </a>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Estatísticas do mural">
+      <article class="stat-card">
+        <span class="stat-icon">🏆</span>
+        <strong id="totalRecognitions">0</strong>
+        <span>Reconhecimentos</span>
+      </article>
+      <article class="stat-card">
+        <span class="stat-icon">👥</span>
+        <strong id="totalMembers">0</strong>
+        <span>Membros reconhecidos</span>
+      </article>
+      <article class="stat-card">
+        <span class="stat-icon">✨</span>
+        <strong id="totalBadges">3</strong>
+        <span>Tipos de selos</span>
+      </article>
+    </section>
+
+    <section class="section" id="novo-reconhecimento">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Espalhe reconhecimento</span>
+          <h2>Enviar um novo reconhecimento</h2>
+          <p>Escolha um colega, um selo e escreva sua mensagem.</p>
+        </div>
+      </div>
+
+      <form id="recognitionForm" class="form-card">
+        <div class="form-group">
+          <label for="recipientId">Colega destinatário</label>
+          <select id="recipientId" name="recipientId" required>
+            <option value="">Selecione um colega</option>
+          </select>
+        </div>
+
+        <fieldset class="badge-fieldset">
+          <legend>Escolha um selo</legend>
+          <div class="badge-options">
+            <label class="badge-option">
+              <input type="radio" name="badge" value="bug" required>
+              <span>🐛 Resolveu um Bug Crítico</span>
+            </label>
+            <label class="badge-option">
+              <input type="radio" name="badge" value="explanation">
+              <span>💡 Ótima Explicação</span>
+            </label>
+            <label class="badge-option">
+              <input type="radio" name="badge" value="teamwork">
+              <span>🤝 Ajuda no Projeto</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="form-group">
+          <label for="message">Mensagem de reconhecimento</label>
+          <textarea id="message" name="message"
+            maxlength="280" minlength="5" rows="4"
+            placeholder="Conte como essa pessoa fez a diferença..."
+            required></textarea>
+          <small>Máximo de 280 caracteres.</small>
+        </div>
+
+        <button type="submit" id="sendBtn"
+          class="btn btn-primary">
+          Publicar reconhecimento
+        </button>
+        <p id="statusMessage" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="section" id="mural">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Nossa comunidade</span>
+          <h2>Mural de Reconhecimentos</h2>
+          <p>Pequenos gestos, grandes conquistas.</p>
+        </div>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filtrar reconhecimentos">
+        <button type="button" class="filter-btn active"
+          data-filter="all">Todos</button>
+        <button type="button" class="filter-btn"
+          data-filter="received">Recebidos</button>
+        <button type="button" class="filter-btn"
+          data-filter="sent">Enviados</button>
+      </div>
+
+      <div id="recognitionGrid" class="recognition-grid"
+           aria-live="polite">
+        <p class="empty-state">
+          Carregando reconhecimentos...
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="projectFooter">
+    <div class="container footer-content">
+      <p>© 2026 DevGratitude — Projeto #29</p>
+      <p>Desenvolvido por Laerto Santin | UniBrasil</p>
+      <p>Chave Única de Auditoria:
+        <code>P26-3A-AB80-1165-A8DC-0585</code>
+      </p>
+      <p>Licenciado sob MIT</p>
+    </div>
+  </footer>
+</body>
+</html>
