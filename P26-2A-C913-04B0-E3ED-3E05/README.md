@@ -1,50 +1,44 @@
-# Projeto #5: Quiz Competitivo Temporizado
+﻿# Projeto #5 — Quiz Competitivo Temporizado
 
-- **Modalidade:** Projeto Oficial Sorteado (Valendo 100 pontos)
-- **Estudante:** Mateus dos Reis Oliveira
-- **Turma:** 2A
-- **Chave Única:** `P26-2A-C913-04B0-E3ED-3E05`
-- **URL_CLOUDFLARE:** `https://p26-2a-c913-04b0-e3ed-3e05.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+**Chave Única:** `P26-2A-C913-04B0-E3ED-3E05`  
+**Aluno:** Mateus dos Reis Oliveira · **Turma:** 2A  
+**URL Cloudflare Pages:** `https://p26-2a-c913-04b0-e3ed-3e05.pages.dev` *(deploy precisa ser confirmado)*
 
----
+Plataforma de revisão acadêmica com login Discord OAuth2, categorias e questões de múltipla escolha. Cada questão é entregue individualmente; o cliente exibe um contador regressivo, enquanto a Cloudflare Pages Function mede o tempo no D1, verifica a resposta e calcula a pontuação. A alternativa correta não faz parte do payload da questão.
 
-## Especificação do Projeto
+## Tecnologias
 
-Crie uma plataforma de perguntas e respostas de múltipla escolha voltada para revisão de conteúdos acadêmicos. Após realizar o login via OAuth2 do Discord, o usuário seleciona uma categoria temática e inicia uma bateria de questões, na qual o frontend em JavaScript controla uma barra de progresso visual regressiva para cada resposta.
+- Cliente em HTML5, CSS3 e JavaScript vanilla, sem frameworks de interface.
+- Cloudflare Pages Functions para OAuth2, sessões assinadas e regras do quiz.
+- Cloudflare D1 (SQLite) para perfil Discord, categorias, questões, tentativas e respostas.
 
-O servidor na Cloudflare entrega uma questão por vez sem revelar a alternativa correta no payload JSON. Quando o usuário responde, a função serverless verifica a diferença temporal entre o envio da pergunta e o recebimento da resposta no Cloudflare D1, atribuindo pontuação proporcional à velocidade e precisão, bloqueando respostas enviadas após o limite de tempo estipulado.
+## Configuração
 
----
+O `wrangler.jsonc` já aponta para o banco D1 informado para este projeto. Confirme que esse ID corresponde ao banco da sua conta Cloudflare. A migração `0001_init.sql` cria as tabelas-base; aplique `0002_quiz.sql` para criar categorias, questões de exemplo e tabelas do quiz:
 
-## Como Publicar esta Subpasta no Cloudflare Pages + D1 + Discord OAuth2
+```powershell
+npx.cmd wrangler d1 migrations apply db-p26-2a-c913-04b0-e3ed-3e05 --remote
+```
 
-1. No painel da Cloudflare (**Workers & Pages** → **Create** → **Pages** → **Connect to Git**), selecione o seu fork do repositório `Avalia2026-2`.
-2. Configure os parâmetros de build apontando para esta subpasta:
-   - **Root directory (Diretório raiz):** `P26-2A-C913-04B0-E3ED-3E05`
-   - **Build command:** *(deixe em branco — HTML/CSS/JS puro)*
-   - **Build output directory:** `public`
-3. Crie o banco de dados D1 e aplique a migração inicial (no terminal do laboratório usando Scoop):
-   ```powershell
-   cd P26-2A-C913-04B0-E3ED-3E05
-   npx.cmd wrangler d1 create db-p26-2a-c913-04b0-e3ed-3e05
-   # Copie o database_id gerado para o arquivo wrangler.jsonc e execute:
-   npx.cmd wrangler d1 migrations apply DB --remote
-   ```
-4. **Vincule o Banco D1 ao seu Cloudflare Pages (Obrigatório para ativar env.DB):**
-   - No painel da Cloudflare: acesse seu projeto Pages → **Settings** → **Functions** → **D1 database bindings**.
-   - Clique em **Add binding**:
-     - **Variable name:** `DB`
-     - **D1 database:** selecione o banco que você criou (`db-p26-2a-c913-04b0-e3ed-3e05`).
-5. **Configuração do Discord OAuth2 (Obrigatório para autenticação real):**
-   - Acesse o **Discord Developer Portal** (https://discord.com/developers/applications) e crie uma nova Application.
-   - Na aba **OAuth2**:
-     - Copie o **Client ID** e gere o **Client Secret**.
-     - Em **Redirects**, adicione a URL exata do deploy:
-       `https://p26-2a-c913-04b0-e3ed-3e05.pages.dev/api/auth/discord/callback`
-   - No painel do seu projeto no Cloudflare Pages:
-     - Acesse **Settings** → **Environment variables**.
-     - Adicione as variáveis de ambiente:
-       - `DISCORD_CLIENT_ID`
-       - `DISCORD_CLIENT_SECRET`
-6. Atualize o campo **URL_CLOUDFLARE** no topo deste `README.md` com o endereço público gerado pela Cloudflare.
-7. Na raiz do repositório, execute `node validar-local.mjs P26-2A-C913-04B0-E3ED-3E05` para validar todos os critérios antes de fazer o commit e abrir o Pull Request.
+Configure `DISCORD_CLIENT_ID` e `DISCORD_CLIENT_SECRET` como variáveis de ambiente no Cloudflare Pages. Configure também `SESSION_SECRET` com um segredo aleatório longo (ou mantenha a chave de sessão derivada do client secret). No Discord Developer Portal, cadastre como Redirect URI a URL exata `https://p26-2a-c913-04b0-e3ed-3e05.pages.dev/api/auth/discord/callback`.
+
+Para desenvolvimento local, use `.dev.vars` (ignorado pelo Git) e cadastre também o callback local no Discord. Rode `npx.cmd wrangler pages dev public --port 8788`. Não publique valores de `.dev.vars` nem os inclua em commits.
+
+## Rotas principais
+
+- `GET /api/auth/discord` e `GET /api/auth/discord/callback`: fluxo OAuth2 com `state` assinado.
+- `GET /api/auth/session` e `POST /api/auth/logout`: sessão HttpOnly assinada e saída.
+- `GET /api/quiz/categories`, `POST /api/quiz/start`, `POST /api/quiz/answer`, `POST /api/quiz/next`: fluxo do quiz autenticado.
+- `GET /api/status`: diagnóstico básico sem dados pessoais de outros usuários.
+
+Todas as respostas e avanços de tentativa são associados ao usuário da sessão. O cliente não fornece identidade, tempo, correção ou pontuação confiáveis. A pontuação e o prazo são verificados no servidor a partir do horário registrado no D1.
+
+## Publicação
+
+No Cloudflare Pages, conecte o fork público de `Avalia2026-2`, selecione esta pasta como diretório raiz e use `public` como diretório de saída, sem comando de build. Configure o vínculo D1 com variável `DB` e as variáveis OAuth2/segredo de sessão. Depois do deploy, confirme o login e o quiz no endereço público e atualize a URL acima se o domínio final for diferente.
+
+A entrega também requer publicar o fork/repositório no GitHub, abrir o Pull Request da subpasta e enviar no AVA as URLs do deploy e do repositório. Isso ainda depende das suas contas e da confirmação do deploy; este workspace não publica nem envia a entrega.
+
+## Licença
+
+MIT. Consulte [LICENSE](./LICENSE). A documentação de harness, agentes e skills está em [AGENTS.md](./AGENTS.md).
