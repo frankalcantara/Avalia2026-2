@@ -5,8 +5,8 @@
 - **RA:** 2026109204
 - **Turma:** 2C
 - **Chave Única:** `P26-2C-7200-F0C5-B458-DA41`
-- **URL_CLOUDFLARE:** `https://seu-projeto.pages.dev` *(troque pela URL real do deploy antes do Pull Request)*
-- **Repositório GitHub:** `https://github.com/SEU-USUARIO/Avalia2026-2/tree/main/P26-2C-7200-F0C5-B458-DA41`
+- **URL_CLOUDFLARE:** `https://issue-tracker-vitoria.pages.dev` *(troque pela URL real do deploy antes do Pull Request)*
+- **Repositório GitHub:** `https://github.com/chapezx/Avalia2026-2/tree/main/P26-2C-7200-F0C5-B458-DA41`
 - **Licença:** MIT ([LICENSE](./LICENSE))
 
 ---
