@@ -1,34 +1,41 @@
-# Documentação de Engenharia de Agentes e Harness (P26-2A-C913-04B0-E3ED-3E05)
+﻿# Engenharia de Agentes e Harness — P26-2A-C913-04B0-E3ED-3E05
 
-> **Requisito da Rubrica (25 pontos):** Uso obrigatório de no mínimo **3 agentes diferentes** (sendo obrigatoriamente **1 agente dedicado a teste e validação**), documentando em qual *harness* operaram e relacionando as *skills* na pasta `skills/`.
+## Harness
 
-## 1. Ambiente de Orquestração (Harness Utilizado)
+- **Harness utilizado:** Codex, em modo de colaboração multiagente, nesta workspace local.
+- **Modelo base:** GPT-6 (agentes delegados herdaram o modelo do agente principal).
+- **Coordenação:** implementação modular no mesmo repositório: backend e D1, interface e revisão independente. O contrato JSON das Pages Functions foi compartilhado durante a implementação.
 
-- **Harness Principal:** *(Descreva aqui qual harness foi utilizado, ex: Antigravity / Claude Code / Cursor / Cline / GitHub Copilot Workspace / OpenHands)*
-- **Modelo(s) Base:** *(Informe os modelos utilizados pelos agentes)*
-- **Estratégia de Coordenação:** Os agentes operaram de forma modular sobre a subpasta `P26-2A-C913-04B0-E3ED-3E05/`, compartilhando especificações de banco de dados D1, contratos JSON das Cloudflare Pages Functions e verificação automatizada via `validar-local.mjs`.
+## Agentes e responsabilidades
 
----
+### Agente 1 — Backend serverless, D1 e Discord OAuth2
 
-## 2. Agentes Criados e Responsabilidades (Mínimo de 3 Agentes)
+- **Harness:** Codex multiagente.
+- **Skill:** [serverless-d1-discord](./skills/serverless-d1-discord/SKILL.md).
+- **Responsabilidade/entrega:** migração do quiz, sessões assinadas, validação de `state` OAuth, endpoints autenticados e pontuação calculada com timestamps do D1.
 
-### Agente 1: Arquiteto Serverless, Cloudflare D1 e Segurança Discord OAuth2
-- **Papel:** Modelagem do esquema relacional SQLite no Cloudflare D1 (`migrations/0001_init.sql`), implementação do fluxo de autenticação Discord OAuth2 e validação das regras de negócio no servidor (`functions/`).
-- **Skill Utilizada:** [`skills/serverless-d1-discord/SKILL.md`](./skills/serverless-d1-discord/SKILL.md)
-- **Entregas Realizadas:**
-  - Estruturação das tabelas e índices no Cloudflare D1.
-  - Proteção das rotas serverless contra manipulação no cliente.
+### Agente 2 — Interface Web Vanilla
 
-### Agente 2: Especialista em Interface Web Vanilla (HTML5, CSS3 e DOM)
-- **Papel:** Construção da interface responsiva e acessível utilizando exclusivamente HTML5 semântico, CSS3 moderno (sem sombras em fontes) e JavaScript puro (Vanilla JS), consumindo as rotas serverless via `fetch`.
-- **Skill Utilizada:** [`skills/vanilla-dom-ui/SKILL.md`](./skills/vanilla-dom-ui/SKILL.md)
-- **Entregas Realizadas:**
-  - Componentes visuais em `public/index.html`, `public/styles.css` e `public/app.js`.
-  - Inclusão do cabeçalho de perfil do Discord (`user_id`, nome e avatar) e rodapé oficial com a Chave Única `P26-2A-C913-04B0-E3ED-3E05`.
+- **Harness:** Codex multiagente.
+- **Skill:** [vanilla-dom-ui](./skills/vanilla-dom-ui/SKILL.md).
+- **Responsabilidade/entrega:** interface responsiva em HTML/CSS/JavaScript vanilla, perfil do Discord, seleção de categoria, questão individual, temporizador visual, feedback e resultado.
 
-### Agente 3: Agente de Teste, Auditoria de Segurança e Validação (Obrigatório)
-- **Papel:** Verificação independente de ponta a ponta: inspeção de contratos de API, tentativa de contorno das validações do servidor, auditoria da rubrica de 100 pontos e execução de testes funcionais.
-- **Skill Utilizada:** [`skills/teste-validacao/SKILL.md`](./skills/teste-validacao/SKILL.md)
-- **Entregas Realizadas:**
-  - Bateria de verificação de integridade dos endpoints e conformidade com a rubrica (`validar-local.mjs` e casos de teste documentados abaixo).
-  - Relatório de validação confirmando ausência de frameworks proibidos, presença da licença MIT e funcionamento no Cloudflare.
+### Agente 3 — Teste, auditoria e validação independente
+
+- **Harness:** Codex multiagente.
+- **Skill:** [teste-validacao](./skills/teste-validacao/SKILL.md).
+- **Responsabilidade/entrega:** revisão estática independente dos contratos, riscos anti-manipulação, conformidade estrutural e integração. Identificou e comunicou o requisito de `attemptId` nas respostas e o alinhamento do limite de tempo.
+- **Limitação:** a auditoria foi estática; não foram executados testes funcionais nem confirmado o deploy remoto. O script `../validar-local.mjs` acessa a URL pública e não comprova sozinho regras de segurança ou funcionamento do quiz.
+
+## Skills incluídas
+
+- `skills/serverless-d1-discord/SKILL.md`
+- `skills/vanilla-dom-ui/SKILL.md`
+- `skills/teste-validacao/SKILL.md`
+
+## Próximas verificações para entrega
+
+1. Aplicar `migrations/0002_quiz.sql` ao D1 remoto.
+2. Configurar variáveis OAuth2, segredo de sessão e callback no Discord/Cloudflare Pages.
+3. Executar a bateria funcional/anti-manipulação em ambiente local e confirmar o fluxo publicado em HTTPS.
+4. Atualizar a URL real, publicar no GitHub, abrir o Pull Request e enviar as URLs no AVA.
