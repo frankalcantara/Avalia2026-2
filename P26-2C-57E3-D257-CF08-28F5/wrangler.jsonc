@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "projeto-p26-2c-57e3-d257-cf08-28f5",
+  "compatibility_date": "2026-11-12",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2c-57e3-d257-cf08-28f5",
+      "migrations_dir": "migrations",
+      // Replace with the real Cloudflare D1 UUID when the database is created.
+      "database_id": "00000000-0000-0000-0000-000000000000"
+    }
+  ]
+}
