@@ -12,6 +12,21 @@ Plataforma de revisão acadêmica com login Discord OAuth2, categorias e questõ
 - Cloudflare Pages Functions para OAuth2, sessões assinadas e regras do quiz.
 - Cloudflare D1 (SQLite) para perfil Discord, categorias, questões, tentativas e respostas.
 
+## Estrutura do código
+
+```text
+functions/api/
+├── _shared/          # Sessão, autenticação e helpers do quiz
+├── auth/             # OAuth Discord, consulta de sessão e logout
+└── quiz/             # Categorias, início, respostas e avanço de questões
+public/
+├── modules/          # Chamadas à API, componentes DOM e visualização do quiz
+├── app.js            # Orquestração da interface e estado da sessão
+├── index.html        # Estrutura semântica da página
+└── styles.css        # Tokens, componentes e regras responsivas
+migrations/           # Esquema inicial e dados do quiz
+```
+
 ## Configuração
 
 O `wrangler.jsonc` já aponta para o banco D1 informado para este projeto. Confirme que esse ID corresponde ao banco da sua conta Cloudflare. A migração `0001_init.sql` cria as tabelas-base; aplique `0002_quiz.sql` para criar categorias, questões de exemplo e tabelas do quiz:
