@@ -339,6 +339,15 @@ async function main() {
   const folderPath = path.resolve(process.cwd(), targetFolder);
   const { checks, cloudflareUrl, dossier } = await inspecionarSubpasta(folderPath, chave, { checkLiveUrl: true });
 
+  const chaveLocalizada = checks.cloudflareHasHashInFooter;
+  const rodapeDiagnostico = chaveLocalizada
+    ? checks.footerHasHash
+      ? "Chave localizada no rodapé"
+      : "Chave localizada no HTML"
+    : checks.hasFooterElement
+      ? "Rodapé presente, mas faltam informações: Chave Única não localizada"
+      : "Elemento footer não localizado";
+
   const checklistMarkdown = [
       `## 📋 Diagnóstico Preliminar de Entrega — Projeto #${project.id} (\`${chave}\`)`,
       ``,
@@ -351,7 +360,7 @@ async function main() {
       `| **2. Serverless (Functions + D1 + Discord OAuth2)** | ${checks.hasCloudflareFunctions && checks.hasD1BindingOrSql ? "✅ OK" : "⚠️ PENDENTE"} | Functions: ${checks.hasCloudflareFunctions ? "Sim" : "Não"} · D1: ${checks.hasD1BindingOrSql ? "Sim" : "Não"} · Discord OAuth2: ${checks.hasDiscordOAuth ? "Sim" : "Não"} |`,
       `| **3. Frontend HTML5/CSS3/JS Vanilla** | ${checks.hasVanillaFrontend && !checks.hasProhibitedFrameworks ? "✅ OK" : "⚠️ ATENÇÃO"} | ${checks.hasProhibitedFrameworks ? "Frameworks proibidos detectados" : "HTML/CSS/JS puro"} |`,
       `| **4. Engenharia de Agentes (Mín. 3 Agentes + Teste + Skills)** | ${checks.hasAgentsDoc && checks.hasTestingAgent && checks.skillsCount >= 3 ? "✅ OK" : "⚠️ PENDENTE"} | Agentes: ${checks.agentsCountDetected} · Agente de Teste: ${checks.hasTestingAgent ? "Sim" : "Não"} · Skills: ${checks.skillsCount} |`,
-      `| **5. Licença MIT + Chave no README e Rodapé** | ${checks.hasMitLicense && checks.hasReadmeWithHash && checks.localHtmlHasHash ? "✅ OK" : "⚠️ PENDENTE"} | MIT: ${checks.hasMitLicense ? "Sim" : "Não"} · README: ${checks.hasReadmeWithHash ? "Sim" : "Não"} · Rodapé: ${checks.localHtmlHasHash ? "Sim" : "Não"} |`,
+      `| **5. Licença MIT + Chave no README e Rodapé** | ${checks.hasMitLicense && checks.hasReadmeWithHash && chaveLocalizada ? "✅ OK" : "⚠️ PENDENTE"} | MIT: ${checks.hasMitLicense ? "Sim" : "Não"} · README: ${checks.hasReadmeWithHash ? "Sim" : "Não"} · Rodapé: ${rodapeDiagnostico} |`,
       ``,
       `💡 **Observação:** Seu Pull Request permanece **ABERTO**. Você pode continuar realizando commits e melhorias no seu repositório à vontade (o Pull Request atualizará sozinho a cada \`git push\`). A avaliação por Inteligência Artificial com atribuição de nota final (0 a 100) e o merge oficial serão executados pelo professor na data de encerramento das entregas.`,
     ].join("\n");
