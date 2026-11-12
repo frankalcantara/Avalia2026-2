@@ -49,10 +49,10 @@
     add.onclick = async () => { try { await post('/cards', { deck_id: deck.id, front: f.value, back: b.value }); cards(deck); } catch (e) { showErr(e); } };
     const back = el('button', { className: 'ghost', textContent: '← Baralhos' }); back.onclick = decks;
     const del = el('button', { className: 'ghost', textContent: 'Excluir baralho' });
-    del.onclick = async () => { if (confirm('Excluir este baralho e seus cartões?')) { await api('/decks?id=' + deck.id, { method: 'DELETE' }); decks(); } };
+    del.onclick = async () => { if (!confirm('Excluir este baralho e seus cartões?')) return; try { await api('/decks?id=' + deck.id, { method: 'DELETE' }); decks(); } catch (e) { showErr(e); } };
     const ul = el('ul', { className: 'list' }, list.map((c) => {
       const x = el('button', { className: 'ghost', textContent: 'Remover' });
-      x.onclick = async () => { await api('/cards?id=' + c.id, { method: 'DELETE' }); cards(deck); };
+      x.onclick = async () => { try { await api('/cards?id=' + c.id, { method: 'DELETE' }); cards(deck); } catch (e) { showErr(e); } };
       return el('li', { className: 'item' }, el('div', {}, el('b', { textContent: c.front }), el('div', { className: 'meta', textContent: c.back })), x);
     }));
     app.replaceChildren(el('div', { className: 'row' }, back, del), el('h2', { textContent: deck.name }), f, el('div', { style: 'height:.5rem' }), b,

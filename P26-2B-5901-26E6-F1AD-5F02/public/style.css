@@ -1,4 +1,5 @@
 /* Mesa azul-marinho, cartões de fichário com pauta e margem vermelha */
+[hidden]{display:none !important}
 :root{
   --desk:#1d2a47;--desk-2:#263659;--desk-ink:#e9eefb;--desk-muted:#a9b6d6;
   --card:#fcfcf9;--card-ink:#1c2438;--card-muted:#5d6784;--rule:#cfdcf2;--margin:#e0566b;
