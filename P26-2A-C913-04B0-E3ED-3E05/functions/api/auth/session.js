@@ -1,7 +1,11 @@
 import { getSession } from "../_shared/auth.js";
 
 export async function onRequestGet({ request, env }) {
-  return Response.json({ user: await getSession(request, env) }, { headers: { "Cache-Control": "no-store" } });
+  const user = await getSession(request, env);
+  return Response.json(
+    { user },
+    { headers: { "Cache-Control": "no-store" } },
+  );
 }
 
 export async function onRequestPost() {
