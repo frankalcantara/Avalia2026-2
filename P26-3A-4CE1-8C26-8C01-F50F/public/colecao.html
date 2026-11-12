@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Uma coleção de links compartilhada no Bookmark Manager.">
+  <meta name="referrer" content="no-referrer">
+  <title>Coleção compartilhada — Bookmark Manager</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/colecao.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Pular para o conteúdo</a>
+  <header class="topbar"><div class="topbar-inner"><a class="brand" href="/" aria-label="Bookmark Manager, início"><span class="brand-mark" aria-hidden="true"></span><span>Bookmark<span class="brand-light"> Manager</span></span></a><a class="button button-secondary" href="/">Minha biblioteca <span aria-hidden="true">↗</span></a></div></header>
+  <main class="main-shell public-shell" id="mainContent" tabindex="-1">
+    <noscript><p class="notice notice-error">Ative o JavaScript para carregar os links desta coleção.</p></noscript>
+    <section aria-labelledby="publicCollectionTitle">
+      <div class="public-heading"><p class="eyebrow">Uma seleção para compartilhar</p><span class="visibility visibility-public">Coleção pública</span><h1 id="publicCollectionTitle">Carregando coleção…</h1><p class="muted" id="publicCollectionDescription">Boas referências abrem novos caminhos.</p></div>
+      <div class="notice" id="publicFeedback" role="status" aria-live="polite" aria-atomic="true">Buscando os links desta coleção…</div>
+      <button class="button button-secondary" id="retryPublicButton" type="button" hidden>Tentar novamente</button>
+      <p class="result-count" id="publicCount" hidden></p>
+      <div class="empty-state" id="publicEmpty" hidden><span class="empty-mark" aria-hidden="true">↗</span><h2>As próximas descobertas vêm aí</h2><p>Esta coleção ainda não tem links. Volte mais tarde para conferir.</p></div>
+      <ul class="bookmark-list public-bookmarks" id="publicBookmarkList" aria-label="Links da coleção"></ul>
+    </section>
+  </main>
+  <footer class="site-footer"><span>Bookmark Manager · Leituras que ficam.</span><span>Chave Única: <code>P26-3A-4CE1-8C26-8C01-F50F</code> · Licença MIT</span></footer>
+</body>
+</html>
