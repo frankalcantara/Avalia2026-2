@@ -38,7 +38,7 @@ function showNotice(message, isSuccess = false) {
   elements.notice.hidden = false;
 }
 
-async function requestJson(url, options = {}) {
+async function requestJson(url, options = {}, { allowUnauthenticated = false } = {}) {
   const response = await fetch(url, {
     ...options,
     credentials: "same-origin",
@@ -52,6 +52,7 @@ async function requestJson(url, options = {}) {
   if (!response.ok) {
     if (response.status === 401) {
       showLogin();
+      if (allowUnauthenticated) return null;
       const message = "Sua sessão expirou. Entre novamente com o Discord.";
       showNoticeOnLogin(message);
       throw new Error(message);
@@ -343,7 +344,8 @@ elements.form.addEventListener("submit", async (event) => {
 
 async function initialize() {
   try {
-    const response = await requestJson("/api/auth/me");
+    const response = await requestJson("/api/auth/me", {}, { allowUnauthenticated: true });
+    if (!response) return;
     if (!response.user || !response.user.username) {
       throw new Error("O servidor retornou um usuário inválido.");
     }
