@@ -2,7 +2,7 @@
 
 **Chave Única:** `P26-2A-C913-04B0-E3ED-3E05`  
 **Aluno:** Mateus dos Reis Oliveira · **Turma:** 2A  
-**URL Cloudflare Pages:** `https://p26-2a-c913-04b0-e3ed-3e05.pages.dev` *(deploy precisa ser confirmado)*
+**URL Cloudflare Pages:** `avalia2026-2-dt7.pages.dev` *(deploy precisa ser confirmado)*
 
 Plataforma de revisão acadêmica com login Discord OAuth2, categorias e questões de múltipla escolha. Cada questão é entregue individualmente; o cliente exibe um contador regressivo, enquanto a Cloudflare Pages Function mede o tempo no D1, verifica a resposta e calcula a pontuação. A alternativa correta não faz parte do payload da questão.
 
@@ -35,7 +35,7 @@ O `wrangler.jsonc` já aponta para o banco D1 informado para este projeto. Confi
 npx.cmd wrangler d1 migrations apply db-p26-2a-c913-04b0-e3ed-3e05 --remote
 ```
 
-Configure `DISCORD_CLIENT_ID` e `DISCORD_CLIENT_SECRET` como variáveis de ambiente no Cloudflare Pages. Configure também `SESSION_SECRET` com um segredo aleatório longo (ou mantenha a chave de sessão derivada do client secret). No Discord Developer Portal, cadastre como Redirect URI a URL exata `https://p26-2a-c913-04b0-e3ed-3e05.pages.dev/api/auth/discord/callback`.
+Configure `DISCORD_CLIENT_ID` e `DISCORD_CLIENT_SECRET` como variáveis de ambiente no Cloudflare Pages. Configure também `SESSION_SECRET` com um segredo aleatório longo (ou mantenha a chave de sessão derivada do client secret). No Discord Developer Portal, cadastre como Redirect URI a URL exata `https://avalia2026-2-dt7.pages.dev/api/auth/discord/callback`.
 
 Para desenvolvimento local, use `.dev.vars` (ignorado pelo Git) e cadastre também o callback local no Discord. Rode `npx.cmd wrangler pages dev public --port 8788`. Não publique valores de `.dev.vars` nem os inclua em commits.
 
