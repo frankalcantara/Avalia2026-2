@@ -495,11 +495,28 @@
       $("profileUsername").textContent = user.username;
       $("profileUserId").textContent = "user_id: " + user.user_id;
       $("avatarInitials").textContent = user.username.trim().split(/\s+/).slice(0, 2).map((word) => Array.from(word)[0] || "").join("").toLocaleUpperCase("pt-BR") || "?";
-      if (user.avatar) {
-        const image = $("profileAvatar");
+      // Preserve URLs completas da API e reconstrua somente hashes válidos.
+      const avatar = typeof user.avatar === "string" && !/\s/.test(user.avatar) ? user.avatar : "";
+      const avatarHash = /^(?:a_)?[a-f0-9]{32}$/;
+      const customAvatar = /^https:\/\/cdn\.discordapp\.com\/avatars\/([0-9]{17,20})\/([^/?#]+)\.(?:png|gif|jpe?g|webp)(?:\?size=[0-9]+)?$/.exec(avatar);
+      const defaultAvatar = /^https:\/\/cdn\.discordapp\.com\/embed\/avatars\/[0-5]\.png(?:\?size=[0-9]+)?$/.test(avatar);
+      const userId = String(user.user_id);
+      let avatarSrc = "";
+      if (defaultAvatar || (customAvatar && customAvatar[1] === userId && avatarHash.test(customAvatar[2]))) {
+        avatarSrc = avatar;
+      } else if (avatarHash.test(avatar) && /^[0-9]{17,20}$/.test(userId)) {
+        avatarSrc = "https://cdn.discordapp.com/avatars/" + userId + "/" + avatar + ".png";
+      }
+      const image = $("profileAvatar");
+      image.hidden = true;
+      image.onload = null;
+      image.onerror = null;
+      if (avatarSrc) {
         image.onload = () => { image.hidden = false; };
         image.onerror = () => { image.hidden = true; };
-        image.src = "https://cdn.discordapp.com/avatars/" + encodeURIComponent(user.user_id) + "/" + encodeURIComponent(user.avatar) + ".png";
+        image.src = avatarSrc;
+      } else {
+        image.removeAttribute("src");
       }
       $("sessionLoading").hidden = true;
       $("sessionProfile").hidden = false;

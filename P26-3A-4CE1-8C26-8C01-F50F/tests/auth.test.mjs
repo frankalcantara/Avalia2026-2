@@ -147,7 +147,7 @@ test("OAuth completo: state, hash persistido, identidade do POST e revogação n
   } });
 
   const saved = await dispatch(status, request("/api/status", {
-    token, method: "POST", body: { userId: "intruso", username: "Falso", conteudo: "Teste autenticado" },
+    token, method: "POST", body: { conteudo: "Teste autenticado" },
   }), bindings);
   assert.equal(saved.status, 201);
   const record = DB.sqlite.prepare("SELECT user_id, username, conteudo FROM project_records").get();
@@ -211,6 +211,18 @@ test("POST status anônimo é rejeitado sem inserir registros", async (t) => {
   }), env(DB));
   assert.equal(response.status, 401);
   assert.equal(DB.sqlite.prepare("SELECT COUNT(*) AS n FROM project_records").get().n, 0);
+});
+
+test("POST status autenticado rejeita identidade forjada sem inserir registros", async (t) => {
+  const DB = database(t);
+  const token = await seed(DB);
+  for (const identity of [{ userId: "intruso" }, { username: "Falso" }]) {
+    const response = await dispatch(status, request("/api/status", {
+      token, method: "POST", body: { conteudo: "Não salvar", ...identity },
+    }), env(DB));
+    assert.equal(response.status, 400);
+    assert.equal(DB.sqlite.prepare("SELECT COUNT(*) AS n FROM project_records").get().n, 0);
+  }
 });
 
 test("POST status e logout rejeitam Origin externo sem gravar ou revogar", async (t) => {

@@ -1,4 +1,26 @@
-import { isSameOrigin, jsonError, requireUser } from "../../lib/auth.js";
+import { route, statusBody } from "../../lib/api.js";
+
+const chave = "P26-3A-4CE1-8C26-8C01-F50F";
+
+const postStatus = route(["POST"], async (context) => {
+  const { request, env } = context;
+  const { conteudo } = await statusBody(request);
+  const { user_id: userId, username } = context.data.user;
+
+  await env.DB.prepare(
+    "CREATE TABLE IF NOT EXISTS project_records (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, username TEXT NOT NULL, chave_projeto TEXT NOT NULL, conteudo TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)"
+  ).run();
+  await env.DB.prepare(
+    "INSERT INTO project_records (user_id, username, chave_projeto, conteudo) VALUES (?, ?, ?, ?)"
+  ).bind(userId, username, chave, conteudo).run();
+
+  return Response.json({
+    ok: true,
+    saved: Boolean(env.DB),
+    chave,
+    serverTimestamp: new Date().toISOString(),
+  }, { status: 201, headers: { "Cache-Control": "no-store" } });
+});
 
 /**
  * Cloudflare Pages Function — /api/status
@@ -6,7 +28,6 @@ import { isSameOrigin, jsonError, requireUser } from "../../lib/auth.js";
  */
 export async function onRequest(context) {
   const { request, env } = context;
-  const chave = "P26-3A-4CE1-8C26-8C01-F50F";
   const projectId = 42;
   const projectTitle = "Agregador e Curadoria de Links Técnicos (Bookmark Manager)";
 
@@ -42,34 +63,7 @@ export async function onRequest(context) {
   }
 
   if (request.method === "POST") {
-    const error = requireUser(context);
-    if (error) return error;
-    if (!isSameOrigin(request)) return jsonError("invalid_origin", 403);
-
-    const body = await request.json().catch(() => ({}));
-    const userId = context.data.user.user_id;
-    const username = context.data.user.username;
-    const conteudo = String(body?.conteudo || "").trim().slice(0, 500);
-
-    if (!conteudo) {
-      return Response.json({ ok: false, error: "Conteúdo obrigatório." }, { status: 400 });
-    }
-
-    if (env.DB) {
-      await env.DB.prepare(
-        "CREATE TABLE IF NOT EXISTS project_records (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, username TEXT NOT NULL, chave_projeto TEXT NOT NULL, conteudo TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)"
-      ).run();
-      await env.DB.prepare(
-        "INSERT INTO project_records (user_id, username, chave_projeto, conteudo) VALUES (?, ?, ?, ?)"
-      ).bind(userId, username, chave, conteudo).run();
-    }
-
-    return Response.json({
-      ok: true,
-      saved: Boolean(env.DB),
-      chave,
-      serverTimestamp: new Date().toISOString(),
-    }, { status: 201 });
+    return postStatus(context);
   }
 
   return Response.json({ ok: false, error: "Method not allowed" }, { status: 405 });

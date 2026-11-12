@@ -199,6 +199,12 @@ function url(value) {
   return result;
 }
 
+export async function statusBody(request) {
+  const body = await readJson(request);
+  checkFields(body, ["conteudo"], ["conteudo"], false);
+  return { conteudo: text(body.conteudo, "conteudo", 1, 500, true) };
+}
+
 export async function collectionBody(request, partial = false) {
   const body = await readJson(request);
   checkFields(body, ["name", "is_public"], ["name"], partial);
