@@ -2,7 +2,7 @@
 
 - **Estudante:** Pedro Alexandre Zanetti, turma 2B
 - **Chave Única:** `P26-2B-4B46-8A0C-C452-8FFD`
-- **URL_CLOUDFLARE:** pendente de publicação
+- **URL_CLOUDFLARE:** https://avalia2026-2-nsd.pages.dev/
 
 Descubra a palavra de cinco letras em até seis tentativas. A partida abre após o login com Discord e vira à meia-noite de São Paulo. O servidor valida cada palpite e usa o D1 para restaurar o tabuleiro ao recarregar e calcular as estatísticas.
 
