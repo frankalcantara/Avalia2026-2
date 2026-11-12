@@ -1,0 +1,15 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "issue-tracker-p26-2c-7200-f0c5-b458-da41",
+	"compatibility_date": "2026-03-01",
+	"pages_build_output_dir": "./public",
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "db-p26-2c-7200-f0c5-b458-da41",
+			// Cole aqui o database_id mostrado por: npx.cmd wrangler d1 create db-p26-2c-7200-f0c5-b458-da41
+			"database_id": "842b6e21-1d88-4c7c-b59f-625588839e8b",
+			"migrations_dir": "migrations"
+		}
+	]
+}
