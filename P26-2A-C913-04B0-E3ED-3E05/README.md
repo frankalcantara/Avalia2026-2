@@ -2,7 +2,7 @@
 
 **Chave Única:** `P26-2A-C913-04B0-E3ED-3E05`  
 **Aluno:** Mateus dos Reis Oliveira · **Turma:** 2A  
-**URL Cloudflare Pages:** `avalia2026-2-dt7.pages.dev` *(deploy precisa ser confirmado)*
+**URL Cloudflare Pages:** `https://avalia2026-2-dt7.pages.dev` *(deploy ativo)*
 
 Plataforma de revisão acadêmica com login Discord OAuth2, categorias e questões de múltipla escolha. Cada questão é entregue individualmente; o cliente exibe um contador regressivo, enquanto a Cloudflare Pages Function mede o tempo no D1, verifica a resposta e calcula a pontuação. A alternativa correta não faz parte do payload da questão.
 
@@ -57,3 +57,4 @@ A entrega também requer publicar o fork/repositório no GitHub, abrir o Pull Re
 ## Licença
 
 MIT. Consulte [LICENSE](./LICENSE). A documentação de harness, agentes e skills está em [AGENTS.md](./AGENTS.md).
+
