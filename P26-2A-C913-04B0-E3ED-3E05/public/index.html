@@ -3,48 +3,56 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projeto #5 — P26-2A-C913-04B0-E3ED-3E05</title>
+  <meta name="theme-color" content="#f5f6f3">
+  <title>Estudaí — revisão em foco</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="topbar">
-    <div class="topbar-inner">
-      <div>
-        <strong>Projeto #5: Quiz Competitivo Temporizado</strong>
-      </div>
-      <div class="discord-badge" id="discordProfile">
-        <a id="discordLoginLink" href="/api/auth/discord" style="color:inherit;text-decoration:none;">
-          <span id="discordUserText">Entrar com Discord OAuth2</span>
-        </a>
-      </div>
+    <a class="brand" href="/" aria-label="Estudaí, início"><span class="brand-mark" aria-hidden="true">e</span>estudaí<span class="brand-dot">.</span></a>
+    <div class="account" id="accountArea">
+      <a class="login-link" id="discordLoginLink" href="/api/auth/discord">Entrar com Discord <span aria-hidden="true">↗</span></a>
+      <div class="profile hidden" id="profileArea"><img id="profileAvatar" alt="" width="34" height="34"><span id="discordUserText"></span><button class="logout-button" id="logoutBtn" type="button">Sair</button></div>
     </div>
   </header>
 
   <main>
-    <section class="card">
-      <span class="pill">Projeto Oficial #5</span>
-      <h1>Quiz Competitivo Temporizado</h1>
-      <p class="desc">Crie uma plataforma de perguntas e respostas de múltipla escolha voltada para revisão de conteúdos acadêmicos. Após realizar o login via OAuth2 do Discord, o usuário seleciona uma categoria temática e inicia uma bateria de questões, na qual o frontend em JavaScript controla uma barra de progresso visual regressiva para cada resposta. O servidor na Cloudflare entrega uma questão por vez sem revelar a alternativa correta no payload JSON. Quando o usuário responde, a função serverless verifica a diferença temporal entre o envio da pergunta e o recebimento da resposta no Cloudflare D1, atribuindo pontuação proporcional à velocidade e precisão, bloqueando respostas enviadas após o limite de tempo estipulado.</p>
+    <section class="intro" aria-labelledby="pageTitle">
+      <p class="eyebrow"><span class="eyebrow-dot"></span> UM PASSO DE CADA VEZ</p>
+      <h1 id="pageTitle">Aprender também<br>é <em>lembrar.</em></h1>
+      <p class="intro-copy">Revisões curtas, com foco total. Escolha um tema e veja o que já está firme — e o que merece mais uma rodada.</p>
+    </section>
 
-      <div class="form-row">
-        <input class="input-text" id="recordInput" type="text" placeholder="Digite um registro para gravar na Cloudflare Function + D1...">
-        <button class="btn-primary" id="sendBtn" type="button">Registrar no Cloudflare D1</button>
+    <section class="workspace" aria-label="Área de revisão">
+      <div class="setup-panel" id="setupPanel">
+        <div class="panel-heading"><div><p class="eyebrow">SUA PRÓXIMA SESSÃO</p><h2>Por onde começamos?</h2></div><span class="step-badge">01 <span>/ 02</span></span></div>
+        <label class="field-label" for="categorySelect">Escolha uma matéria</label>
+        <div class="select-wrap"><select id="categorySelect" disabled><option value="">Carregando matérias…</option></select><span aria-hidden="true">⌄</span></div>
+        <div class="session-note"><span class="note-icon" aria-hidden="true">◷</span><span>Uma pergunta por vez <b>·</b> 20 segundos para responder</span></div>
+        <button class="button-primary" id="startBtn" type="button" disabled>Começar revisão <span aria-hidden="true">→</span></button>
+        <p class="helper" id="setupMessage" role="status">Entre com sua conta Discord para iniciar uma sessão.</p>
       </div>
-      <div id="statusMessage" style="font-size:0.88rem;font-weight:700;color:#166534;margin-bottom:0.75rem;"></div>
-    </section>
 
-    <section class="card">
-      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:0.85rem;">Registros Persistidos (Cloudflare Pages Functions + D1)</h2>
-      <ul class="records-list" id="recordsList">
-        <li>Carregando status da API serverless...</li>
-      </ul>
+      <section class="quiz-panel hidden" id="quizPanel" aria-labelledby="questionText">
+        <div class="quiz-topline"><span class="category-tag" id="questionCategory">Matéria</span><span class="question-count" id="questionCount">Questão 1</span></div>
+        <div class="timer-row"><span id="timerLabel">TEMPO PARA RESPONDER</span><span class="timer-number" id="timerNumber">20s</span></div>
+        <div class="progress-track" role="progressbar" aria-label="Tempo restante" aria-valuemin="0" aria-valuemax="20" aria-valuenow="20" id="timerTrack"><span id="timerBar"></span></div>
+        <h2 id="questionText" tabindex="-1">Carregando pergunta…</h2>
+        <div class="answers" id="answers" role="group" aria-label="Alternativas"></div>
+        <p class="feedback" id="answerFeedback" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="result-panel hidden" id="resultPanel" aria-labelledby="resultTitle">
+        <div class="result-icon" aria-hidden="true">✓</div><p class="eyebrow">SESSÃO CONCLUÍDA</p><h2 id="resultTitle">Boa revisão.</h2>
+        <p class="result-copy" id="resultCopy"></p>
+        <div class="result-stats"><div><strong id="scoreValue">0</strong><span>pontos</span></div><div><strong id="correctValue">0/0</strong><span>acertos</span></div></div>
+        <button class="button-primary" id="againBtn" type="button">Escolher outro tema <span aria-hidden="true">→</span></button>
+      </section>
     </section>
+    <p class="privacy-note"><span aria-hidden="true">✳</span> Seu progresso fica associado à sua conta Discord.</p>
   </main>
 
-  <footer id="projectFooter">
-    Chave Única de Auditoria: <code>P26-2A-C913-04B0-E3ED-3E05</code> · Turma 2A · Licenciado sob MIT
-  </footer>
-
-  <script src="/app.js"></script>
+  <footer><span>Feito para aprender no seu ritmo.</span><span>Chave Única <code>P26-2A-C913-04B0-E3ED-3E05</code><b> · </b>Turma 2A <b> · </b>MIT</span></footer>
+  <script src="/app.js" defer></script>
 </body>
 </html>
