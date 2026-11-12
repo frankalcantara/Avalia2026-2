@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projeto #33 — P26-2C-6503-DF96-B025-1EBF</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <strong>Projeto #33: Cápsula do Tempo e Livro de Visitas Digital</strong>
+      </div>
+      <div class="discord-badge" id="discordProfile">
+        <a id="discordLoginLink" href="/api/auth/discord" style="color:inherit;text-decoration:none;">
+          <span id="discordUserText">Entrar com Discord OAuth2</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <span class="pill">Projeto Oficial #33</span>
+      <h1>Cápsula do Tempo e Livro de Visitas Digital</h1>
+      <p class="desc">Desenvolva um sistema de mensagens históricas e livro de assinaturas para turmas de graduação. O usuário faz login via Discord OAuth2 para deixar depoimentos no mural público imediato ou para criar "cápsulas do tempo" — mensagens endereçadas à turma ou a si mesmo com uma data futura de desbloqueio (ex: data da formatura). A segurança temporal deve ser garantida pelas Cloudflare Pages Functions: ao consultar a lista de cápsulas no Cloudflare D1, o servidor compara a data atual com a coluna unlock_date. Se a data futura ainda não chegou, o backend retorna apenas os metadados (autor, título e contagem regressiva), omitindo completamente o texto da mensagem no JSON enviado ao navegador.</p>
+
+      <div class="form-row">
+        <input class="input-text" id="recordInput" type="text" placeholder="Digite um registro para gravar na Cloudflare Function + D1...">
+        <button class="btn-primary" id="sendBtn" type="button">Registrar no Cloudflare D1</button>
+      </div>
+      <div id="statusMessage" style="font-size:0.88rem;font-weight:700;color:#166534;margin-bottom:0.75rem;"></div>
+    </section>
+
+    <section class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:0.85rem;">Registros Persistidos (Cloudflare Pages Functions + D1)</h2>
+      <ul class="records-list" id="recordsList">
+        <li>Carregando status da API serverless...</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer id="projectFooter">
+    Chave Única de Auditoria: <code>P26-2C-6503-DF96-B025-1EBF</code> · Turma 2C · Licenciado sob MIT
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
