@@ -1,0 +1,14 @@
+{
+  "name": "issue-tracker-p26-2c-7200-f0c5-b458-da41",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Projeto #38 — Rastreador de Solicitações e Chamados Internos (Issue Tracker) em Cloudflare Pages + D1 + Discord OAuth2",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "db:local": "wrangler d1 migrations apply DB --local",
+    "db:remote": "wrangler d1 migrations apply DB --remote",
+    "dev": "wrangler pages dev"
+  }
+}
