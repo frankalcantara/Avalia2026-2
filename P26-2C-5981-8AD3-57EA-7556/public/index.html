@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projeto #3 — P26-2C-5981-8AD3-57EA-7556</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div><strong>Projeto #3: Batalha Naval Tático</strong></div>
+      <div class="discord-badge" id="discordProfile">
+        <a id="discordLoginLink" href="/api/auth/discord" class="link-reset">
+          <span id="discordUserText">Entrar com Discord OAuth2</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card" id="secaoLobby">
+      <span class="pill">Lobby</span>
+      <h1>Partidas</h1>
+      <p class="desc">Crie uma partida e aguarde um oponente, ou entre em uma partida aberta. Cada jogador posiciona 5 navios (5, 4, 3, 3 e 2 casas) em uma malha 10x10.</p>
+      <div class="form-row">
+        <button class="btn-primary" id="btnCriar" type="button">Criar partida</button>
+        <button class="btn-secundario" id="btnBot" type="button">Jogar contra o bot</button>
+        <button class="btn-secundario" id="btnAtualizarLobby" type="button">Atualizar lista</button>
+      </div>
+      <p class="mensagem" id="mensagemLobby" role="status"></p>
+      <ul class="records-list" id="listaPartidas"></ul>
+    </section>
+
+    <section class="card" id="secaoPartida" hidden>
+      <span class="pill" id="pillStatus">Partida</span>
+      <h2 class="titulo-secao" id="tituloPartida">Partida</h2>
+      <p class="desc" id="instrucaoPartida"></p>
+      <p class="mensagem" id="mensagemPartida" role="status"></p>
+
+      <div id="painelPosicionamento" hidden>
+        <div class="form-row">
+          <button class="btn-secundario" id="btnOrientacao" type="button">Orientação: Horizontal</button>
+          <button class="btn-secundario" id="btnLimpar" type="button">Limpar frota</button>
+          <button class="btn-primary" id="btnConfirmar" type="button" disabled>Confirmar frota</button>
+        </div>
+        <p class="desc" id="proximoNavio"></p>
+      </div>
+
+      <div class="tabuleiros">
+        <div>
+          <h3 class="titulo-grade">Minha frota</h3>
+          <div class="grade" id="gradeMinha" aria-label="Minha frota"></div>
+        </div>
+        <div>
+          <h3 class="titulo-grade">Radar (oponente)</h3>
+          <div class="grade" id="gradeRadar" aria-label="Radar do oponente"></div>
+        </div>
+      </div>
+
+      <p class="legenda">Legenda: cinza = navio · azul = água · laranja = acerto · vermelho = afundado · tracejado roxo = navio do oponente revelado</p>
+    </section>
+
+    <section class="card">
+      <h2 class="titulo-secao">Placar geral</h2>
+      <table class="tabela-placar">
+        <thead>
+          <tr><th>#</th><th>Jogador</th><th>Vitórias</th><th>Derrotas</th></tr>
+        </thead>
+        <tbody id="corpoPlacar"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    Chave Única de Auditoria: <code>P26-2C-5981-8AD3-57EA-7556</code> · Turma 2C · Licenciado sob MIT
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
