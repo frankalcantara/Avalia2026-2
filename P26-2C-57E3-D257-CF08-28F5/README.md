@@ -1,7 +1,7 @@
 # Projeto #37 — Almoxarifado do laboratório
 
 - **Chave Única:** `P26-2C-57E3-D257-CF08-28F5`
-- **URL_CLOUDFLARE:** `https://p26-2c-57e3-d257-cf08-28f5.pages.dev` *(URL reservada; substitua/valide após o deploy.)*
+- **URL_CLOUDFLARE:** `https://bancada-p26-2c-57e3-d257-cf08-28f5.pages.dev` *(projeto Pages criado; deploy ainda em configuração.)*
 
 Sistema de inventário para componentes eletrônicos, placas de desenvolvimento, sensores e ferramentas de laboratório. A interface é HTML5, CSS3 e JavaScript puro; autenticação, autorização e regras de estoque ficam nas Cloudflare Pages Functions com persistência no D1.
 
@@ -24,8 +24,8 @@ Sistema de inventário para componentes eletrônicos, placas de desenvolvimento,
 
 ## Configuração e deploy
 
-1. Conecte o fork `marlonnanico/Avalia2026-2` em Cloudflare Workers & Pages e configure o diretório raiz como `P26-2C-57E3-D257-CF08-28F5`, sem comando de build e com diretório de saída `public`.
-2. Crie o D1 e configure o binding `DB` no projeto Pages:
+1. O projeto Pages está conectado ao fork `marlonnanico/Avalia2026-2` com diretório raiz `P26-2C-57E3-D257-CF08-28F5`, sem comando de build e com diretório de saída `public`.
+2. Neste projeto, o D1 `db-p26-2c-57e3-d257-cf08-28f5` já está criado, o binding `DB` está configurado e a migration inicial foi aplicada. Para instalar em outra conta Cloudflare, crie um D1 e atualize o `database_id` em `wrangler.jsonc`:
 
    ```powershell
    npx.cmd wrangler d1 create db-p26-2c-57e3-d257-cf08-28f5
@@ -38,9 +38,9 @@ Sistema de inventário para componentes eletrônicos, placas de desenvolvimento,
    ```
 
 3. Crie uma aplicação no [Discord Developer Portal](https://discord.com/developers/applications). Em OAuth2, registre o callback:
-   `https://p26-2c-57e3-d257-cf08-28f5.pages.dev/api/auth/discord/callback`
+   `https://bancada-p26-2c-57e3-d257-cf08-28f5.pages.dev/api/auth/discord/callback`
 4. Configure no Cloudflare Pages as variáveis `DISCORD_CLIENT_ID` e `DISCORD_CLIENT_SECRET`, além do secret `SESSION_SECRET` (aleatório, com pelo menos 32 bytes). Nunca salve secrets no repositório.
-5. Publique o projeto e atualize `URL_CLOUDFLARE` com a URL real do deploy.
+5. Publique o projeto. A URL do Pages já está definida em `URL_CLOUDFLARE`; valide-a após o deploy.
 6. Na raiz do fork, rode a validação oficial:
 
    ```powershell

@@ -8,8 +8,7 @@
       "binding": "DB",
       "database_name": "db-p26-2c-57e3-d257-cf08-28f5",
       "migrations_dir": "migrations",
-      // Replace with the real Cloudflare D1 UUID when the database is created.
-      "database_id": "00000000-0000-0000-0000-000000000000"
+      "database_id": "d0cecb27-88e8-4f46-8d09-9426b5c11b5c"
     }
   ]
 }
