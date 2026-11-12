@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="Organize suas receitas e despesas em um livro-caixa pessoal.">
+  <title>Meu Livro-caixa</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Página inicial do livro-caixa">
+      <span class="brand-mark" aria-hidden="true">L</span>
+      <span>Meu Livro-caixa</span>
+    </a>
+    <div id="user-area" class="user-area" hidden>
+      <img id="user-avatar" class="user-avatar" alt="" width="38" height="38">
+      <span id="user-name"></span>
+      <button id="logout-button" class="button button-quiet" type="button">Sair</button>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section id="signed-out" class="welcome-card" hidden>
+      <div class="welcome-icon" aria-hidden="true">+</div>
+      <p class="eyebrow">Suas finanças, em ordem</p>
+      <h1>Um jeito simples de cuidar do seu dinheiro.</h1>
+      <p class="welcome-copy">Registre receitas e despesas, acompanhe seu saldo e veja para onde vai cada parte do seu orçamento.</p>
+      <a class="button button-primary login-button" href="/api/login">Entrar com Discord</a>
+      <p id="login-error" class="notice notice-error" role="alert" hidden></p>
+    </section>
+
+    <section id="dashboard" hidden>
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">Visão geral</p>
+          <h1>Seu livro-caixa</h1>
+          <p class="muted">Acompanhe suas movimentações em um só lugar.</p>
+        </div>
+      </div>
+
+      <section class="summary-grid" aria-label="Resumo financeiro">
+        <article class="summary-card summary-main">
+          <p class="summary-label">Saldo líquido</p>
+          <p id="net-balance" class="summary-value">R$ 0,00</p>
+          <p class="summary-caption">Saldo total das suas movimentações</p>
+        </article>
+        <article class="summary-card">
+          <p class="summary-label">Receitas</p>
+          <p id="income-total" class="summary-value value-income">R$ 0,00</p>
+          <p class="summary-caption">Total recebido</p>
+        </article>
+        <article class="summary-card">
+          <p class="summary-label">Despesas</p>
+          <p id="expense-total" class="summary-value value-expense">R$ 0,00</p>
+          <p class="summary-caption">Total gasto</p>
+        </article>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel form-panel" aria-labelledby="form-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Movimentação</p>
+              <h2 id="form-title">Nova transação</h2>
+            </div>
+          </div>
+          <form id="transaction-form" novalidate>
+            <label for="transaction-type">Tipo</label>
+            <select id="transaction-type" name="type" required>
+              <option value="despesa">Despesa</option>
+              <option value="receita">Receita</option>
+            </select>
+
+            <label for="transaction-amount">Valor</label>
+            <div class="money-input">
+              <span aria-hidden="true">R$</span>
+              <input id="transaction-amount" name="amount" type="text" inputmode="decimal" placeholder="0,00" maxlength="13" autocomplete="off" required aria-describedby="form-message">
+            </div>
+
+            <label for="transaction-category">Categoria</label>
+            <select id="transaction-category" name="category" required>
+              <option value="">Selecione uma categoria</option>
+              <option>Alimentação</option>
+              <option>Moradia</option>
+              <option>Transporte</option>
+              <option>Saúde</option>
+              <option>Educação</option>
+              <option>Lazer</option>
+              <option>Salário</option>
+              <option>Freelance</option>
+              <option>Outros</option>
+            </select>
+
+            <label for="transaction-date">Data</label>
+            <input id="transaction-date" name="date" type="date" required>
+
+            <label for="transaction-description">Descrição <span class="optional">(opcional)</span></label>
+            <input id="transaction-description" name="description" type="text" maxlength="300" placeholder="Ex.: conta de luz">
+
+            <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+            <div class="form-actions">
+              <button id="save-button" class="button button-primary" type="submit">Adicionar transação</button>
+              <button id="cancel-edit" class="button button-quiet" type="button" hidden>Cancelar edição</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel chart-panel" aria-labelledby="chart-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Seus gastos</p>
+              <h2 id="chart-title">Despesas por categoria</h2>
+            </div>
+          </div>
+          <p id="chart-empty" class="empty-state">Adicione despesas para visualizar o gráfico.</p>
+          <div id="expense-chart" class="expense-chart" aria-label="Gráfico de despesas por categoria"></div>
+        </section>
+      </div>
+
+      <section class="panel transactions-panel" aria-labelledby="transactions-title">
+        <div class="panel-heading transactions-heading">
+          <div>
+            <p class="eyebrow">Histórico</p>
+            <h2 id="transactions-title">Transações</h2>
+          </div>
+          <div class="filters">
+            <label class="filter-label" for="filter-month">Mês</label>
+            <input id="filter-month" type="month">
+            <label class="filter-label" for="filter-category">Categoria</label>
+            <select id="filter-category">
+              <option value="">Todas</option>
+              <option>Alimentação</option>
+              <option>Moradia</option>
+              <option>Transporte</option>
+              <option>Saúde</option>
+              <option>Educação</option>
+              <option>Lazer</option>
+              <option>Salário</option>
+              <option>Freelance</option>
+              <option>Outros</option>
+            </select>
+          </div>
+        </div>
+        <p id="transactions-message" class="form-message" role="status" aria-live="polite"></p>
+        <div id="transaction-list" class="transaction-list"></div>
+        <p id="transactions-empty" class="empty-state" hidden>Nenhuma transação encontrada com estes filtros.</p>
+      </section>
+    </section>
+
+    <p id="app-error" class="notice notice-error app-error" role="alert" hidden></p>
+  </main>
+
+  <footer class="site-footer">
+    <span>Feito para cuidar melhor do seu dinheiro.</span>
+    <span>Chave Única: P26-2C-7DDD-9039-3A0D-D491</span>
+  </footer>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
