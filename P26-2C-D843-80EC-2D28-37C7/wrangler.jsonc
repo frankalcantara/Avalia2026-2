@@ -1,13 +1,18 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "projeto-p26-2c-d843-80ec-2d28-37c7",
-  "compatibility_date": "2026-03-01",
-  "pages_build_output_dir": "./public",
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "db-p26-2c-d843-80ec-2d28-37c7",
-      "database_id": "00000000-0000-0000-0000-000000000000"
-    }
-  ]
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "projeto-p26-2c-d843-80ec-2d28-37c7",
+	"compatibility_date": "2026-03-01",
+	"pages_build_output_dir": "./public",
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "db-p26-2c-d843-80ec-2d28-37c7",
+			"database_id": "00000000-0000-0000-0000-000000000000"
+		},
+		{
+			"binding": "catalogo_filmes",
+			"database_name": "catalogo-filmes",
+			"database_id": "55c67545-09f3-40de-acb0-0625569ccde7"
+		}
+	]
 }
