@@ -10,20 +10,9 @@ export async function onRequest(context) {
   const projectId = 42;
   const projectTitle = "Agregador e Curadoria de Links Técnicos (Bookmark Manager)";
 
-  // Lê sessão real do Discord a partir do cookie HttpOnly se autenticado
-  const cookieHeader = request.headers.get("Cookie") || "";
-  let sessionUser = null;
-  const sessionMatch = cookieHeader.match(/discord_session=([^;]+)/);
-  if (sessionMatch) {
-    try {
-      sessionUser = JSON.parse(decodeURIComponent(atob(sessionMatch[1])));
-    } catch {}
-  }
-
   if (request.method === "GET") {
     let dbConnected = false;
     let totalRegistros = 0;
-    let ultimosRegistros = [];
 
     if (env.DB) {
       try {
@@ -31,10 +20,8 @@ export async function onRequest(context) {
           "CREATE TABLE IF NOT EXISTS project_records (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, username TEXT NOT NULL, chave_projeto TEXT NOT NULL, conteudo TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)"
         ).run();
         const countRow = await env.DB.prepare("SELECT COUNT(*) AS total FROM project_records").first();
-        const listRes = await env.DB.prepare("SELECT id, user_id, username, conteudo, created_at FROM project_records ORDER BY id DESC LIMIT 10").all();
         dbConnected = true;
         totalRegistros = Number(countRow?.total || 0);
-        ultimosRegistros = listRes.results || [];
       } catch (err) {
         dbConnected = false;
       }
@@ -47,11 +34,11 @@ export async function onRequest(context) {
       projectTitle,
       d1Connected: dbConnected,
       discordOAuthConfigured: Boolean(env.DISCORD_CLIENT_ID),
-      sessionUser,
+      sessionUser: null,
       totalRegistros,
-      ultimosRegistros,
+      ultimosRegistros: [],
       serverTimestamp: new Date().toISOString(),
-    });
+    }, { headers: { "Cache-Control": "no-store" } });
   }
 
   if (request.method === "POST") {
