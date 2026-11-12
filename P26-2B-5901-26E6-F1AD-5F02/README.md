@@ -4,8 +4,8 @@
 **Aluno:** Kauã Fernando Fuckner · Turma 2B · RA 2026108321
 **Licença:** MIT
 
-**URL_CLOUDFLARE:** https://SEU-PROJETO.pages.dev
-**Repositório:** https://github.com/SEU-USUARIO/Avalia2026-2
+**URL_CLOUDFLARE:** https://flashcards-p26-2b-5901.pages.dev
+**Repositório:** https://github.com/kaua-fuckner/Avalia2026-2
 
 ## O que faz
 Baralhos de cartões frente e verso. O cartão vira com animação CSS ao clique; depois de virar, aparecem **Difícil**, **Bom** e **Fácil**. A Function `/api/study/review` aplica um SM-2 simplificado e grava a próxima revisão no D1.
@@ -36,8 +36,7 @@ npx.cmd wrangler d1 create db-p26-2b-5901-26e6-f1ad-5f02
 # cole o database_id em wrangler.jsonc
 npx.cmd wrangler d1 migrations apply DB --remote
 ```
-Redirect no Discord: `https://SEU-PROJETO.pages.dev/api/auth/discord/callback`.
-Variáveis no Cloudflare Pages: `DISCORD_CLIENT_ID` e `DISCORD_CLIENT_SECRET`. Binding D1: `DB`.
+Redirect no Discord: `https://flashcards-p26-2b-5901.pages.dev/api/auth/discord/callback`.
 
 ## Agentes
 Veja [AGENTS.md](AGENTS.md).
