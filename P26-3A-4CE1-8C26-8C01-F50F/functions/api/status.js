@@ -1,3 +1,5 @@
+import { isSameOrigin, jsonError, requireUser } from "../../lib/auth.js";
+
 /**
  * Cloudflare Pages Function — /api/status
  * Verifica conectividade com o Cloudflare D1, sessão Discord OAuth2 e permite registrar pings de diagnóstico.
@@ -53,10 +55,14 @@ export async function onRequest(context) {
   }
 
   if (request.method === "POST") {
+    const error = requireUser(context);
+    if (error) return error;
+    if (!isSameOrigin(request)) return jsonError("invalid_origin", 403);
+
     const body = await request.json().catch(() => ({}));
-    const userId = String(body.userId || "discord_demo_user").trim().slice(0, 64);
-    const username = String(body.username || "Estudante").trim().slice(0, 80);
-    const conteudo = String(body.conteudo || "").trim().slice(0, 500);
+    const userId = context.data.user.user_id;
+    const username = context.data.user.username;
+    const conteudo = String(body?.conteudo || "").trim().slice(0, 500);
 
     if (!conteudo) {
       return Response.json({ ok: false, error: "Conteúdo obrigatório." }, { status: 400 });
