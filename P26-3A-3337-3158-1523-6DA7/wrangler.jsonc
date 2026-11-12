@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "projeto-p26-3a-3337-3158-1523-6da7",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-3a-3337-3158-1523-6da7",
+      "database_id": "f70257bf-5057-4595-91d9-9aef6e4f65e7"
+    }
+  ]
+}

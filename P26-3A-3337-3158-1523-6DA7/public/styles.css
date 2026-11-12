@@ -1,0 +1,290 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+[hidden] { display: none !important; }
+
+/* Regra estrita de tipografia: ZERO sombras em textos */
+h1, h2, h3, p, span, label, button, input, select, textarea, code, strong, a, footer {
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: #eef2f6;
+  color: #0f172a;
+  line-height: 1.5;
+}
+
+.topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #dce4ef;
+  padding: 0.9rem 1.5rem;
+}
+
+.topbar-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.discord-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.discord-badge a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.discord-badge a:not([href]) { cursor: default; }
+.discord-badge .logout {
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-family: inherit;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+}
+.avatar { border-radius: 50%; }
+
+main {
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #dce4ef;
+  border-radius: 20px;
+  padding: 1.75rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 10px 26px -10px rgba(15, 23, 42, 0.07);
+}
+
+.pill {
+  display: inline-block;
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+h1 { font-size: 1.65rem; font-weight: 800; margin-bottom: 0.5rem; }
+h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.6rem; }
+
+.desc {
+  color: #475569;
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Formulário */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.form-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.input-text {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.input-text:focus-visible,
+.logout:focus-visible,
+.btn-primary:focus-visible,
+.btn-danger:focus-visible,
+a:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1.4rem;
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.btn-primary:hover { background: #1e293b; }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-danger {
+  background: #ffffff;
+  color: #991b1b;
+  border: 1.5px solid #fecaca;
+  border-radius: 999px;
+  padding: 0.25rem 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.btn-danger:hover { background: #fef2f2; }
+
+.status-msg {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #166534;
+  margin-bottom: 0.75rem;
+  min-height: 1.2rem;
+}
+.status-msg.error { color: #991b1b; }
+
+/* Barras de progresso */
+.progress-row { margin-bottom: 1rem; }
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  color: #0f172a;
+}
+
+.progress-track {
+  height: 14px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.fill-ensino { background: #2563eb; }
+.fill-pesquisa { background: #7c3aed; }
+.fill-extensao { background: #059669; }
+.fill-total { background: #0f172a; }
+
+.progress-hint { font-size: 0.78rem; color: #475569; margin-top: 0.25rem; }
+.progress-hint.done { color: #166534; font-weight: 700; }
+.total-progress { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+
+/* Lista */
+.records-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.records-list li {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
+}
+
+.records-list .item-main { flex: 1; min-width: 200px; }
+.records-list .meta { display: block; font-size: 0.75rem; color: #475569; margin-top: 0.35rem; }
+.records-list a { color: #1d4ed8; font-weight: 700; text-decoration: none; }
+.records-list a:hover { text-decoration: underline; }
+.records-list .empty { display: block; color: #475569; }
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+.badge-ensino { background: #2563eb; }
+.badge-pesquisa { background: #7c3aed; }
+.badge-extensao { background: #047857; }
+
+footer {
+  text-align: center;
+  padding: 1.25rem;
+  background: #ffffff;
+  border-top: 1px solid #dce4ef;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .topbar { padding: 0.75rem 1rem; }
+  main { padding: 1.25rem 0.85rem; }
+  .card { padding: 1.15rem; border-radius: 16px; }
+  h1 { font-size: 1.35rem; }
+  .btn-primary { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-fill { transition: none; }
+}
