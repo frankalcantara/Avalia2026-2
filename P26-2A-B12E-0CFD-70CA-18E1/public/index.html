@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sorteador auditável de equipes e ordem de apresentação: Fisher-Yates no servidor e ata imutável no Cloudflare D1, verificável por qualquer pessoa.">
+  <meta name="theme-color" content="#4338ca">
+  <title>Sorteador Auditável · Equipes e Ordem de Apresentação</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#/" aria-label="Sorteador Auditável — início">
+        <svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 7h3.2c1.2 0 2.3.6 3 1.6L16 16h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 17h3.2c1.2 0 2.3-.6 3-1.6L16 8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="m17.5 5.5 2.5 2.5-2.5 2.5M17.5 13.5 20 16l-2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="brand-text">
+          <strong>Sorteador Auditável</strong>
+          <small>equipes e ordem de apresentação</small>
+        </span>
+      </a>
+      <div class="user-area" id="userArea" aria-live="polite"></div>
+    </div>
+  </header>
+
+  <main id="conteudo" class="page" tabindex="-1">
+    <div id="app">
+      <noscript>
+        <div class="card">
+          <h1>JavaScript é necessário</h1>
+          <p>Este sorteador usa JavaScript puro no navegador para conversar com as Cloudflare Pages Functions. Ative o JavaScript para continuar.</p>
+        </div>
+      </noscript>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>
+        Chave única de auditoria: <code>P26-2A-B12E-0CFD-70CA-18E1</code>
+      </p>
+      <p class="footer-meta">
+        Turma 2A · Bruno Kenyu Ochiai · Licença MIT ·
+        <a href="https://github.com/Kenchiai/Avalia2026-2" rel="noopener noreferrer" target="_blank">código-fonte</a>
+      </p>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
