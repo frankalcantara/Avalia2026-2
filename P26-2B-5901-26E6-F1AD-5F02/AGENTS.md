@@ -27,7 +27,7 @@ Os agentes foram definidos como arquivos de instruções em `.claude/agents/` (f
 
 - **Arquivo:** `.claude/agents/frontend-vanilla.md`
 - **Papel:** construir a interface em HTML5, CSS3 e JavaScript puro, com a animação CSS de virar o cartão, os botões Difícil, Bom e Fácil, responsividade e acessibilidade.
-- **Skills usados:** nenhum skill de projeto; segue as regras do próprio arquivo do agente (sem frameworks, `textContent` em vez de `innerHTML`, `prefers-reduced-motion`).
+- **Skills usados:** `skills/frontend-vanilla/SKILL.md`, que reúne as regras de interface aplicadas na revisão (sem frameworks, `textContent` em vez de `innerHTML`, `[hidden]` no CSS, `prefers-reduced-motion`).
 - **Execução:** revisou `public/app.js`. Achou que o atributo `hidden` não escondia os botões de avaliação por causa do CSS, e que as exclusões não tratavam erro. As duas correções foram aplicadas.
 - **Resultado:** `qa/relatorio-frontend-vanilla.md`.
 
@@ -41,3 +41,4 @@ Os agentes foram definidos como arquivos de instruções em `.claude/agents/` (f
 
 - `skills/sm2-review/SKILL.md`: regras e tabela do algoritmo de revisão espaçada.
 - `skills/cloudflare-d1-oauth/SKILL.md`: padrões de sessão, OAuth e consultas com controle de autoria.
+- `skills/frontend-vanilla/SKILL.md`: regras de interface em HTML, CSS e JavaScript puro.
