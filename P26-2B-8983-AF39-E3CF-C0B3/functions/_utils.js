@@ -249,7 +249,7 @@ export async function listRecipes(db, userId, filters = {}) {
 
   const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
   const query = await db.prepare(`
-    SELECT r.id, r.title, r.description, r.prep_time AS prepTime, r.servings,
+    SELECT r.id, r.title, r.description, r.image_url AS imageUrl, r.prep_time AS prepTime, r.servings,
       u.user_id AS authorUserId, u.username AS authorUsername, u.avatar AS authorAvatar,
       EXISTS (SELECT 1 FROM favorites f WHERE f.recipe_id = r.id AND f.user_id = ?) AS isFavorite
     FROM recipes r
@@ -290,6 +290,7 @@ export async function listRecipes(db, userId, filters = {}) {
     id: row.id,
     title: row.title,
     description: row.description,
+    imageUrl: row.imageUrl,
     prepTime: Number(row.prepTime),
     servings: Number(row.servings),
     author: {

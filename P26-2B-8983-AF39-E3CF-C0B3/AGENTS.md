@@ -38,6 +38,7 @@ O contrato compartilhado define as rotas `/api/auth/me`, `/api/auth/logout`, `/a
 - `node --test P26-2B-8983-AF39-E3CF-C0B3/tests/backend.test.mjs`: 10 testes passaram (imports e respostas de rotas, normalização de título, validação de ingrediente, sessão para favoritos, rejeição de OAuth state incorreto e status D1 sem dados de usuários).
 - `npx wrangler@4 pages functions build P26-2B-8983-AF39-E3CF-C0B3/functions --project-directory P26-2B-8983-AF39-E3CF-C0B3 --build-output-directory P26-2B-8983-AF39-E3CF-C0B3/public --outdir /tmp/p26-pages-build`: compilação Cloudflare Pages Functions aprovada.
 - Migrações aplicadas em SQLite local; constraints e busca `PÃO`/`pão` verificadas.
+- Migração de catálogo aplicada em SQLite local: 50 receitas, com ingredientes e etapas, e 50 ilustrações SVG locais verificadas.
 - Chromium com API local simulada verificou o escalonamento de 2 para 5 e depois 3 porções e uma viewport móvel sem overflow horizontal. A captura gerada usa dados fictícios e não representa um deploy.
 - `node validar-local.mjs P26-2B-8983-AF39-E3CF-C0B3`: checks estruturais aprovados; o deploy público segue pendente.
 - Não foi possível validar OAuth com Discord nem D1 remoto: credenciais/conta Cloudflare não estão configuradas neste ambiente.

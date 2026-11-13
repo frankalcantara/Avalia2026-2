@@ -75,6 +75,7 @@ export async function onRequest(context) {
           id,
           title: recipe.title,
           description: recipe.description,
+          imageUrl: "/images/recipes/placeholder.svg",
           prepTime: recipe.prepTime,
           servings: recipe.servings,
           author: { userId: user.userId, username: user.username, avatar: user.avatar },

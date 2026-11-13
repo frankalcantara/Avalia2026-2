@@ -470,6 +470,14 @@ input::placeholder, textarea::placeholder {
   place-items: center;
 }
 
+.recipe-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .recipe-card:nth-child(3n + 2) .recipe-art {
   background-color: #ead9c5;
   background-image: radial-gradient(ellipse at 58% 54%, #fcf4e3 0 18%, transparent 18.5%), radial-gradient(ellipse at 58% 54%, #d3ab82 0 25%, transparent 25.5%), linear-gradient(135deg, #ded1bd, #eee1cf 65%, #d4bea6);
@@ -634,6 +642,15 @@ input::placeholder, textarea::placeholder {
 
 .detail-heading > h2 {
   margin-bottom: .55rem;
+}
+
+.detail-cover {
+  display: block;
+  width: 100%;
+  max-height: 320px;
+  margin: .9rem 0 1rem;
+  border-radius: 10px;
+  object-fit: cover;
 }
 
 .detail-description {

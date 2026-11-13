@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title">
+  <title id="title">Granola caseira crocante</title>
+  <rect width="640" height="400" fill="#e8e0c3"/>
+  <circle cx="520" cy="70" r="115" fill="#fffdf7" opacity=".22"/>
+  <circle cx="84" cy="330" r="150" fill="#638767" opacity=".12"/>
+  <ellipse cx="320" cy="215" rx="194" ry="125" fill="#fffdf7" opacity=".92"/><ellipse cx="320" cy="208" rx="151" ry="88" fill="#9d7846"/><path d="M205 211c33-53 77-72 114-40 40-48 83-24 110 17-28 48-69 76-122 71-45 0-78-16-102-48z" fill="#638767" opacity=".72"/><circle cx="278" cy="193" r="11" fill="#f7e9be" opacity=".9"/><circle cx="321" cy="222" r="7" fill="#638767" opacity=".9"/><circle cx="364" cy="176" r="7" fill="#f7e9be" opacity=".9"/><circle cx="257" cy="205" r="11" fill="#638767" opacity=".9"/><circle cx="300" cy="234" r="7" fill="#f7e9be" opacity=".9"/><circle cx="343" cy="188" r="7" fill="#638767" opacity=".9"/><circle cx="386" cy="217" r="11" fill="#f7e9be" opacity=".9"/>
+  <rect x="22" y="338" width="596" height="42" rx="12" fill="#fffdf7" opacity=".9"/>
+  <text x="42" y="365" fill="#313b32" font-family="Arial,sans-serif" font-size="17" font-weight="700">Granola caseira crocante</text>
+</svg>

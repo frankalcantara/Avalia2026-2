@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title">
+  <title id="title">Limonada suíça</title>
+  <rect width="640" height="400" fill="#ead1c8"/>
+  <circle cx="520" cy="70" r="115" fill="#fffdf7" opacity=".22"/>
+  <circle cx="84" cy="330" r="150" fill="#71875b" opacity=".12"/>
+  <path d="M255 95h130l-18 205a22 22 0 0 1-22 20h-50a22 22 0 0 1-22-20z" fill="#fffdf7" opacity=".94"/><path d="M269 125h102l-13 148h-77z" fill="#a95043"/><path d="m340 65 34 49" stroke="#71875b" stroke-width="12" stroke-linecap="round"/><circle cx="334" cy="240" r="11" fill="#f7e9be" opacity=".9"/><circle cx="377" cy="194" r="7" fill="#71875b" opacity=".9"/><circle cx="270" cy="223" r="7" fill="#f7e9be" opacity=".9"/><circle cx="313" cy="177" r="11" fill="#71875b" opacity=".9"/><circle cx="356" cy="206" r="7" fill="#f7e9be" opacity=".9"/><circle cx="249" cy="235" r="7" fill="#71875b" opacity=".9"/><circle cx="292" cy="189" r="11" fill="#f7e9be" opacity=".9"/>
+  <rect x="22" y="338" width="596" height="42" rx="12" fill="#fffdf7" opacity=".9"/>
+  <text x="42" y="365" fill="#313b32" font-family="Arial,sans-serif" font-size="17" font-weight="700">Limonada suíça</text>
+</svg>

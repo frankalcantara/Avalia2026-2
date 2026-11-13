@@ -78,6 +78,12 @@ function normalizeRecipe(recipe) {
   };
 }
 
+function recipeImagePath(imageUrl) {
+  return typeof imageUrl === "string" && /^\/images\/recipes\/[a-z0-9-]+\.svg$/.test(imageUrl)
+    ? imageUrl
+    : "/images/recipes/placeholder.svg";
+}
+
 function updateAccount() {
   const loggedIn = Boolean(state.user);
   elements.profile.hidden = !loggedIn;
@@ -116,7 +122,15 @@ function recipeCard(recipe) {
   const article = makeElement("article", "recipe-card");
   const image = makeElement("div", "recipe-art");
   image.setAttribute("aria-hidden", "true");
-  image.append(makeElement("span", "recipe-art-mark", "✳"));
+  const cover = makeElement("img", "recipe-cover");
+  cover.src = recipeImagePath(recipe.imageUrl);
+  cover.alt = `Ilustração de ${recipe.title || "receita"}`;
+  cover.loading = "lazy";
+  cover.decoding = "async";
+  cover.addEventListener("error", () => {
+    cover.src = "/images/recipes/placeholder.svg";
+  }, { once: true });
+  image.append(cover);
 
   const favoriteButton = makeElement("button", `favorite-toggle${recipe.isFavorite ? " is-favorite" : ""}`, recipe.isFavorite ? "♥" : "♡");
   favoriteButton.type = "button";
@@ -241,6 +255,13 @@ function renderRecipeDetail(recipe, desiredServings) {
   top.append(closeButton);
   heading.append(top);
   heading.append(makeElement("h2", "", recipe.title || "Receita sem nome"));
+  const cover = makeElement("img", "detail-cover");
+  cover.src = recipeImagePath(recipe.imageUrl);
+  cover.alt = `Ilustração de ${recipe.title || "receita"}`;
+  cover.addEventListener("error", () => {
+    cover.src = "/images/recipes/placeholder.svg";
+  }, { once: true });
+  heading.append(cover);
   if (recipe.description) heading.append(makeElement("p", "detail-description", recipe.description));
   const byline = makeElement("p", "detail-byline", `${recipe.prepTime || "—"} minutos · ${recipe.author?.username || "Comunidade Panela"}`);
   heading.append(byline);

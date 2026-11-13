@@ -12,6 +12,7 @@ Projeto oficial **#28** — catálogo gastronômico colaborativo com autenticaç
 
 - Login OAuth2 exclusivo pelo Discord; o perfil (`user_id`, nome e avatar) é persistido no D1.
 - Catálogo compartilhado com busca por nome, ingrediente e tempo máximo de preparo.
+- 50 receitas editoriais iniciais, cada uma com ilustração SVG local original; novas receitas recebem uma imagem de fallback.
 - Receitas com ingredientes estruturados (quantidade numérica e unidade separada), rendimento e etapas ordenadas.
 - Controle de porções que recalcula as quantidades no navegador a partir do rendimento original, sem acumular erros de arredondamento.
 - Favoritos privados por usuário, persistidos no Cloudflare D1.
@@ -23,6 +24,9 @@ Projeto oficial **#28** — catálogo gastronômico colaborativo com autenticaç
 - `public/` — interface estática.
 - `functions/api/` — rotas serverless e OAuth2.
 - `migrations/0001_init.sql` — esquema relacional do D1.
+- `migrations/0003_seed_catalog.sql` — 50 receitas iniciais, ingredientes, etapas e caminhos das imagens.
+- `public/images/recipes/` — ilustrações locais das receitas.
+- `scripts/generate-seed-catalog.mjs` — gerador reproduzível da migração e das ilustrações.
 - `wrangler.jsonc` — configuração Pages e binding `DB`.
 - `skills/` — instruções utilizadas pelos agentes de backend, frontend e validação.
 - `AGENTS.md` — registro dos agentes, harness e responsabilidades.
@@ -65,6 +69,8 @@ node validar-local.mjs P26-2B-8983-AF39-E3CF-C0B3
 ```
 
 A suíte usa o runner nativo do Node.js e cobre busca Unicode, validação de payload, sessão obrigatória em favoritos, state OAuth e resposta do endpoint de status. A validação online permanecerá pendente até haver um deploy real e acessível; o fluxo OAuth real também requer as credenciais do Discord.
+
+As receitas iniciais aparecem como publicadas por **Caderno Panela**, um autor editorial reservado para o conteúdo de demonstração — não é uma conta Discord nem permite login.
 
 ## Entrega
 
