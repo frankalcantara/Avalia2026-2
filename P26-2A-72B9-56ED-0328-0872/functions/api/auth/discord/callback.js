@@ -17,7 +17,7 @@ export async function onRequestGet(context) {
     return Response.json({
       ok: false,
       error: "missing_credentials",
-      message: "Defina DISCORD_CLIENT_ID e DISCORD_CLIENT_SECRET nas variáveis do Cloudflare Pages (Settings -> Environment variables).",
+      message: "Defina DISCORD_CLIENT_ID e DISCORD_CLIENT_SECRET nas variáveis do Cloudflare Pages.",
     }, { status: 500 });
   }
 
@@ -28,8 +28,8 @@ export async function onRequestGet(context) {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
-        client_id: env.DISCORD_CLIENT_ID,
-        client_secret: env.DISCORD_CLIENT_SECRET,
+        client_id: env.DISCORD_CLIENT_ID.trim(),
+        client_secret: env.DISCORD_CLIENT_SECRET.trim(),
         grant_type: "authorization_code",
         code,
         redirect_uri: redirectUri,
@@ -37,6 +37,8 @@ export async function onRequestGet(context) {
     });
 
     if (!tokenRes.ok) {
+      const erroDetalhe = await tokenRes.text();
+      console.error("Erro Discord Token:", tokenRes.status, erroDetalhe);
       return Response.redirect(new URL("/?auth_error=token_exchange_failed", url.origin).href, 302);
     }
 
@@ -69,15 +71,17 @@ export async function onRequestGet(context) {
 
     const sessionPayload = JSON.stringify({ userId, username, avatar });
     const encodedSession = btoa(encodeURIComponent(sessionPayload));
+    const secureFlag = url.protocol === "https:" ? "; Secure" : "";
 
     return new Response(null, {
       status: 302,
       headers: {
         Location: "/?login=success",
-        "Set-Cookie": `discord_session=${encodedSession}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400; Secure`,
+        "Set-Cookie": `discord_session=${encodedSession}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400${secureFlag}`,
       },
     });
   } catch (err) {
+    console.error("Exceção no callback:", err);
     return Response.redirect(new URL("/?auth_error=exception", url.origin).href, 302);
   }
 }

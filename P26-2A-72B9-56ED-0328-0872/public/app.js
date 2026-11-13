@@ -122,31 +122,34 @@ if (btnLoginDiscord) {
 // --- VERIFICAÇÃO DE SESSÃO ATIVA ---
 async function verificarSessao() {
     try {
-        // Pede ao backend (Cloudflare Functions) o status atual do utilizador
-        const resposta = await fetch('/api/auth/status');
+        const resposta = await fetch('/api/status');
         const dados = await resposta.json();
 
-        // Se o backend confirmar que existe um utilizador logado
-        if (dados.user) {
-            const btnLogin = document.getElementById('btnLoginDiscord');
-            if (btnLogin) {
-                // Substitui o botão de login pelo nome e avatar do utilizador do Discord
-                const avatarUrl = dados.user.avatar 
-                    ? `https://cdn.discordapp.com/avatars/${dados.user.id}/${dados.user.avatar}.png` 
-                    : 'https://cdn.discordapp.com/embed/avatars/0.png'; // Avatar padrão caso não tenha
+        const utilizador = dados.sessionUser;
 
-                btnLogin.outerHTML = `
-                    <div style="display: flex; align-items: center; gap: 10px; color: white; font-weight: bold;">
-                        <img src="${avatarUrl}" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%;">
-                        <span>${dados.user.username}</span>
-                    </div>
-                `;
+        if (utilizador && (utilizador.username || utilizador.userId)) {
+            const btnLogin = document.getElementById('btnLoginDiscord');
+            const userInfo = document.getElementById('userInfo');
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+
+            if (btnLogin) btnLogin.style.display = 'none';
+            if (userInfo) {
+                userInfo.style.display = 'flex';
+                userInfo.style.alignItems = 'center';
+                userInfo.style.gap = '10px';
+            }
+            if (userName) {
+                userName.textContent = utilizador.username || 'Utilizador';
+            }
+            if (userAvatar) {
+                userAvatar.src = utilizador.avatar || 'https://cdn.discordapp.com/embed/avatars/0.png';
+                userAvatar.style.borderRadius = '50%';
             }
         }
     } catch (erro) {
-        console.log("Nenhuma sessão ativa encontrada.");
+        console.log('Nenhuma sessão ativa encontrada:', erro);
     }
 }
 
-// Executa a verificação assim que a página carrega
 verificarSessao();
