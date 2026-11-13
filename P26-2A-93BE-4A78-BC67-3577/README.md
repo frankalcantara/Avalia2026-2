@@ -16,6 +16,28 @@ A autenticação via Discord OAuth2 vincula cada jogador às suas partidas ativa
 
 ---
 
+## Como o jogo funciona
+
+1. **Login:** Discord OAuth2 (`identify`); `user_id`, nome e avatar ficam no D1 e a sessão é um token aleatório em cookie `HttpOnly`.
+2. **Posicionamento:** 5 navios (5, 4, 3, 3 e 2 casas) na malha 10x10, na horizontal ou vertical. O servidor valida limites, sobreposição e tamanhos.
+3. **Combate:** o jogador atira contra o computador; a frota do computador é sorteada e fica **somente no servidor**. A API responde apenas `agua`, `acerto` ou `afundado`, e o computador revida no mesmo pedido.
+4. **Placar geral:** ao fim de cada partida, vitórias e derrotas são gravadas no D1 e listadas na página (`/api/scores`).
+
+## Rodando localmente
+
+```powershell
+cd P26-2A-93BE-4A78-BC67-3577
+# Crie .dev.vars (NÃO versionado) com DISCORD_CLIENT_ID e DISCORD_CLIENT_SECRET
+npx.cmd wrangler d1 migrations apply DB --local
+npx.cmd wrangler pages dev
+```
+
+Acesse `http://localhost:8788` (use `localhost`, não `127.0.0.1`) e cadastre `http://localhost:8788/api/auth/discord/callback` como Redirect no Discord. Testes das regras: `node tests/regras.test.mjs`.
+
+Agentes, harness e skills utilizados: veja [`AGENTS.md`](./AGENTS.md).
+
+---
+
 ## Como Publicar esta Subpasta no Cloudflare Pages + D1 + Discord OAuth2
 
 1. No painel da Cloudflare (**Workers & Pages** → **Create** → **Pages** → **Connect to Git**), selecione o seu fork do repositório `Avalia2026-2`.
