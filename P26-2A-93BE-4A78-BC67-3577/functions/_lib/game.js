@@ -82,3 +82,44 @@ export function randomFleet() {
   }
   return placed;
 }
+
+// Navio (da lista recebida) que ocupa a célula, ou null.
+export function shipAt(ships, row, col) {
+  return ships.find((s) => cellsOf(s).some(([r, c]) => r === row && c === col)) || null;
+}
+
+/**
+ * Resolve um tiro contra uma lista de navios (cada um com hits e size).
+ * NÃO altera nada: devolve o resultado e o navio atingido (ou null).
+ */
+export function resolveShot(ships, row, col) {
+  const ship = shipAt(ships, row, col);
+  if (!ship) return { result: "agua", ship: null };
+  return { result: ship.hits + 1 >= ship.size ? "afundado" : "acerto", ship };
+}
+
+/**
+ * Escolhe o tiro do computador: se há acerto em navio ainda não afundado, tenta as
+ * células vizinhas; senão, sorteia entre as células ainda não atiradas.
+ * `taken` = Set "r,c" dos tiros do computador; `playerShips` = frota do jogador (com hits).
+ */
+export function pickCpuShot(taken, playerShips) {
+  const free = (r, c) => inBoard(r, c) && !taken.has(`${r},${c}`);
+  const pool = [];
+  for (const ship of playerShips) {
+    if (ship.hits <= 0 || ship.hits >= ship.size) continue;
+    for (const [r, c] of cellsOf(ship)) {
+      if (!taken.has(`${r},${c}`)) continue; // célula já atingida deste navio
+      for (const [dr, dc] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        if (free(r + dr, c + dc)) pool.push([r + dr, c + dc]);
+      }
+    }
+  }
+  if (!pool.length) {
+    for (let r = 0; r < BOARD_SIZE; r++) for (let c = 0; c < BOARD_SIZE; c++) if (free(r, c)) pool.push([r, c]);
+  }
+  if (!pool.length) return null;
+  const buf = new Uint32Array(1);
+  crypto.getRandomValues(buf);
+  return pool[buf[0] % pool.length];
+}
