@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f6f3">
+    <title>Estudaí — revisão em foco</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Estudaí, início">
+        <span class="brand-mark" aria-hidden="true">e</span>
+        estudaí
+        <span class="brand-dot">.</span>
+      </a>
+
+      <div class="account" id="accountArea">
+        <a class="login-link" id="discordLoginLink" href="/api/auth/discord">
+          Entrar com Discord <span aria-hidden="true">↗</span>
+        </a>
+        <div class="profile hidden" id="profileArea">
+          <img id="profileAvatar" alt="" width="34" height="34">
+          <span id="discordUserText"></span>
+          <button class="logout-button" id="logoutBtn" type="button">Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="pageTitle">
+        <p class="eyebrow">
+          <span class="eyebrow-dot" aria-hidden="true"></span>
+          UM PASSO DE CADA VEZ
+        </p>
+        <h1 id="pageTitle">Aprender também<br>é <em>lembrar.</em></h1>
+        <p class="intro-copy">
+          Revisões curtas, com foco total. Escolha um tema e veja o que já está
+          firme — e o que merece mais uma rodada.
+        </p>
+      </section>
+
+      <section class="workspace" aria-label="Área de revisão">
+        <div class="setup-panel" id="setupPanel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">SUA PRÓXIMA SESSÃO</p>
+              <h2>Por onde começamos?</h2>
+            </div>
+            <span class="step-badge">01 <span>/ 02</span></span>
+          </div>
+
+          <label class="field-label" for="categorySelect">Escolha uma matéria</label>
+          <div class="select-wrap">
+            <select id="categorySelect" disabled>
+              <option value="">Carregando matérias…</option>
+            </select>
+            <span aria-hidden="true">⌄</span>
+          </div>
+
+          <div class="session-note">
+            <span class="note-icon" aria-hidden="true">◷</span>
+            <span>Uma pergunta por vez <b>·</b> 20 segundos para responder</span>
+          </div>
+
+          <button class="button-primary" id="startBtn" type="button" disabled>
+            Começar revisão <span aria-hidden="true">→</span>
+          </button>
+          <p class="helper" id="setupMessage" role="status">
+            Entre com sua conta Discord para iniciar uma sessão.
+          </p>
+        </div>
+
+        <section
+          class="quiz-panel hidden"
+          id="quizPanel"
+          aria-labelledby="questionText"
+        >
+          <div class="quiz-topline">
+            <span class="category-tag" id="questionCategory">Matéria</span>
+            <span class="question-count" id="questionCount">Questão 1</span>
+          </div>
+
+          <div class="timer-row">
+            <span id="timerLabel">TEMPO PARA RESPONDER</span>
+            <span class="timer-number" id="timerNumber">20s</span>
+          </div>
+          <div
+            class="progress-track"
+            id="timerTrack"
+            role="progressbar"
+            aria-label="Tempo restante"
+            aria-valuemin="0"
+            aria-valuemax="20"
+            aria-valuenow="20"
+          >
+            <span id="timerBar"></span>
+          </div>
+
+          <h2 id="questionText" tabindex="-1">Carregando pergunta…</h2>
+          <div class="answers" id="answers" role="group" aria-label="Alternativas"></div>
+          <p class="feedback" id="answerFeedback" role="status" aria-live="polite"></p>
+        </section>
+
+        <section
+          class="result-panel hidden"
+          id="resultPanel"
+          aria-labelledby="resultTitle"
+        >
+          <div class="result-icon" aria-hidden="true">✓</div>
+          <p class="eyebrow">SESSÃO CONCLUÍDA</p>
+          <h2 id="resultTitle">Boa revisão.</h2>
+          <p class="result-copy" id="resultCopy"></p>
+
+          <div class="result-stats">
+            <div>
+              <strong id="scoreValue">0</strong>
+              <span>pontos</span>
+            </div>
+            <div>
+              <strong id="correctValue">0/0</strong>
+              <span>acertos</span>
+            </div>
+          </div>
+
+          <button class="button-primary" id="againBtn" type="button">
+            Escolher outro tema <span aria-hidden="true">→</span>
+          </button>
+        </section>
+      </section>
+
+      <p class="privacy-note">
+        <span aria-hidden="true">✳</span>
+        Seu progresso fica associado à sua conta Discord.
+      </p>
+    </main>
+
+    <footer>
+      <span>Feito para aprender no seu ritmo.</span>
+      <span>
+        Chave Única <code>P26-2A-C913-04B0-E3ED-3E05</code>
+        <b> · </b>Turma 2A <b> · </b>MIT
+      </span>
+    </footer>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html> 
+ 
