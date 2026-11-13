@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title">
+  <title id="title">Pão na chapa com requeijão</title>
+  <rect width="640" height="400" fill="#ead1c8"/>
+  <circle cx="520" cy="70" r="115" fill="#fffdf7" opacity=".22"/>
+  <circle cx="84" cy="330" r="150" fill="#71875b" opacity=".12"/>
+  <ellipse cx="320" cy="210" rx="190" ry="118" fill="#fffdf7" opacity=".92"/><path d="M190 238c0-66 44-111 104-111 33 0 55 15 68 39 48 0 86 37 86 82 0 38-32 66-75 66H260c-42 0-70-29-70-76z" fill="#a95043"/><path d="m258 160 24 48m35-59 18 42m35-26 14 35" stroke="#71875b" stroke-width="9" stroke-linecap="round"/><circle cx="354" cy="230" r="11" fill="#f7e9be" opacity=".9"/><circle cx="247" cy="184" r="7" fill="#71875b" opacity=".9"/><circle cx="290" cy="213" r="7" fill="#f7e9be" opacity=".9"/><circle cx="333" cy="242" r="11" fill="#71875b" opacity=".9"/><circle cx="376" cy="196" r="7" fill="#f7e9be" opacity=".9"/><circle cx="269" cy="225" r="7" fill="#71875b" opacity=".9"/><circle cx="312" cy="179" r="11" fill="#f7e9be" opacity=".9"/>
+  <rect x="22" y="338" width="596" height="42" rx="12" fill="#fffdf7" opacity=".9"/>
+  <text x="42" y="365" fill="#313b32" font-family="Arial,sans-serif" font-size="17" font-weight="700">Pão na chapa com requeijão</text>
+</svg>
