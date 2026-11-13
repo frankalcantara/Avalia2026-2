@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "projeto-p26-2b-8983-af39-e3cf-c0b3",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2b-8983-af39-e3cf-c0b3",
+      // Replace with the ID returned by `wrangler d1 create`; no credentials belong in this file.
+      "database_id": "00000000-0000-0000-0000-000000000000"
+    }
+  ]
+}
