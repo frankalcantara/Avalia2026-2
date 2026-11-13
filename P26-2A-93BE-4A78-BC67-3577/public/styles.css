@@ -147,3 +147,62 @@ footer {
   font-weight: 700;
   color: #334155;
 }
+
+/* ---------- Batalha Naval ---------- */
+h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.85rem; }
+
+.user-area { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.user-area img { width: 28px; height: 28px; border-radius: 50%; }
+.btn-secondary {
+  background: #ffffff; color: #0f172a; border: 1.5px solid #cbd5e1; border-radius: 999px;
+  padding: 0.5rem 1.1rem; font-size: 0.85rem; font-weight: 800; cursor: pointer;
+}
+.btn-secondary:hover { background: #f1f5f9; }
+.btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+a.btn-primary { text-decoration: none; display: inline-block; }
+
+.toolbar { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1rem 0; align-items: center; }
+.ship-list { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.ship-btn {
+  background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px;
+  padding: 0.45rem 0.8rem; font-size: 0.85rem; font-weight: 700; cursor: pointer;
+}
+.ship-btn.active { border-color: #0f172a; background: #e2e8f0; }
+.ship-btn.placed { background: #dcfce7; border-color: #86efac; }
+
+.boards { display: flex; gap: 1.75rem; flex-wrap: wrap; align-items: flex-start; }
+.board-wrap h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.4rem; }
+.board {
+  display: grid; grid-template-columns: 1.6rem repeat(10, 2.1rem); grid-auto-rows: 2.1rem;
+  gap: 2px; width: max-content; max-width: 100%;
+}
+.board .lbl { display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; color: #64748b; }
+.cell {
+  border: 1px solid #bfdbfe; background: #dbeafe; border-radius: 4px; padding: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800;
+}
+button.cell { cursor: crosshair; }
+button.cell:hover:not(:disabled) { background: #bfdbfe; }
+button.cell:disabled { cursor: default; }
+.cell.ship { background: #475569; border-color: #334155; color: #fff; }
+.cell.preview-ok { background: #86efac; border-color: #22c55e; }
+.cell.preview-bad { background: #fca5a5; border-color: #ef4444; }
+.cell.agua { background: #e2e8f0; border-color: #cbd5e1; color: #64748b; }
+.cell.acerto { background: #fb923c; border-color: #ea580c; color: #fff; }
+.cell.afundado { background: #b91c1c; border-color: #7f1d1d; color: #fff; }
+
+.message { min-height: 1.5rem; margin-top: 1rem; font-weight: 700; font-size: 0.92rem; }
+.message.err { color: #b91c1c; }
+.message.ok { color: #166534; }
+.legend { font-size: 0.8rem; color: #475569; margin-top: 0.6rem; }
+.result-banner { padding: 0.9rem 1.1rem; border-radius: 12px; font-weight: 800; margin: 1rem 0; }
+.result-banner.win { background: #dcfce7; color: #166534; }
+.result-banner.lose { background: #fee2e2; color: #991b1b; }
+
+.scores { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.scores th, .scores td { text-align: left; padding: 0.55rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+.scores img { width: 20px; height: 20px; border-radius: 50%; vertical-align: middle; margin-right: 0.4rem; }
+
+@media (max-width: 560px) {
+  .board { grid-template-columns: 1.2rem repeat(10, 1.85rem); grid-auto-rows: 1.85rem; }
+}
