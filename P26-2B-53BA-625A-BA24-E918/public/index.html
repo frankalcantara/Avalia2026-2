@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Mural de Avisos — por disciplina</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Mural de Avisos, início">
+      <span class="brand-mark" aria-hidden="true">M</span>
+      <span><strong>Mural</strong><small>por disciplina</small></span>
+    </a>
+    <div class="account-area">
+      <p class="account-status" id="accountStatus" role="status">Verificando sessão…</p>
+      <a class="button button-discord" id="loginLink" href="/api/auth/discord" hidden>Entrar com Discord</a>
+      <div class="profile" id="profile" hidden>
+        <img id="profileAvatar" alt="" width="34" height="34" hidden>
+        <span id="profileName"></span>
+        <button class="profile-logout" id="logoutButton" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="welcome">
+      <div>
+        <p class="eyebrow">SEU ESPAÇO DE ESTUDOS</p>
+        <h1>O que acontece nas suas disciplinas.</h1>
+        <p class="welcome-copy">Avisos, lembretes e links úteis em um só lugar.</p>
+      </div>
+      <div class="welcome-art" aria-hidden="true"><span>✳</span><span>↗</span><span>✎</span></div>
+    </section>
+
+    <section class="login-panel panel" id="loginPanel" aria-labelledby="loginTitle" hidden>
+      <div class="login-icon" aria-hidden="true">↗</div>
+      <div>
+        <h2 id="loginTitle">Entre para acessar seu mural</h2>
+        <p>Use sua conta Discord para escolher disciplinas e acompanhar os avisos.</p>
+      </div>
+      <a class="button button-primary" href="/api/auth/discord">Continuar com Discord</a>
+    </section>
+
+    <div class="app-layout" id="appLayout" hidden>
+      <aside class="sidebar">
+        <section class="panel course-panel" aria-labelledby="coursesTitle">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">PERSONALIZE</p>
+              <h2 id="coursesTitle">Suas disciplinas</h2>
+            </div>
+            <span class="count-badge" id="courseCount">0</span>
+          </div>
+          <p class="muted small-copy">Escolha as disciplinas que quer acompanhar.</p>
+          <form id="subscriptionForm" class="subscription-form">
+            <label for="coursePicker">Adicionar disciplina</label>
+            <div class="picker-row">
+              <select id="coursePicker" name="course" required disabled>
+                <option value="">Carregando…</option>
+              </select>
+              <button class="button button-icon" type="submit" aria-label="Adicionar disciplina" title="Adicionar disciplina" disabled>+</button>
+            </div>
+          </form>
+          <ul class="subscription-list" id="subscriptionList" aria-label="Disciplinas inscritas"></ul>
+          <p class="inline-message" id="subscriptionMessage" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="tip-card">
+          <span aria-hidden="true">✦</span>
+          <p><strong>Fique por dentro</strong><br>Fixe os avisos importantes para encontrá-los mais rápido.</p>
+        </section>
+      </aside>
+
+      <section class="feed-column" aria-labelledby="feedTitle">
+        <div class="feed-toolbar">
+          <div>
+            <p class="eyebrow">ACOMPANHAMENTO</p>
+            <h2 id="feedTitle">Mural de avisos</h2>
+          </div>
+          <label class="filter-label" for="courseFilter">
+            <span>Disciplina</span>
+            <select id="courseFilter" disabled>
+              <option value="">Todas as disciplinas</option>
+            </select>
+          </label>
+        </div>
+
+        <form class="panel compose-panel" id="postForm">
+          <div class="compose-heading">
+            <div class="avatar-placeholder" aria-hidden="true">+</div>
+            <div><h3 id="formHeading">Compartilhe com sua turma</h3><p>Publique um aviso, lembrete ou link útil.</p></div>
+          </div>
+          <div class="compose-grid">
+            <label for="postCourse">Disciplina
+              <select id="postCourse" name="courseCode" required disabled>
+                <option value="">Inscreva-se em uma disciplina</option>
+              </select>
+            </label>
+            <label for="postType">Tipo
+              <select id="postType" name="type">
+                <option value="aviso">Aviso</option>
+                <option value="lembrete">Lembrete</option>
+                <option value="link">Link útil</option>
+              </select>
+            </label>
+          </div>
+          <label for="postTitle">Título
+            <input id="postTitle" name="title" type="text" maxlength="110" required placeholder="Um título claro e objetivo">
+          </label>
+          <label for="postBody">Mensagem
+            <textarea id="postBody" name="body" rows="3" maxlength="3000" required placeholder="Escreva os detalhes para seus colegas…"></textarea>
+          </label>
+          <label for="postLink">Link <span class="optional">(opcional)</span>
+            <input id="postLink" name="link" type="url" maxlength="2048" placeholder="https://…">
+          </label>
+          <div class="compose-actions">
+            <p class="inline-message" id="postMessage" role="status" aria-live="polite"></p>
+            <div class="button-group">
+              <button class="button button-quiet" id="cancelEdit" type="button" hidden>Cancelar edição</button>
+              <button class="button button-primary" id="submitPost" type="submit" disabled>Publicar aviso</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="feed-list" id="feedList" aria-live="polite" aria-busy="true">
+          <div class="empty-state"><span class="loader" aria-hidden="true"></span><p>Carregando avisos…</p></div>
+        </div>
+      </section>
+    </div>
+    <div class="global-message" id="globalMessage" role="status" aria-live="polite"></div>
+  </main>
+
+  <footer>
+    <span>Mural de Avisos Departamental por Disciplina</span>
+    <span>Chave oficial <code>P26-2B-53BA-625A-BA24-E918</code></span>
+  </footer>
+</body>
+</html>
