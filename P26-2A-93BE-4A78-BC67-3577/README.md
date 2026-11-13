@@ -4,7 +4,7 @@
 - **Estudante:** Gabriel Benato Batistel Correa
 - **Turma:** 2A
 - **Chave Única:** `P26-2A-93BE-4A78-BC67-3577`
-- **URL_CLOUDFLARE:** `https://p26-2a-93be-4a78-bc67-3577.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://p26-2a-93be-4a78-bc67-3577.pages.dev`
 
 ---
 
@@ -38,7 +38,21 @@ Agentes, harness e skills utilizados: veja [`AGENTS.md`](./AGENTS.md).
 
 ---
 
-## Como Publicar esta Subpasta no Cloudflare Pages + D1 + Discord OAuth2
+## Deploy realizado (Cloudflare Pages + D1 + Discord OAuth2)
+
+Publicado por *upload direto* com o Wrangler (o repositório já estava vinculado a outro projeto Pages do laboratório anterior):
+
+```powershell
+npx.cmd wrangler d1 migrations apply DB --remote
+npx.cmd wrangler pages project create p26-2a-93be-4a78-bc67-3577 --production-branch main
+npx.cmd wrangler pages secret put DISCORD_CLIENT_ID --project-name p26-2a-93be-4a78-bc67-3577
+npx.cmd wrangler pages secret put DISCORD_CLIENT_SECRET --project-name p26-2a-93be-4a78-bc67-3577
+npx.cmd wrangler pages deploy public --project-name p26-2a-93be-4a78-bc67-3577 --branch main
+```
+
+O binding `DB` do D1 vem do `wrangler.jsonc`. Os secrets do Discord ficam só na Cloudflare (nunca no Git). Redirect cadastrado no Discord: `https://p26-2a-93be-4a78-bc67-3577.pages.dev/api/auth/discord/callback`.
+
+## Alternativa: publicar via Git no Cloudflare Pages
 
 1. No painel da Cloudflare (**Workers & Pages** → **Create** → **Pages** → **Connect to Git**), selecione o seu fork do repositório `Avalia2026-2`.
 2. Configure os parâmetros de build apontando para esta subpasta:
