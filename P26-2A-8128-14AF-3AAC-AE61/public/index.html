@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#3b49ac">
+  <meta name="description" content="Encontre livros de colegas da universidade, compartilhe seu acervo e combine empréstimos e trocas presenciais pelo Discord.">
+  <title>EntreLivros — Livros da nossa comunidade</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" type="module"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir para o conteúdo</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="EntreLivros, início"><span class="brand-symbol" aria-hidden="true">eL</span><span>EntreLivros<small>Uma estante compartilhada</small></span></a>
+      <div id="profile" class="profile"><a class="button button-primary" href="/api/auth/discord">Entrar com Discord</a></div>
+    </div>
+  </header>
+  <main id="main" class="page-shell">
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="intro-copy">
+        <p class="community-label"><span aria-hidden="true"></span>De estudante para estudante</p>
+        <h1 id="intro-title">Livros que circulam.<br>Conhecimento que fica.</h1>
+        <p>Seu próximo livro pode estar na estante de um colega. Encontre, empreste ou troque e combine a entrega pelo Discord.</p>
+        <button class="button button-primary" id="hero-add" type="button">Compartilhar um livro <span aria-hidden="true">+</span></button>
+      </div>
+      <div class="shelf-art" aria-hidden="true">
+        <div class="art-note">Boas histórias<br>merecem companhia.</div>
+        <div class="art-books"><span class="art-book art-book-a">Literatura</span><span class="art-book art-book-b">Novas ideias</span><span class="art-book art-book-c">Tecnologia</span><span class="art-book art-book-d">Entre páginas</span></div>
+        <div class="art-shelf"></div><span class="art-star">✳</span>
+      </div>
+    </section>
+    <nav class="workspace-nav" aria-label="Área da biblioteca">
+      <div class="view-links"><button type="button" class="view-link is-active" data-view="catalog" aria-current="page">Catálogo</button><button type="button" class="view-link" data-view="mine">Meus livros</button><button type="button" class="view-link" data-view="requests">Pedidos <span id="pending-count" class="count" hidden></span></button></div>
+      <button id="refresh" class="button button-text" type="button">Atualizar</button>
+    </nav>
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section id="catalog-view" class="view" aria-labelledby="catalog-title">
+      <div class="section-heading"><div><h2 id="catalog-title">Explore a estante</h2><p id="catalog-count">Carregando livros da comunidade…</p></div></div>
+      <form id="filters" class="filters" role="search">
+        <label class="search-field"><span class="sr-only">Buscar por título ou autor</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input name="q" type="search" placeholder="Qual livro você está procurando?" maxlength="200"><button class="search-submit" type="submit">Buscar</button></label>
+        <div class="filter-selects"><label>Categoria<select name="category"><option value="">Todas</option><option value="tecnico">Técnicos</option><option value="literario">Literários</option></select></label><label>Modalidade<select name="mode"><option value="">Todas</option><option value="emprestimo">Empréstimo</option><option value="troca">Troca</option></select></label><label>Disponibilidade<select name="status"><option value="">Todos os livros</option><option value="disponivel">Disponível</option><option value="reservado">Reservado</option><option value="emprestado">Emprestado</option></select></label></div>
+      </form>
+      <div id="catalog-grid" class="book-grid" aria-live="polite"></div>
+    </section>
+    <section id="mine-view" class="view" aria-labelledby="mine-title" hidden>
+      <div class="section-heading"><div><h2 id="mine-title">Sua estante, novas conexões</h2><p>Gerencie os exemplares que você compartilha com a comunidade.</p></div><button class="button button-primary" id="add-book" type="button">Adicionar livro <span aria-hidden="true">+</span></button></div>
+      <div id="mine-grid" class="book-grid" aria-live="polite"></div>
+    </section>
+    <section id="requests-view" class="view" aria-labelledby="requests-title" hidden>
+      <div class="section-heading"><div><h2 id="requests-title">Acompanhe cada encontro</h2><p>Aprove pedidos, combine a entrega e registre o retorno dos livros.</p></div></div>
+      <div class="request-tabs" aria-label="Filtrar pedidos"><button class="request-tab is-active" data-direction="incoming" type="button" aria-pressed="true">Recebidos</button><button class="request-tab" data-direction="outgoing" type="button" aria-pressed="false">Meus pedidos</button></div>
+      <div id="requests-list" class="requests-list" aria-live="polite"></div>
+    </section>
+    <aside class="community-guide" aria-label="Como compartilhar"><span class="guide-icon" aria-hidden="true">↔</span><div><h2>A troca começa aqui. O encontro é presencial.</h2><p>Escolha um exemplar, envie seu pedido e combine os detalhes com o colega pelo Discord. Cuide do livro e respeite a data de devolução.</p></div></aside>
+  </main>
+  <footer class="site-footer"><div><a class="footer-brand" href="/">EntreLivros</a><p>Projeto 24 · Empréstimo e troca de livros físicos</p></div><div class="audit"><p>Rennan Raposo · Turma 2A · Licença MIT</p><p>Chave de auditoria: <code>P26-2A-8128-14AF-3AAC-AE61</code></p></div></footer>
+  <dialog id="modal" aria-labelledby="modal-title"><div class="modal-heading"><h2 id="modal-title"></h2><button class="icon-button" id="close-modal" type="button" aria-label="Fechar janela">×</button></div><div id="modal-body"></div></dialog>
+  <noscript><div class="noscript">Ative o JavaScript no navegador para consultar os livros e acompanhar seus pedidos.</div></noscript>
+</body>
+</html>
