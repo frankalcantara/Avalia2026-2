@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "achados-perdidos-campus",
+  "compatibility_date": "2026-11-01",
+  "pages_build_output_dir": "./public",
+  // DISCORD_CLIENT_SECRET NAO fica aqui: e secret do Pages (wrangler pages secret put).
+  "vars": {
+    "DISCORD_CLIENT_ID": "1569481233329823744"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-3a-5e56-230d-1716-d540",
+      "database_id": "3ec21699-756e-48c7-9f7a-41ecd0adc086",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

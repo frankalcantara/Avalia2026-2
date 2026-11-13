@@ -1,0 +1,20 @@
+{
+  "name": "achados-perdidos-campus",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vitrine de Achados e Perdidos do Campus — Projeto #34 (P26-3A-5E56-230D-1716-D540)",
+  "license": "MIT",
+  "scripts": {
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "dev": "wrangler pages dev",
+    "test": "node --test tests/validacao.test.mjs tests/estatico.test.mjs",
+    "deploy": "wrangler pages deploy --project-name achados-perdidos-campus --branch main",
+    "test:api": "bash tests/rodar-api.sh",
+    "test:preparar": "bash tests/preparar.sh"
+  },
+  "devDependencies": {
+    "wrangler": "4.159.0"
+  }
+}
