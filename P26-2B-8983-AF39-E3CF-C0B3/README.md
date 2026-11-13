@@ -69,7 +69,7 @@ A suíte usa o runner nativo do Node.js e cobre busca Unicode, validação de pa
 ## Entrega
 
 - Fork público: https://github.com/wesleysantos847317-sketch/Avalia2026-2-
-- Pull request oficial: será aberto para https://github.com/frankalcantara/Avalia2026-2 após a validação local.
+- Pull request oficial: [#34](https://github.com/frankalcantara/Avalia2026-2/pull/34).
 - A URL do projeto e a URL do repositório devem ser submetidas no AVA pelo estudante; este ambiente não possui sessão do AVA.
 
 ## Licença
