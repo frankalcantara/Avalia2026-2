@@ -4,7 +4,7 @@
 - **Estudante:** Cleinaldo Ferreira Bretas
 - **Turma:** 2B
 - **Chave Única:** `P26-2B-86B9-E260-A00B-F564`
-- **URL Cloudflare:** `https://p26-2b-86b9-e260-a00b-f564.pages.dev` *(substitua pela URL real após o deploy)*
+- **URL Cloudflare:** `https://p26-2b-86b9-e260-a00b-f564.pages.dev`
 - **Repositório GitHub:** *(informe a URL pública do repositório após publicar)*
 - **Licença:** MIT (arquivo [`LICENSE`](./LICENSE))
 
