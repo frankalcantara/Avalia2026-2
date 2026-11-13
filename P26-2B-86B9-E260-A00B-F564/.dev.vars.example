@@ -1,0 +1,5 @@
+# Copie para .dev.vars (ignorado pelo Git) e preencha para desenvolvimento local.
+# No Cloudflare Pages, configure as mesmas variáveis em Settings -> Environment variables.
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+SESSION_SECRET=

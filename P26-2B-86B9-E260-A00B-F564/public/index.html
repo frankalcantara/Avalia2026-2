@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sistema de Enquetes e Votação Verificada com Discord OAuth2, Cloudflare Pages Functions e Cloudflare D1.">
+  <title>Sistema de Enquetes e Votação Verificada — P26-2B-86B9-E260-A00B-F564</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">#26</span>
+        <div class="brand-text">
+          <strong>Sistema de Enquetes e Votação Verificada</strong>
+          <span class="brand-sub">Cloudflare Pages Functions + D1 + Discord OAuth2</span>
+        </div>
+      </div>
+      <div id="authArea" class="auth-area" aria-live="polite">
+        <a class="btn btn-discord" href="/api/auth/discord">Entrar com Discord</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero card">
+      <span class="pill">Projeto Oficial #26</span>
+      <h1>Decisões coletivas com voto verificado</h1>
+      <p class="desc">
+        Crie enquetes com prazo de encerramento e múltiplas opções. Apenas usuários autenticados
+        via Discord OAuth2 podem criar enquetes e votar. O servidor valida o prazo e bloqueia votos
+        duplicados por <code>user_id</code> antes de consolidar os resultados.
+      </p>
+      <ul class="feature-list">
+        <li>Autenticação exclusiva via Discord OAuth2</li>
+        <li>Persistência relacional no Cloudflare D1</li>
+        <li>Bloqueio de voto duplicado e de enquete encerrada no servidor</li>
+        <li>Resultados em barras horizontais proporcionais</li>
+      </ul>
+    </section>
+
+    <section class="card" id="createSection">
+      <div class="section-head">
+        <h2>Criar enquete</h2>
+        <span class="hint" id="createHint">Entre com o Discord para publicar uma enquete.</span>
+      </div>
+
+      <form id="pollForm" class="poll-form" novalidate>
+        <label class="field">
+          <span>Título</span>
+          <input id="pollTitle" type="text" maxlength="120" minlength="3" placeholder="Ex.: Escolha da data da retrospectiva" required>
+        </label>
+
+        <label class="field">
+          <span>Descrição</span>
+          <textarea id="pollDescription" rows="3" maxlength="1000" placeholder="Contexto e critérios da decisão (opcional)"></textarea>
+        </label>
+
+        <label class="field">
+          <span>Encerra em</span>
+          <input id="pollDeadline" type="datetime-local" required>
+        </label>
+
+        <fieldset class="options-fieldset">
+          <legend>Opções de escolha</legend>
+          <div id="optionRows" class="option-rows"></div>
+          <button id="addOptionBtn" class="btn btn-ghost" type="button">+ Adicionar opção</button>
+        </fieldset>
+
+        <div class="form-actions">
+          <button id="submitPollBtn" class="btn btn-primary" type="submit" disabled>Publicar enquete</button>
+          <span id="formMessage" class="form-message" role="status"></span>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <h2>Enquetes</h2>
+        <button id="refreshBtn" class="btn btn-ghost" type="button">Atualizar</button>
+      </div>
+      <div id="pollsContainer" class="polls" aria-live="polite">
+        <p class="empty">Carregando enquetes...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="projectFooter">
+    <span>Chave Única de Auditoria: <code>P26-2B-86B9-E260-A00B-F564</code></span>
+    <span>Turma 2B · Licenciado sob MIT</span>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
