@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Nome do projeto no Cloudflare Pages (vira https://<name>.pages.dev quando o nome está livre)
+  "name": "achados-perdidos-p26-2b",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2b-dee2-e5f5-044f-d68",
+      "database_id": "c7098269-6d6a-4355-86bc-d52cf94f1a2e",
+      "migrations_dir": "migrations"
+    }
+  ]
+  // DISCORD_CLIENT_ID e DISCORD_CLIENT_SECRET NÃO ficam aqui:
+  // cadastre os dois como "Secret" no painel da Cloudflare (Settings → Variables and Secrets)
+  // e, para testar no seu PC, num arquivo .dev.vars (que não vai para o GitHub).
+}
