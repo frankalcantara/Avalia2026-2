@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "trajetoria-luiz-2026",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2a-de92-bea1-d95b-f329",
+      "database_id": "c1b72eb7-3836-4c4f-b995-baf86903a3d5"
+    }
+  ]
+}
