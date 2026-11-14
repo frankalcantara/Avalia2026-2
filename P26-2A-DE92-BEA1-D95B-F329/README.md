@@ -3,7 +3,7 @@
 **Projeto oficial #39 · Luiz Henrique Weinert Jardwski · Turma 2A**
 
 - **Chave Única:** `P26-2A-DE92-BEA1-D95B-F329`
-- **URL_CLOUDFLARE:** PENDENTE — preencher somente após a publicação real e a conferência do domínio.
+- **URL_CLOUDFLARE:** https://trajetoria-luiz-2026.pages.dev
 - **Repositório de entrega:** [lulujardwski-ship-it/Avalia2026-2](https://github.com/lulujardwski-ship-it/Avalia2026-2), fork público do repositório oficial.
 - **Licença:** [MIT](LICENSE).
 
@@ -91,9 +91,12 @@ Antes da entrega, completar:
 - [x] Interface, backend, migração, três agentes reais, skills oficiais, licença e documentação.
 - [x] Testes de integração e compilação das Functions.
 - [x] Fork público na conta do aluno e código enviado na subpasta oficial.
-- [ ] D1 remoto, credenciais Discord e publicação Cloudflare configurados.
+- [x] Banco D1 remoto criado e esquema SQL aplicado pelo Console do Cloudflare.
+- [x] Primeira implantação do Cloudflare Pages concluída, conforme confirmação no painel.
+- [ ] Credenciais Discord e SESSION_SECRET configurados em produção.
 - [ ] Login e persistência em produção verificados.
-- [ ] URL real registrada e todos os itens do validador oficial aprovados.
+- [x] URL pública real registrada neste README.
+- [ ] Todos os itens do validador oficial aprovados no ambiente publicado.
 - [ ] Pull Request oficial aberto contendo somente a pasta deste projeto.
 - [ ] URLs do projeto online e do repositório publicadas no AVA.
 
