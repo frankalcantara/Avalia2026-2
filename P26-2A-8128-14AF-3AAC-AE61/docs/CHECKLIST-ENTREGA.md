@@ -1,10 +1,10 @@
 # Checklist de conformidade e entrega
 
-Chave oficial: `P26-2A-8128-14AF-3AAC-AE61`. Fonte: imagem da atividade e README do repositório oficial consultado em 13/11/2026. Itens marcados representam evidências observadas, não promessa de nota.
+Chave oficial: `P26-2A-8128-14AF-3AAC-AE61`. Fonte: imagem da atividade e README do repositório oficial consultado em 13/11/2026. Atualização em 14/11/2026 com os relatos do estudante sobre a execução no laboratório. Itens marcados representam verificações observadas ou relatos identificados em `VALIDACAO.md`, não promessa de nota.
 
 | Critério | Pontos | Evidência e situação |
 |---|---:|---|
-| Publicação Cloudflare e funcionamento pleno (eliminatório) | 25 | Site HTTPS publicado, D1 remoto e login Discord real conferidos. Fluxos de dois participantes aprovados por testes de API locais; ensaio com colega recomendado. |
+| Publicação Cloudflare e funcionamento pleno (eliminatório) | 25 | Site HTTPS publicado, D1 remoto e login Discord real conferidos. Fluxos de dois participantes aprovados por testes de API locais; estudante confirmou empréstimo e devolução com colega no site publicado. Ensaio manual de troca ainda recomendado. |
 | Pages Functions, D1 e Discord OAuth2 | 25 | Implementados e testados no runtime Cloudflare local; autorização Discord real conferida no site publicado. |
 | HTML5, CSS3 e JavaScript puro | 15 | Arquivos em public/, sem frameworks; interface conferida no navegador e em largura de celular. |
 | Três agentes, um de testes, harness e skills | 25 | Três subagentes efetivamente criados; contribuições em AGENTS.md e skills/. Testes finalizados pelo principal após interrupção dos subagentes. |
@@ -41,11 +41,13 @@ Chave oficial: `P26-2A-8128-14AF-3AAC-AE61`. Fonte: imagem da atividade e README
 - [x] Configurar os segredos no Pages e repetir a publicação se necessário.
 - [x] Confirmar URL pública acessível por HTTPS e atualizar URL_CLOUDFLARE no README.
 - [x] Testar login real com Discord no site publicado.
-- [ ] Ensaio complementar recomendado: percorrer os fluxos da interface com duas contas reais, conforme roteiro.
+- [x] Estudante confirmou cadastro, persistência, busca e empréstimo com outra conta real: pedido, reserva, aprovação com data e devolução.
+- [ ] Ensaio complementar recomendado: completar uma troca pela interface com duas contas reais e conferir a transferência dos dois exemplares.
 - [x] Confirmar push do código completo para o fork público.
 - [x] Executar o validador oficial com o site acessível.
 - [x] Pull Request oficial aberto: https://github.com/frankalcantara/Avalia2026-2/pull/37, somente pasta P26.
+- [x] Pré-inspeção remota do professor: cinco grupos de requisitos marcados como OK, sem atribuição de nota final.
 - [ ] Postar URLs do projeto e do GitHub no AVA e guardar o comprovante.
-- [ ] Se a execução no laboratório com Node.js via Scoop ainda não foi feita, realizá-la no ambiente exigido pelo professor.
+- [x] Execução no laboratório com Node.js via Scoop, inicializadores e validadores dos projetos 0 e 24: estudante informou nove itens OK e cópias sem alterações ao final.
 
 O validador oficial faz verificações estruturais e consulta a página pública. Ele não prova sozinho que todas as funcionalidades funcionam, nem que o login foi autorizado por uma pessoa real. O merge é manual pelo professor a partir de 20/11/2026, segundo o README oficial consultado; isso não define por si só o prazo final da disciplina.

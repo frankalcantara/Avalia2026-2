@@ -41,12 +41,23 @@ Correções na integração: Miniflare 5 não converte modulesRules; a suíte pa
 - Projeto 0 corrigido: login real, gravação de um registro de diagnóstico e leitura após recarregar a página. Validador oficial do Projeto 0 também aprovado.
 - Código no fork público de Rennan, em branch separada da pasta de treino.
 
+## Validação no laboratório relatada pelo estudante
+
+Relatos consolidados em 14/11/2026. As verificações abaixo foram executadas pelo estudante e seu colega, com orientação nesta conversa. Os resultados foram informados por eles; não se trata de observação direta do agente no computador da instituição.
+
+- Node.js e Git instalados pelo Scoop no computador da faculdade; comandos de versão funcionaram e o caminho do Node.js indicou a pasta Scoop.
+- Projetos 24 e 0 baixados em pastas separadas. Inicializadores executados com as respectivas chaves, nove itens `[OK]` em ambos os validadores e `working tree clean` ao final.
+- Projeto 0 no navegador da faculdade: login Discord funcionou e um novo registro de diagnóstico permaneceu após F5.
+- EntreLivros: cadastro de livro, permanência após F5 e localização pela busca confirmados pelo estudante.
+- Colega usando outra conta pelo celular: solicitação de empréstimo visível nos dois painéis e exemplar reservado.
+- Estudante confirmou aprovação do empréstimo com data de devolução e registro da devolução, relatando funcionamento do fluxo.
+
 ## Limites e fechamento
 
-- Ciclos entre dois usuários foram exercitados por API no D1 local isolado. Não se afirma ensaio completo da interface publicada com duas contas Discord reais. Recomenda-se seguir o roteiro de demonstração com um colega.
+- Empréstimo entre duas contas reais confirmado pelo relato acima. O fluxo completo de troca permanece coberto pelos testes automatizados de API; o ensaio manual de troca com dois exemplares ainda é recomendado.
 - A tentativa de conferência visual adicional em ambiente local foi interrompida por indisponibilidade do acesso ao navegador.
-- A entrega no AVA e a execução física no laboratório/Scoop dependem do estudante.
-- Pull Request oficial #37 aberto: https://github.com/frankalcantara/Avalia2026-2/pull/37. A avaliação automatizada remota pertence ao professor e será conferida separadamente.
+- A postagem das URLs no AVA e o comprovante de entrega ainda dependem do estudante.
+- Pull Request oficial #37 aberto: https://github.com/frankalcantara/Avalia2026-2/pull/37. A pré-inspeção remota marcou os cinco grupos de requisitos como OK: https://github.com/frankalcantara/Avalia2026-2/pull/37#issuecomment-6868245359. Isso não representa a nota final.
 
 ## Referências técnicas consultadas
 
