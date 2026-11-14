@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "entrelivros-rennan",
+  "compatibility_date": "2026-11-13",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2a-8128-14af-3aac-ae61",
+      "database_id": "202df45a-c2c6-4def-a74f-a8eaf8d930ec",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
