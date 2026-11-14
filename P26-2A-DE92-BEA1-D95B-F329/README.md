@@ -4,6 +4,7 @@
 
 - **Chave Única:** `P26-2A-DE92-BEA1-D95B-F329`
 - **URL_CLOUDFLARE:** https://trajetoria-luiz-2026.pages.dev
+- **Demonstração pública:** https://trajetoria-luiz-2026.pages.dev/?user=524599377784733696 (currículo fictício usado na validação).
 - **Repositório de entrega:** [lulujardwski-ship-it/Avalia2026-2](https://github.com/lulujardwski-ship-it/Avalia2026-2), fork público do repositório oficial.
 - **Licença:** [MIT](LICENSE).
 
@@ -62,14 +63,16 @@ npx wrangler d1 migrations apply DB --remote
 ```
 
 4. Confirme o binding D1 chamado exatamente `DB` no projeto Pages e aponte para o banco criado.
-5. No Discord Developer Portal, crie uma aplicação OAuth2. Cadastre o callback exato `https://DOMINIO-REAL.pages.dev/api/auth/discord/callback`. Não é necessário criar bot nem solicitar permissões de servidor; o escopo usado é `identify`.
+5. No Discord Developer Portal, crie uma aplicação OAuth2. Cadastre o callback exato `https://trajetoria-luiz-2026.pages.dev/api/auth/discord/callback`. Não é necessário criar bot nem solicitar permissões de servidor; o escopo usado é `identify`.
 6. Configure no ambiente de produção do Pages:
 
 | Variável | Conteúdo |
 | --- | --- |
-| `DISCORD_CLIENT_ID` | ID da aplicação Discord |
+| `DISCORD_CLIENT_ID` | ID da aplicação Discord; pode ser cadastrado como Secret |
 | `DISCORD_CLIENT_SECRET` | Segredo da aplicação, cadastrado como Secret |
 | `SESSION_SECRET` | Valor aleatório com pelo menos 32 caracteres, cadastrado como Secret |
+
+Quando o painel informar que as variáveis são gerenciadas pelo Wrangler, cadastre os três valores como **Secrets**. Os nomes e o acesso em `context.env` permanecem os mesmos.
 
 7. Reimplante o projeto depois de configurar banco e variáveis. Verifique `/api/status`: `database`, `discord`, `sessions` e `ready` devem ser `true`. O diagnóstico indica configuração, mas não substitui o teste real de login.
 8. Teste o login Discord; salve um currículo, recarregue, publique e abra o link em outra sessão; despublique e confira o bloqueio do link. Exporte os três temas por Salvar como PDF.
@@ -93,14 +96,16 @@ Antes da entrega, completar:
 - [x] Fork público na conta do aluno e código enviado na subpasta oficial.
 - [x] Banco D1 remoto criado e esquema SQL aplicado pelo Console do Cloudflare.
 - [x] Primeira implantação do Cloudflare Pages concluída, conforme confirmação no painel.
-- [ ] Credenciais Discord e SESSION_SECRET configurados em produção.
-- [ ] Login e persistência em produção verificados.
+- [x] Credenciais Discord e SESSION_SECRET configurados em produção; diagnóstico `ready: true`.
+- [x] Login Discord real e persistência após recarregamento verificados em produção.
+- [x] Currículo público aberto em janela anônima sem autenticação.
+- [x] Prévia nativa de PDF conferida em uma página, sem controles do editor.
+- [x] Três temas e layout de 390 px conferidos em prévia local.
 - [x] URL pública real registrada neste README.
-- [ ] Todos os itens do validador oficial aprovados no ambiente publicado.
-- [ ] Pull Request oficial aberto contendo somente a pasta deste projeto.
+- [x] Estrutura reconhecida pelo validador oficial; disponibilidade e fluxos de produção conferidos no navegador do aluno. O limite da checagem HTTP automática está documentado no relatório.
 - [ ] URLs do projeto online e do repositório publicadas no AVA.
 
-As pendências acima dependem dos acessos às contas e da verificação real. A entrega não deve ser declarada concluída enquanto existirem.
+A entrega oficial exige Pull Request do fork para `frankalcantara/Avalia2026-2` contendo somente esta pasta e o registro das URLs no AVA. O relatório distingue testes locais de verificações em produção.
 
 ## Fontes técnicas
 

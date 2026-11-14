@@ -67,13 +67,18 @@ A prévia integrada com o runtime local de Workers não iniciou neste ambiente d
 - O esquema SQL foi executado no Console do D1 com mensagem de sucesso. A versão sem comentários de linha também foi testada localmente após reproduzir a falha de colagem em uma única linha.
 - Em captura enviada pelo aluno a partir do seu navegador, `/api/status` respondeu com a chave correta do projeto e `database: true`, confirmando acesso das Functions ao banco remoto.
 - A primeira checagem automática deste ambiente recebeu HTTP 403 com código 1010; o resultado observado no navegador do aluno é registrado separadamente, sem declarar que a checagem automática passou.
-- Uma nova implantação será acionada pela integração Git para aplicar as variáveis de autenticação. O login Discord real, a persistência autenticada, a impressão final e a experiência móvel ainda precisam ser confirmados.
+- Depois da configuração dos Secrets e nova implantação, o diagnóstico no navegador do aluno mostrou `database: true`, `discord: true`, `sessions: true` e `ready: true`.
+- O login OAuth2 real foi concluído: o retorno à aplicação exibiu nome, identificador e avatar obtidos do Discord, além do botão de logout.
+- O currículo fictício foi salvo com as seis seções preenchidas e permaneceu carregado após o recarregamento solicitado ao aluno. A interface exibiu o horário de salvamento.
+- O aluno publicou esse currículo e o abriu em uma janela anônima, com o botão de entrada visível e sem sessão autenticada: https://trajetoria-luiz-2026.pages.dev/?user=524599377784733696.
+- A prévia nativa de impressão enviada pelo aluno exibiu somente o currículo em uma página, com destino Salvar/Guardar como PDF e sem cabeçalhos e rodapés. O arquivo final é salvo no computador do aluno; a confirmação aqui diz respeito à prévia.
+- O coordenador também conferiu a interface em iframe com viewport de 390 × 844 px, na prévia local. A largura útil e a largura de conteúdo foram ambas 375 px, sem transbordamento horizontal. O exemplo e os temas clássico e minimalista responderam às interações; o moderno já havia sido conferido. Isso verifica o layout responsivo, sem alegar teste em hardware móvel físico.
 
-**Os 17 testes locais utilizam respostas controladas do Discord. Eles não substituem a validação do OAuth2 com uma conta real em produção.**
+**Os 17 testes locais utilizam respostas controladas do Discord. As verificações reais em produção acima são evidências separadas, fornecidas pelo aluno em seu navegador.**
 
 ## Limites
 
 - O adaptador usa SQLite local e reproduz as operações usadas pela aplicação; ele não comprova a configuração do binding de um banco D1 remoto nem aspectos operacionais da infraestrutura Cloudflare.
-- As respostas do Discord nos testes são controladas. Um login OAuth2 com uma conta Discord real deve ser verificado no endereço publicado, com Client ID, Client Secret e redirect URI configurados.
+- As respostas do Discord na suíte automatizada são controladas. O login real no domínio publicado foi verificado separadamente no navegador do aluno, conforme descrito acima.
 - O validador fornecido pelo professor verifica estrutura e disponibilidade HTTP da URL, mas não substitui testes de autorização, persistência, interface ou autenticação real.
-- Inspeção visual em navegador, impressão PDF e experiência móvel são executadas separadamente pelo agente coordenador. Não foram declaradas aprovadas por esta suíte.
+- A inspeção visual, a prévia de impressão e a simulação de tela pequena são verificações separadas da suíte. Não foi executado teste em aparelho móvel físico, nem observado o arquivo PDF final salvo no disco do aluno.
