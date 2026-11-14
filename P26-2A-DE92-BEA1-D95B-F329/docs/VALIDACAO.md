@@ -60,7 +60,16 @@ Verificação adicional pelo coordenador: migração D1 aplicada localmente pelo
 
 A prévia integrada com o runtime local de Workers não iniciou neste ambiente devido ao erro de sistema `uv_interface_addresses`; a compilação das Functions e os testes de integração passaram separadamente. Não foram alteradas permissões de rede nem o runtime para contornar essa limitação.
 
-**Este resultado local não declara o projeto publicado nem o OAuth2 real configurado.** Login real, D1 remoto, inspeção móvel e exportação PDF final permanecem pendentes.
+## Verificações do ambiente publicado
+
+- URL de produção: https://trajetoria-luiz-2026.pages.dev.
+- O painel do Cloudflare confirmou a implantação do Pages em 14/11/2026.
+- O esquema SQL foi executado no Console do D1 com mensagem de sucesso. A versão sem comentários de linha também foi testada localmente após reproduzir a falha de colagem em uma única linha.
+- Em captura enviada pelo aluno a partir do seu navegador, `/api/status` respondeu com a chave correta do projeto e `database: true`, confirmando acesso das Functions ao banco remoto.
+- A primeira checagem automática deste ambiente recebeu HTTP 403 com código 1010; o resultado observado no navegador do aluno é registrado separadamente, sem declarar que a checagem automática passou.
+- Uma nova implantação será acionada pela integração Git para aplicar as variáveis de autenticação. O login Discord real, a persistência autenticada, a impressão final e a experiência móvel ainda precisam ser confirmados.
+
+**Os 17 testes locais utilizam respostas controladas do Discord. Eles não substituem a validação do OAuth2 com uma conta real em produção.**
 
 ## Limites
 
