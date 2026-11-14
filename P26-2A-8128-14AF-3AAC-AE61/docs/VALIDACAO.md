@@ -56,7 +56,7 @@ Relatos consolidados em 14/11/2026. As verificações abaixo foram executadas pe
 
 - Empréstimo entre duas contas reais confirmado pelo relato acima. O fluxo completo de troca permanece coberto pelos testes automatizados de API; o ensaio manual de troca com dois exemplares ainda é recomendado.
 - A tentativa de conferência visual adicional em ambiente local foi interrompida por indisponibilidade do acesso ao navegador.
-- A postagem das URLs no AVA e o comprovante de entrega ainda dependem do estudante.
+- Em 14/11/2026, o estudante informou que publicou os links do projeto, do repositório e do Pull Request em um comentário na publicação do professor no AVA, pois a atividade exibe "Esta tarefa não requer o envio online". O comentário não foi inspecionado diretamente pelo agente. Recomenda-se guardar uma captura como comprovante; não há confirmação de avaliação ou aceite final pelo professor.
 - Pull Request oficial #37 aberto: https://github.com/frankalcantara/Avalia2026-2/pull/37. A pré-inspeção remota marcou os cinco grupos de requisitos como OK: https://github.com/frankalcantara/Avalia2026-2/pull/37#issuecomment-6868245359. Isso não representa a nota final.
 
 ## Referências técnicas consultadas
