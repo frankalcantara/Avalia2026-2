@@ -5,7 +5,7 @@ Plataforma de empréstimo e troca de livros físicos entre estudantes.
 - **Estudante:** Rennan Raposo
 - **Turma:** 2A
 - **Chave Única:** `P26-2A-8128-14AF-3AAC-AE61`
-- **URL_CLOUDFLARE:** PENDENTE DE CONFIRMAÇÃO DA PUBLICAÇÃO
+- **URL_CLOUDFLARE:** https://entrelivros-rennan.pages.dev
 - **Repositório público:** https://github.com/rennanraposo/Avalia2026-2/tree/projeto-24/P26-2A-8128-14AF-3AAC-AE61
 - **Licença:** MIT, disponível em [LICENSE](LICENSE).
 
@@ -54,7 +54,7 @@ A suíte usa o runtime Cloudflare local e D1 isolado. Os perfis fictícios são 
 
 ## Publicação na Cloudflare Pages
 
-Projeto previsto: `entrelivros-rennan`, vinculado ao fork público do repositório oficial.
+Projeto publicado: `entrelivros-rennan`, vinculado ao fork público do repositório oficial.
 
 | Configuração | Valor |
 |---|---|
@@ -81,4 +81,4 @@ Cadastre `DISCORD_CLIENT_ID` e `DISCORD_CLIENT_SECRET` como secrets no Pages, fo
 - [Roteiro de demonstração](docs/ROTEIRO-DEMONSTRACAO.md).
 - [Repositório oficial do professor](https://github.com/frankalcantara/Avalia2026-2).
 
-O Projeto 0 é uma etapa prévia separada, sem nota. O fork já contém a pasta de teste `T26-2A-2FDD-6CD3-97B0-E36E`, mas a publicação anterior estava com falha em 13/11/2026. Não incluir pastas T26 no Pull Request oficial, pois são rejeitadas pelo fluxo do professor. Após concluir as verificações, abrir PR contendo apenas esta pasta P26 e entregar no AVA as URLs do site e do repositório. A entrega no AVA deve ser feita pelo estudante.
+O Projeto 0 é uma etapa prévia separada, sem nota. O fork já contém a pasta de teste `T26-2A-2FDD-6CD3-97B0-E36E`, cuja publicação foi corrigida e validada em 13/11/2026 com login real e gravação persistente no D1. Não incluir pastas T26 no Pull Request oficial, pois são rejeitadas pelo fluxo do professor. Após concluir as verificações, abrir PR contendo apenas esta pasta P26 e entregar no AVA as URLs do site e do repositório. A entrega no AVA deve ser feita pelo estudante.

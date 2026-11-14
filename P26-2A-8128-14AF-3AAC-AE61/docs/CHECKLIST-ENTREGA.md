@@ -4,11 +4,11 @@ Chave oficial: `P26-2A-8128-14AF-3AAC-AE61`. Fonte: imagem da atividade e README
 
 | Critério | Pontos | Evidência e situação |
 |---|---:|---|
-| Publicação Cloudflare e funcionamento pleno (eliminatório) | 25 | D1 remoto criado e migração aplicada. Publicação e login real em verificação; não declarar concluído enquanto houver pendências. |
-| Pages Functions, D1 e Discord OAuth2 | 25 | Implementados e testados em runtime local; autorização Discord externa depende de configurar a aplicação. |
+| Publicação Cloudflare e funcionamento pleno (eliminatório) | 25 | Site HTTPS publicado, D1 remoto e login Discord real conferidos. Fluxos de dois participantes aprovados por testes de API locais; ensaio com colega recomendado. |
+| Pages Functions, D1 e Discord OAuth2 | 25 | Implementados e testados no runtime Cloudflare local; autorização Discord real conferida no site publicado. |
 | HTML5, CSS3 e JavaScript puro | 15 | Arquivos em public/, sem frameworks; interface conferida no navegador e em largura de celular. |
 | Três agentes, um de testes, harness e skills | 25 | Três subagentes efetivamente criados; contribuições em AGENTS.md e skills/. Testes finalizados pelo principal após interrupção dos subagentes. |
-| GitHub público, MIT, chave e URLs no AVA | 10 | Fork público existente, LICENSE MIT e chave no README/rodapé. Push, PR e AVA precisam de comprovação separada. |
+| GitHub público, MIT, chave e URLs no AVA | 10 | Código enviado ao fork público; LICENSE MIT e chave no README/rodapé. PR e AVA são etapas de fechamento. |
 
 ## Funcionalidades do projeto 24
 
@@ -36,13 +36,14 @@ Chave oficial: `P26-2A-8128-14AF-3AAC-AE61`. Fonte: imagem da atividade e README
 
 ## Fechamento obrigatório
 
-- [ ] Confirmar Projeto 0: a publicação antiga da chave T26-2A-2FDD-6CD3-97B0-E36E está com falha. Corrigir e testar sem incluir a pasta T26 no PR oficial.
-- [ ] Criar/configurar a aplicação Discord e registrar os redirects corretos.
-- [ ] Configurar os segredos no Pages e repetir a publicação se necessário.
-- [ ] Confirmar URL pública acessível por HTTPS e atualizar URL_CLOUDFLARE no README.
-- [ ] Testar login real com Discord e fluxo entre duas contas no site publicado.
-- [ ] Confirmar push do código completo para o fork público.
-- [ ] Executar o validador oficial com o site acessível.
+- [x] Projeto 0 corrigido e validado: login real e persistência após recarregar. Pasta T26 mantida fora da branch do PR oficial.
+- [x] Criar/configurar a aplicação Discord e registrar os redirects corretos.
+- [x] Configurar os segredos no Pages e repetir a publicação se necessário.
+- [x] Confirmar URL pública acessível por HTTPS e atualizar URL_CLOUDFLARE no README.
+- [x] Testar login real com Discord no site publicado.
+- [ ] Ensaio complementar recomendado: percorrer os fluxos da interface com duas contas reais, conforme roteiro.
+- [x] Confirmar push do código completo para o fork público.
+- [x] Executar o validador oficial com o site acessível.
 - [ ] Abrir Pull Request para o repositório do professor contendo apenas a pasta P26.
 - [ ] Postar URLs do projeto e do GitHub no AVA e guardar o comprovante.
 - [ ] Se a execução no laboratório com Node.js via Scoop ainda não foi feita, realizá-la no ambiente exigido pelo professor.

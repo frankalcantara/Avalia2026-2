@@ -28,4 +28,4 @@ Empréstimos exigem uma data válida posterior ao dia atual em São Paulo, até 
 - [Cloudflare Pages Functions Routing](https://developers.cloudflare.com/pages/functions/routing/): rotas baseadas em arquivos.
 - [Discord OAuth2](https://docs.discord.com/developers/topics/oauth2): authorization code, identify, state e endpoints oficiais.
 
-O Agente 3 escreveu a suíte de integração; o agente principal concluiu sua execução e os ajustes do harness, conforme AGENTS.md. A publicação e o login real no Discord ainda dependem das credenciais e da configuração da conta do aluno; testes com respostas controladas do Discord não são evidência de login real online.
+O Agente 3 escreveu a suíte de integração; o agente principal concluiu sua execução e os ajustes do harness, conforme AGENTS.md. A publicação e o login real no Discord foram confirmados em 13/11/2026. Os ciclos entre dois usuários passaram nos testes locais com D1; o ensaio presencial com duas contas reais continua recomendado.

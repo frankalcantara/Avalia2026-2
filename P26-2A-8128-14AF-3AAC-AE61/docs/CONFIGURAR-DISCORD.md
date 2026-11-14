@@ -6,7 +6,7 @@ Esta etapa precisa ser feita pelo titular da conta. Não envie o Client Secret n
 2. Clique em **New Application**, use o nome **EntreLivros — Projeto 24** e conclua a criação. Leia e aceite pessoalmente os termos apresentados.
 3. Abra **OAuth2**. Em **Redirects**, adicione estas duas URLs exatas e salve:
    - `http://127.0.0.1:8788/api/auth/discord/callback`
-   - A URL pública definitiva seguida de `/api/auth/discord/callback` (será informada após a publicação).
+   - `https://entrelivros-rennan.pages.dev/api/auth/discord/callback`.
 4. Copie o **Client ID**. Gere/copie o **Client Secret** na área OAuth2. Não é necessário criar bot, adicionar bot em servidor ou solicitar escopo de e-mail.
 5. Abra o arquivo `.dev.vars` na pasta do projeto (mesmo nível do README) e preencha:
 

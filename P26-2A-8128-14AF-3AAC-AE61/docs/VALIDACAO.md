@@ -6,9 +6,9 @@ Agente: `/root/teste_validacao`. Harness: Codex desktop, ferramenta de colabora�
 
 Os testes em `tests/api.test.mjs` executam o código real da API no runtime local Miniflare/workerd com um banco D1 isolado e descartável. As migrações reais são aplicadas nesse banco. Fixtures são inseridas diretamente no D1 de teste; nenhum endpoint alternativo de autenticação é disponibilizado na aplicação.
 
-O teste executa HTTP, queries e triggers reais. Chamadas externas são bloqueadas pelo mock de rede. A autorização OAuth real em uma conta Discord e a publicação na conta Cloudflare exigem validação posterior em produção.
+O teste executa HTTP, queries e triggers reais. Chamadas externas são bloqueadas pelo mock de rede. A autorização OAuth real de uma conta Discord e a publicação Cloudflare foram verificadas separadamente, conforme resultados abaixo.
 
-## Cobertura planejada
+## Cobertura executada
 
 - Leitura pública, perfil autenticado, ausência de login fictício, cookie falsificado e sessão expirada.
 - Origem de escrita, JSON e validação de campos no servidor, proteção contra SQL injection.
@@ -31,11 +31,22 @@ Execução finalizada pelo agente principal em 13/11/2026 após o limite de uso 
 
 Correções na integração: Miniflare 5 não converte modulesRules; a suíte passou a receber o módulo empacotado pelo esbuild. O DELETE válido passou a enviar objeto JSON vazio, como o contrato e a interface exigem. As datas foram ajustadas de UTC para São Paulo.
 
-## Pendências que impedem declarar a entrega concluída
+## Verificações em produção
 
-- URL pública real no Cloudflare, migrações no D1 remoto e credenciais OAuth configuradas.
-- Login com Discord e fluxo entre dois usuários reais na aplicação publicada.
-- Fork público, Pull Request, verificação do Projeto 0 e entrega de URLs no AVA.
+- Site público HTTPS: https://entrelivros-rennan.pages.dev, com a chave correta no rodapé.
+- `/api/status`: D1 conectado e OAuth configurado.
+- Login real retornou do Discord e exibiu nome, handle, user_id e avatar no site.
+- Formulário autenticado de cadastro aberto e campo título vazio bloqueado pela validação do navegador. Nenhum livro fictício foi inserido no catálogo de produção.
+- Validador oficial: todos os nove itens aprovados, incluindo disponibilidade da URL pública.
+- Projeto 0 corrigido: login real, gravação de um registro de diagnóstico e leitura após recarregar a página. Validador oficial do Projeto 0 também aprovado.
+- Código no fork público de Rennan, em branch separada da pasta de treino.
+
+## Limites e fechamento
+
+- Ciclos entre dois usuários foram exercitados por API no D1 local isolado. Não se afirma ensaio completo da interface publicada com duas contas Discord reais. Recomenda-se seguir o roteiro de demonstração com um colega.
+- A tentativa de conferência visual adicional em ambiente local foi interrompida por indisponibilidade do acesso ao navegador.
+- A entrega no AVA e a execução física no laboratório/Scoop dependem do estudante.
+- O Pull Request e a sua validação serão registrados no checklist de entrega.
 
 ## Referências técnicas consultadas
 
