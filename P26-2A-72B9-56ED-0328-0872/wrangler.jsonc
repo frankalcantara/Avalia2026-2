@@ -6,7 +6,7 @@
     {
       "binding": "DB",
       "database_name": "timesheet-db",
-      "database_id": "banco-local-dev",
+      "database_id": "b951ae65-a26e-444c-8f6d-93808f368ebd",
       "migrations_dir": "migrations"
     }
   ]
