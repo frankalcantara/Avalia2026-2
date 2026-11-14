@@ -7,6 +7,7 @@ Plataforma de empréstimo e troca de livros físicos entre estudantes.
 - **Chave Única:** `P26-2A-8128-14AF-3AAC-AE61`
 - **URL_CLOUDFLARE:** https://entrelivros-rennan.pages.dev
 - **Repositório público:** https://github.com/rennanraposo/Avalia2026-2/tree/projeto-24/P26-2A-8128-14AF-3AAC-AE61
+- **Pull Request oficial:** https://github.com/frankalcantara/Avalia2026-2/pull/37
 - **Licença:** MIT, disponível em [LICENSE](LICENSE).
 
 ## Funcionalidades

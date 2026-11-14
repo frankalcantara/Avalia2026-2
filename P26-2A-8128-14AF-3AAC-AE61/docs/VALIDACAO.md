@@ -46,7 +46,7 @@ Correções na integração: Miniflare 5 não converte modulesRules; a suíte pa
 - Ciclos entre dois usuários foram exercitados por API no D1 local isolado. Não se afirma ensaio completo da interface publicada com duas contas Discord reais. Recomenda-se seguir o roteiro de demonstração com um colega.
 - A tentativa de conferência visual adicional em ambiente local foi interrompida por indisponibilidade do acesso ao navegador.
 - A entrega no AVA e a execução física no laboratório/Scoop dependem do estudante.
-- O Pull Request e a sua validação serão registrados no checklist de entrega.
+- Pull Request oficial #37 aberto: https://github.com/frankalcantara/Avalia2026-2/pull/37. A avaliação automatizada remota pertence ao professor e será conferida separadamente.
 
 ## Referências técnicas consultadas
 

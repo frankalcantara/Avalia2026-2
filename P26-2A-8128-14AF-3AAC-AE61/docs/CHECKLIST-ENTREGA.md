@@ -8,7 +8,7 @@ Chave oficial: `P26-2A-8128-14AF-3AAC-AE61`. Fonte: imagem da atividade e README
 | Pages Functions, D1 e Discord OAuth2 | 25 | Implementados e testados no runtime Cloudflare local; autorização Discord real conferida no site publicado. |
 | HTML5, CSS3 e JavaScript puro | 15 | Arquivos em public/, sem frameworks; interface conferida no navegador e em largura de celular. |
 | Três agentes, um de testes, harness e skills | 25 | Três subagentes efetivamente criados; contribuições em AGENTS.md e skills/. Testes finalizados pelo principal após interrupção dos subagentes. |
-| GitHub público, MIT, chave e URLs no AVA | 10 | Código enviado ao fork público; LICENSE MIT e chave no README/rodapé. PR e AVA são etapas de fechamento. |
+| GitHub público, MIT, chave e URLs no AVA | 10 | Código enviado ao fork público; LICENSE MIT e chave no README/rodapé. Pull Request #37 aberto. A postagem no AVA ainda depende do estudante. |
 
 ## Funcionalidades do projeto 24
 
@@ -44,7 +44,7 @@ Chave oficial: `P26-2A-8128-14AF-3AAC-AE61`. Fonte: imagem da atividade e README
 - [ ] Ensaio complementar recomendado: percorrer os fluxos da interface com duas contas reais, conforme roteiro.
 - [x] Confirmar push do código completo para o fork público.
 - [x] Executar o validador oficial com o site acessível.
-- [ ] Abrir Pull Request para o repositório do professor contendo apenas a pasta P26.
+- [x] Pull Request oficial aberto: https://github.com/frankalcantara/Avalia2026-2/pull/37, somente pasta P26.
 - [ ] Postar URLs do projeto e do GitHub no AVA e guardar o comprovante.
 - [ ] Se a execução no laboratório com Node.js via Scoop ainda não foi feita, realizá-la no ambiente exigido pelo professor.
 
