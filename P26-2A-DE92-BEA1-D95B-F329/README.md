@@ -102,7 +102,7 @@ Antes da entrega, completar:
 - [x] Prévia nativa de PDF conferida em uma página, sem controles do editor.
 - [x] Três temas e layout de 390 px conferidos em prévia local.
 - [x] URL pública real registrada neste README.
-- [x] Estrutura reconhecida pelo validador oficial; disponibilidade e fluxos de produção conferidos no navegador do aluno. O limite da checagem HTTP automática está documentado no relatório.
+- [x] Validador oficial executado com 9 de 9 itens aprovados, incluindo deploy online. Fluxos reais também conferidos no navegador do aluno.
 - [ ] URLs do projeto online e do repositório publicadas no AVA.
 
 A entrega oficial exige Pull Request do fork para `frankalcantara/Avalia2026-2` contendo somente esta pasta e o registro das URLs no AVA. O relatório distingue testes locais de verificações em produção.

@@ -52,7 +52,7 @@ Resultado executado em 14/11/2026: **17 testes aprovados, 0 falhas, 0 ignorados*
 
 O cenário de capacidade máxima grava e recupera **20 formações, 20 experiências, 20 projetos, 50 habilidades e 15 links**, com textos curtos. O teste inspeciona o número de parâmetros vinculados por comando e o número de comandos emitidos na gravação.
 
-Validador estrutural oficial executado: **8 itens aprovados e 1 pendente**, referente à publicação online no Cloudflare. Licença, chave no README e rodapé, documentação de agentes, agente de validação, skills, frontend vanilla e estrutura de Functions/D1/Discord foram reconhecidos. O validador retorna código de saída `0` mesmo com esse item pendente; a contagem do relatório é a evidência relevante.
+Execução final do validador oficial em 14/11/2026: **9 itens aprovados de 9**, incluindo deploy online na URL real. Licença, chave no README e rodapé, documentação dos três agentes, agente de validação, skills, frontend vanilla, estrutura de Functions/D1/Discord e disponibilidade do site foram reconhecidos. O comando foi `node validar-local.mjs P26-2A-DE92-BEA1-D95B-F329`. O relatório final exibiu todos os itens como `[OK]`.
 
 Checagem de sintaxe de `public/app.js`, `functions/_lib.js`, `functions/api/curriculum.js` e `functions/api/auth/discord/callback.js`: aprovada. Inspeção do HTML não encontrou IDs duplicados nem elementos `label` apontando para IDs inexistentes. Inspeção do código da interface identificou preenchimento de conteúdo por `textContent`, links com protocolos filtrados, consentimento visível para publicação e presença de regras de impressão.
 
@@ -66,7 +66,7 @@ A prévia integrada com o runtime local de Workers não iniciou neste ambiente d
 - O painel do Cloudflare confirmou a implantação do Pages em 14/11/2026.
 - O esquema SQL foi executado no Console do D1 com mensagem de sucesso. A versão sem comentários de linha também foi testada localmente após reproduzir a falha de colagem em uma única linha.
 - Em captura enviada pelo aluno a partir do seu navegador, `/api/status` respondeu com a chave correta do projeto e `database: true`, confirmando acesso das Functions ao banco remoto.
-- A primeira checagem automática deste ambiente recebeu HTTP 403 com código 1010; o resultado observado no navegador do aluno é registrado separadamente, sem declarar que a checagem automática passou.
+- Uma checagem HTTP inicial recebeu 403 com código 1010. Na execução final, o validador oficial alcançou a URL pública e aprovou também o item de deploy online. As verificações no navegador do aluno permanecem registradas como evidência separada.
 - Depois da configuração dos Secrets e nova implantação, o diagnóstico no navegador do aluno mostrou `database: true`, `discord: true`, `sessions: true` e `ready: true`.
 - O login OAuth2 real foi concluído: o retorno à aplicação exibiu nome, identificador e avatar obtidos do Discord, além do botão de logout.
 - O currículo fictício foi salvo com as seis seções preenchidas e permaneceu carregado após o recarregamento solicitado ao aluno. A interface exibiu o horário de salvamento.
