@@ -1,5 +1,3 @@
--- Projeto #39: Construtor de Portfólio e Currículo Acadêmico
--- Chave: P26-2A-DE92-BEA1-D95B-F329
 PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS discord_users (
   user_id TEXT PRIMARY KEY,
