@@ -1,0 +1,10 @@
+# Copie para .dev.vars e substitua pelos valores reais da sua aplicação local.
+# Não versione .dev.vars. Use placeholders apenas neste arquivo de exemplo.
+APP_URL=http://127.0.0.1:8788
+DISCORD_CLIENT_ID=SEU_CLIENT_ID_DO_DISCORD
+DISCORD_CLIENT_SECRET=SEU_CLIENT_SECRET_DO_DISCORD
+DISCORD_REDIRECT_URI=http://127.0.0.1:8788/api/auth/callback
+OAUTH_STATE_TTL_SECONDS=600
+SESSION_TTL_SECONDS=604800
+SPOTIFY_CLIENT_ID=SEU_CLIENT_ID_DO_SPOTIFY
+SPOTIFY_CLIENT_SECRET=SEU_CLIENT_SECRET_DO_SPOTIFY

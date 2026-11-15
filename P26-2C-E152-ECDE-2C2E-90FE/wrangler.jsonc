@@ -1,0 +1,43 @@
+
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "soundroom",
+  "pages_build_output_dir": "./public",
+  "compatibility_date": "2026-11-09",
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "soundroom",
+      "migrations_dir": "migrations/soundroom"
+    }
+  ],
+
+  "env": {
+    "preview": {
+      "vars": {
+        "APP_URL": "https://preview.soundroom.pages.dev",
+        "DISCORD_REDIRECT_URI": "https://preview.soundroom.pages.dev/api/auth/callback"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "soundroom-preview",
+          "database_id": "a0989a12-5ca1-4be6-aff8-d3aeace062a6",
+          "migrations_dir": "migrations/soundroom"
+        }
+      ]
+    },
+
+    "production": {
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "soundroom-production",
+          "database_id": "2fbf75fa-4a9e-4eb7-b3d9-2c47b0283635",
+          "migrations_dir": "migrations/soundroom"
+        }
+      ]
+    }
+  }
+}
