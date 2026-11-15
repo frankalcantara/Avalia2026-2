@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#10151c">
+    <meta
+      name="description"
+      content="Encontre uma sala, compartilhe música e vote nas recomendações da comunidade."
+    >
+    <title>SoundRoom — música para acompanhar suas ideias</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="module" src="/assets/js/app.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="SoundRoom, início">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>SoundRoom</span>
+      </a>
+      <div class="session-area" id="session-area">
+        <p class="session-message" id="session-message" role="status">Conferindo sua sessão…</p>
+        <a class="button button-small" id="login-link" href="/api/auth/discord" hidden>Entrar com Discord</a>
+        <div class="user-menu" id="user-menu" hidden>
+          <img class="avatar avatar-small" id="current-user-avatar" alt="" hidden>
+          <span class="current-user-name" id="current-user-name"></span>
+          <button class="button button-small button-quiet" id="logout-button" type="button">Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Um lugar para ouvir junto</p>
+        <h1 id="page-title">Música boa acompanha<br class="desktop-break"> boas ideias.</h1>
+        <p class="intro-copy">
+          Entre em uma sala, compartilhe o que está ouvindo e ajude a escolher a próxima faixa.
+        </p>
+      </section>
+
+      <p class="notice" id="notice" role="status" aria-live="polite" hidden></p>
+
+      <section class="room-layout" aria-label="Salas musicais">
+        <aside class="room-sidebar" aria-labelledby="rooms-heading">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Comunidade</p>
+              <h2 id="rooms-heading">Salas abertas</h2>
+            </div>
+            <button class="icon-button" id="refresh-rooms" type="button" aria-label="Atualizar salas" title="Atualizar">↻</button>
+          </div>
+
+          <p class="muted" id="rooms-status" role="status">Carregando salas…</p>
+          <ul class="room-list" id="room-list" aria-label="Salas abertas"></ul>
+          <button class="button button-outline full-width" id="more-rooms" type="button" hidden>Carregar mais salas</button>
+
+          <section class="create-room-card" aria-labelledby="create-room-heading">
+            <h3 id="create-room-heading">Abra uma sala</h3>
+            <p class="muted">Comece uma sessão e convide a comunidade.</p>
+            <form id="create-room-form">
+              <label for="room-name">Nome da sala</label>
+              <input id="room-name" name="name" maxlength="120" required placeholder="Ex.: Foco tranquilo">
+              <label for="room-description">Descrição <span class="optional">(opcional)</span></label>
+              <textarea id="room-description" name="description" rows="3" maxlength="2000" placeholder="O clima da sessão"></textarea>
+              <label for="room-category">Categoria</label>
+              <input id="room-category" name="category" maxlength="80" value="Estudo e programação" required>
+              <button class="button full-width" type="submit">Criar sala pública</button>
+              <p class="form-hint" id="create-room-hint">Entre com o Discord para criar uma sala.</p>
+            </form>
+          </section>
+        </aside>
+
+        <section class="room-content" id="room-content" aria-labelledby="room-placeholder-heading">
+          <div class="empty-state" id="room-placeholder">
+            <span class="empty-icon" aria-hidden="true">♫</span>
+            <p class="eyebrow">Seu próximo som está por aqui</p>
+            <h2 id="room-placeholder-heading">Escolha uma sala para começar</h2>
+            <p>Veja quem está por lá, compartilhe recomendações e vote nas suas favoritas.</p>
+          </div>
+          <div id="room-detail" hidden></div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>SoundRoom</span>
+      <span>Feito para acompanhar suas ideias.</span>
+      <span>Chave do projeto: P26-2C-E152-ECDE-2C2E-90FE</span>
+    </footer>
+  </body>
+</html>
