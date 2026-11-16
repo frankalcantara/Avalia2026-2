@@ -4,10 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Memória Celeste — Projeto #7</title>
+  <script>try{if(sessionStorage.getItem("warp"))document.documentElement.classList.add("arriving")}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/cosmos.css">
 </head>
 <body>
   <div class="sky" aria-hidden="true">
@@ -32,6 +34,44 @@
       <p id="loginMessage" class="status" role="status" aria-live="polite"></p>
       <a class="btn magnetic" href="/api/auth/discord"><span>Entrar com Discord</span></a>
       <div class="marquee" aria-hidden="true"><div><span>Foguete ✦ Astronauta ✦ OVNI ✦ Buraco negro ✦ Alienígena ✦ Lua ✦ Saturno ✦ Cometa ✦ Satélite ✦ Sol ✦ Galáxia ✦ Telescópio ✦ </span><span>Foguete ✦ Astronauta ✦ OVNI ✦ Buraco negro ✦ Alienígena ✦ Lua ✦ Saturno ✦ Cometa ✦ Satélite ✦ Sol ✦ Galáxia ✦ Telescópio ✦ </span></div></div>
+    </section>
+
+    <section class="journey" id="journey" aria-label="Como jogar">
+      <article class="stop">
+        <i class="px orb o-a" data-s="-.3" data-m="30"></i>
+        <div class="px obj" data-art="astronauta" data-s=".2" data-m="22"></div>
+        <div class="txt">
+          <h2>Vire as cartas</h2>
+          <p class="lead">Cada carta esconde uma imagem ou um nome. Clique para virar e descobrir o que o universo guardou ali.</p>
+        </div>
+      </article>
+
+      <article class="stop right">
+        <i class="px orb o-b" data-s="-.35" data-m="26"></i>
+        <div class="px obj" data-art="ovni" data-s=".25" data-m="22"></div>
+        <div class="txt">
+          <h2>Ache os pares</h2>
+          <p class="lead">Combine cada imagem com o nome dela. Quem confere cada jogada é o servidor, então não dá para trapacear.</p>
+        </div>
+      </article>
+
+      <article class="stop">
+        <i class="px orb o-a" data-s="-.3" data-m="30"></i>
+        <div class="px obj" data-art="galaxia" data-s=".2" data-m="22"></div>
+        <div class="txt">
+          <h2>Suba no ranking</h2>
+          <p class="lead">Quanto menos movimentos você fizer, maior a eficiência. Os melhores aparecem no ranking com medalha.</p>
+        </div>
+      </article>
+
+      <article class="stop final">
+        <i class="px orb o-b" data-s="-.3" data-m="30"></i>
+        <div class="px obj" data-art="foguete" data-s=".15" data-m="26"></div>
+        <div class="txt">
+          <h2>Pronto para decolar?</h2>
+          <a class="btn magnetic" href="/api/auth/discord"><span>Entrar com Discord</span></a>
+        </div>
+      </article>
     </section>
 
     <section class="game" id="gameSection" hidden>
@@ -64,6 +104,7 @@
     <p class="hash">Chave única: P26-2A-A113-CCFD-DC47-AC0A</p>
   </footer>
 
+  <script src="/cosmos.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>
