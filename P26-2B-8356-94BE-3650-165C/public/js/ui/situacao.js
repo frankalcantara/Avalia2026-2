@@ -1,14 +1,14 @@
 /**
  * situacao.js — textos e cores da situação de uma disciplina (compartilhado entre painéis).
  */
-import { el, fmt, fmt2, icone, ICONES } from "./dom.js";
+import { el, fmt, fmt2, ICONES } from "./dom.js";
 
 export const ROTULO_SITUACAO = {
-  aprovado: "Aprovado(a)",
+  aprovado: "Aprovado",
   em_andamento: "Em andamento",
   exame_inevitavel: "Exame inevitável",
   exame: "Em exame",
-  reprovado: "Reprovado(a)",
+  reprovado: "Reprovado",
   sem_formula: "Sem fórmula",
 };
 
@@ -33,9 +33,26 @@ export const ICONE_TOM = {
   neutro: ICONES.menos,
 };
 
+/** Sigla de três letras da situação (como a coluna de status de uma tabela de classificação). */
+export const SIGLA_SITUACAO = {
+  aprovado: "APR",
+  em_andamento: "AND",
+  exame_inevitavel: "EXA",
+  exame: "EXA",
+  reprovado: "REP",
+  sem_formula: "S/F",
+};
+
+/** Carimbo de situação: o texto é sempre visível; a cor só reforça. */
 export function seloSituacao(s) {
   const tom = TOM_SITUACAO[s] || "neutro";
-  return el("span", { class: `selo selo-${tom}` }, icone(ICONE_TOM[tom], 14), textoSituacao(s));
+  return el("span", { class: `selo selo-${tom}` }, textoSituacao(s));
+}
+
+/** Bloco com a sigla colorida (decorativo: o nome da situação vai à parte para leitores de tela). */
+export function siglaSituacao(s) {
+  const tom = TOM_SITUACAO[s] || "neutro";
+  return el("span", { class: `sigla sigla-${tom}`, "aria-hidden": "true", title: textoSituacao(s) }, SIGLA_SITUACAO[s] || "—");
 }
 
 export const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;

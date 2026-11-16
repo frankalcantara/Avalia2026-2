@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Simulador de Médias</title>
-  <meta name="description" content="Cadastre suas disciplinas, lance suas notas e descubra a nota mínima para passar.">
+  <meta name="description" content="Lance suas notas e veja, a cada nota, a média parcial e quanto falta para passar em cada disciplina.">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#4f46e5">
+  <meta name="theme-color" content="#121210">
   <link rel="icon" href="/img/marca.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
   <script type="module" src="/js/app.js"></script>
@@ -16,9 +16,7 @@
 
   <header class="topo">
     <div class="marca">
-      <span class="marca-icone" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="20" height="20" focusable="false"><path d="M4 18l5-6 4 3 7-9"/><path d="M15 6h5v5"/></svg>
-      </span>
+      <span class="marca-barra" aria-hidden="true"></span>
       <span class="marca-nome">Simulador de Médias</span>
     </div>
     <div id="perfil" class="conta" hidden>
@@ -52,22 +50,21 @@
   <!-- Carregando (estado inicial) -->
   <main id="tela-carregando" class="tela-centro" aria-busy="true">
     <div class="carregando" role="status">
-      <span class="spinner" aria-hidden="true"></span>
-      <span>Carregando…</span>
+      <span class="painel-carregando" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span>Carregando o placar…</span>
     </div>
   </main>
 
   <!-- Erro de conexão -->
   <main id="tela-erro" class="tela-centro" hidden>
-    <section class="cartao-estado" aria-labelledby="erro-titulo">
-      <svg class="ilustracao" viewBox="0 0 160 120" width="160" height="120" aria-hidden="true" focusable="false">
-        <ellipse class="il-sombra" cx="80" cy="108" rx="58" ry="7"/>
-        <rect class="il-papel" x="30" y="18" width="100" height="78" rx="10"/>
-        <rect class="il-faixa" x="30" y="18" width="100" height="16" rx="10"/>
-        <circle class="il-ponto" cx="42" cy="26" r="3"/><circle class="il-ponto" cx="52" cy="26" r="3"/><circle class="il-ponto" cx="62" cy="26" r="3"/>
-        <path class="il-traco-perigo" d="M64 52l32 28M96 52L64 80"/>
-        <circle class="il-badge-perigo" cx="124" cy="24" r="14"/>
-        <path class="il-badge-texto" d="M124 17v8M124 30v.5"/>
+    <section class="ficha-estado" aria-labelledby="erro-titulo">
+      <p class="ficha-rotulo">Sem sinal</p>
+      <svg class="ilustracao" viewBox="0 0 200 92" width="200" height="92" aria-hidden="true" focusable="false">
+        <rect class="il-painel" x="1" y="1" width="198" height="90"/>
+        <rect class="il-celula" x="16" y="18" width="72" height="56"/>
+        <rect class="il-celula" x="112" y="18" width="72" height="56"/>
+        <path class="il-traco" d="M30 46h44M126 46h44"/>
+        <path class="il-seta" d="M92 46h16M102 40l6 6-6 6"/>
       </svg>
       <h1 id="erro-titulo" tabindex="-1">Não foi possível carregar</h1>
       <p id="erro-mensagem"></p>
@@ -81,25 +78,23 @@
   <main id="tela-login" class="tela-login" hidden>
     <div class="landing">
       <section class="landing-texto" aria-labelledby="login-titulo">
-        <p class="pilula-novidade"><span class="pilula-ponto" aria-hidden="true"></span>Para estudantes de graduação</p>
-        <h1 id="login-titulo" tabindex="-1">Quanto falta <span class="titulo-destaque">para passar?</span></h1>
-        <p class="landing-sub">Cadastre as disciplinas do semestre com os pesos de provas, trabalhos e listas. Conforme você lança as notas, o simulador mostra a média parcial e a nota mínima que precisa tirar no que falta.</p>
-        <ul class="login-destaques">
-          <li>
-            <span class="destaque-icone" aria-hidden="true"><svg class="icone" viewBox="0 0 24 24" width="18" height="18" focusable="false"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg></span>
-            <span><strong>Cálculo na hora</strong> a cada nota digitada</span>
-          </li>
-          <li>
-            <span class="destaque-icone" aria-hidden="true"><svg class="icone" viewBox="0 0 24 24" width="18" height="18" focusable="false"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 12h.01"/></svg></span>
-            <span><strong>Nota mínima</strong> para aprovação direta, exame ou para não reprovar</span>
-          </li>
-          <li>
-            <span class="destaque-icone" aria-hidden="true"><svg class="icone" viewBox="0 0 24 24" width="18" height="18" focusable="false"><path d="M9 3h6"/><path d="M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="M7.5 15h9"/></svg></span>
-            <span><strong>Simulação “E se…?”</strong> sem alterar suas notas</span>
-          </li>
-        </ul>
+        <p class="sobretitulo">Boletim do semestre · ao vivo</p>
+        <h1 id="login-titulo" tabindex="-1">Quanto falta para passar?</h1>
+        <!-- Placar de exemplo compacto: só no celular, para o número aparecer na primeira tela -->
+        <p class="ex-mini" aria-hidden="true">
+          <span class="ex-mini-nome">Cálculo II</span>
+          <span class="ex-mini-par"><i>Agora</i> 6,09</span>
+          <span class="ex-mini-par"><i>Meta</i> 7,00</span>
+          <span class="ex-mini-par ex-mini-heroi"><i>Precisa tirar</i> 7,91</span>
+        </p>
+        <p class="landing-sub">Cadastre cada disciplina com a fórmula da média: provas, trabalhos e listas, cada um com seu peso. A cada nota lançada, o placar mostra a média parcial e a nota mínima que você precisa no que falta.</p>
+        <ol class="login-destaques">
+          <li><strong>Placar a cada nota</strong> <span>a média é recalculada enquanto você digita</span></li>
+          <li><strong>Nota mínima</strong> <span>para aprovação direta, para ir ao exame e no exame final</span></li>
+          <li><strong>Simulação “E se…?”</strong> <span>teste notas hipotéticas sem mexer nas reais</span></li>
+        </ol>
         <div class="landing-cta">
-          <a id="btn-login" class="btn btn-discord" href="/api/auth/discord">
+          <a id="btn-login" class="btn btn-primario btn-login" href="/api/auth/discord">
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18 18 0 0 0-5.6 0L8.6 3a19.6 19.6 0 0 0-4.9 1.5C.6 9.1-.3 13.6.2 18.1a19.8 19.8 0 0 0 6 3l1.3-2.1a12.8 12.8 0 0 1-2-1l.5-.4a14.1 14.1 0 0 0 12 0l.5.4a12.8 12.8 0 0 1-2 1l1.3 2.1a19.7 19.7 0 0 0 6-3c.5-5.2-.9-9.7-3.5-13.7ZM8.5 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm7 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg>
             Entrar com Discord
           </a>
@@ -107,42 +102,35 @@
         </div>
         <p id="login-aviso" class="aviso" role="alert" hidden></p>
         <p class="privacidade">
-          <svg class="icone" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-          <span>Privacidade: do Discord usamos apenas seu ID, nome e avatar. Suas disciplinas e notas ficam salvas no Cloudflare D1, só você tem acesso a elas, e você pode baixar ou excluir tudo a qualquer momento no menu da sua conta.</span>
+          <strong>Privacidade.</strong>
+          Do Discord usamos apenas seu ID, nome e avatar. Suas disciplinas e notas ficam salvas no Cloudflare D1, só você tem acesso a elas, e você pode baixar ou excluir tudo a qualquer momento no menu da sua conta.
         </p>
       </section>
 
-      <!-- Prévia ilustrativa do painel (decorativa; feita em HTML/CSS) -->
-      <div class="previa" aria-hidden="true">
-        <div class="pv-janela">
-          <div class="pv-barra"><span></span><span></span><span></span><span class="pv-url">Estruturas de Dados</span></div>
-          <div class="pv-corpo">
-            <div class="pv-lateral">
-              <span class="pv-item pv-item-atual"><i class="pv-ponto pv-info"></i>Estruturas de Dados</span>
-              <span class="pv-item"><i class="pv-ponto pv-ok"></i>Eng. de Requisitos</span>
-              <span class="pv-item"><i class="pv-ponto pv-alerta"></i>Cálculo II</span>
-              <span class="pv-item"><i class="pv-ponto pv-ok"></i>Banco de Dados</span>
-              <span class="pv-item"><i class="pv-ponto pv-perigo"></i>Física I</span>
+      <!-- Placar de exemplo (decorativo; HTML/CSS) -->
+      <div class="exemplo" aria-hidden="true">
+        <div class="ex-placar">
+          <div class="ex-cabeca"><span class="ex-marca">Simulador de Médias</span><span class="ex-temporada">2026.2</span></div>
+          <div class="ex-corpo">
+            <p class="ex-disciplina">Cálculo II <span class="ex-carimbo">Em andamento</span></p>
+            <div class="ex-duelo">
+              <div class="ex-celula"><span class="ex-rot">Agora</span><b>6,09</b><span class="ex-leg">média parcial</span></div>
+              <div class="ex-seta"></div>
+              <div class="ex-celula ex-celula-meta"><span class="ex-rot">Meta</span><b>7,00</b><span class="ex-leg">aprovação direta</span></div>
             </div>
-            <div class="pv-conteudo">
-              <div class="pv-faixa">
-                <span class="pv-faixa-icone"><svg class="icone" viewBox="0 0 24 24" width="18" height="18" focusable="false"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/><path d="M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/><path d="M12 12h.01"/></svg></span>
-                <span class="pv-faixa-texto"><b>Precisa de 6,69</b><i>nas 2 avaliações restantes</i></span>
-              </div>
-              <div class="pv-kpis">
-                <div class="pv-kpi"><span class="pv-anel pv-anel-60"><b>7,2</b></span><i>Média parcial</i></div>
-                <div class="pv-kpi"><span class="pv-anel pv-anel-55 pv-anel-sec"><b>60%</b></span><i>Avaliado</i></div>
-              </div>
-              <div class="pv-tabela">
-                <span class="pv-linha"><i class="pv-tipo pv-prova"></i>Prova 1<b>6,50</b></span>
-                <span class="pv-linha"><i class="pv-tipo pv-trab"></i>Trabalho<b>8,00</b></span>
-                <span class="pv-linha pv-linha-foco"><i class="pv-tipo pv-prova"></i>Prova 2<b class="pv-entrada">mín. 6,69</b></span>
-              </div>
-            </div>
+            <p class="ex-falta"><span class="ex-rot">Precisa tirar</span><b>7,91</b><span class="ex-onde">de média em P2 e Listas</span></p>
+          </div>
+          <div class="ex-regua">
+            <div class="ex-faixas"><span class="ex-rep">Reprovado</span><span class="ex-exa">Exame</span><span class="ex-apr">Aprovado</span></div>
+            <p class="ex-marca-aqui">▲ no ritmo atual · 6,09</p>
           </div>
         </div>
-        <div class="pv-flutuante pv-flut-1"><span class="pv-check"></span>Aprovação garantida</div>
-        <div class="pv-flutuante pv-flut-2"><span class="pv-frasco"></span>E se eu tirar 8?</div>
+        <div class="ex-boletim">
+          <p class="ex-linha"><span>Prova 1 · 30%</span><i></i><b>6,15</b></p>
+          <p class="ex-linha"><span>Trabalho · 20%</span><i></i><b>6,00</b></p>
+          <p class="ex-linha ex-linha-vazia"><span>Prova 2 · 30%</span><i></i><b>mín. 7,91</b></p>
+          <p class="ex-linha ex-linha-vazia"><span>Listas · 20%</span><i></i><b>mín. 7,91</b></p>
+        </div>
       </div>
     </div>
   </main>
@@ -154,7 +142,7 @@
         <h2 id="titulo-grade">Minha grade</h2>
         <button id="btn-nova" class="btn btn-primario btn-pequeno" type="button">
           <svg class="icone" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-          Nova disciplina</button>
+          <span class="btn-texto">Nova disciplina</span></button>
       </div>
       <nav id="lista-disciplinas" class="lista-disciplinas" aria-label="Disciplinas"></nav>
     </aside>
@@ -162,21 +150,20 @@
     <section id="detalhe" class="detalhe" tabindex="-1" aria-label="Conteúdo"></section>
   </main>
 
-  <!-- Ilustração do estado vazio (clonada pelo JS) -->
+  <!-- Ilustração do estado vazio: placar zerado (clonada pelo JS) -->
   <template id="tpl-ilustracao-vazio">
-    <svg class="ilustracao" viewBox="0 0 200 140" width="200" height="140" aria-hidden="true" focusable="false">
-      <ellipse class="il-sombra" cx="100" cy="128" rx="78" ry="8"/>
-      <rect class="il-papel" x="34" y="22" width="112" height="96" rx="12"/>
-      <rect class="il-linha" x="50" y="40" width="54" height="8" rx="4"/>
-      <rect class="il-linha il-linha-clara" x="50" y="56" width="80" height="6" rx="3"/>
-      <rect class="il-linha il-linha-clara" x="50" y="68" width="66" height="6" rx="3"/>
-      <rect class="il-barra-fundo" x="50" y="88" width="80" height="10" rx="5"/>
-      <rect class="il-barra" x="50" y="88" width="52" height="10" rx="5"/>
-      <circle class="il-anel-fundo" cx="150" cy="36" r="22"/>
-      <path class="il-anel" d="M150 14a22 22 0 1 1-20.9 28.8"/>
-      <path class="il-check" d="M141 36l6 6 12-12"/>
-      <circle class="il-brilho" cx="26" cy="40" r="4"/>
-      <circle class="il-brilho il-brilho-2" cx="176" cy="92" r="5"/>
+    <svg class="ilustracao" viewBox="0 0 220 120" width="220" height="120" aria-hidden="true" focusable="false">
+      <rect class="il-painel" x="1" y="1" width="218" height="118"/>
+      <rect class="il-faixa-topo" x="1" y="1" width="218" height="20"/>
+      <rect class="il-destaque" x="10" y="7" width="6" height="8"/>
+      <rect class="il-celula" x="16" y="36" width="76" height="52"/>
+      <rect class="il-celula" x="128" y="36" width="76" height="52"/>
+      <path class="il-digito" d="M30 50h14v24H30zM52 50h14v24H52z"/>
+      <path class="il-digito il-digito-meta" d="M142 50h14l-8 24M164 50h14v24h-14z"/>
+      <path class="il-seta" d="M98 62h22M114 56l6 6-6 6"/>
+      <rect class="il-rep" x="16" y="98" width="70" height="8"/>
+      <rect class="il-exa" x="86" y="98" width="52" height="8"/>
+      <rect class="il-apr" x="138" y="98" width="66" height="8"/>
     </svg>
   </template>
 
@@ -184,7 +171,6 @@
   <dialog id="editor" class="editor" aria-labelledby="editor-titulo">
     <form id="form-disciplina" method="dialog" novalidate>
       <header class="editor-topo">
-        <span class="editor-icone" aria-hidden="true"><svg class="icone" viewBox="0 0 24 24" width="20" height="20" focusable="false"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></span>
         <h2 id="editor-titulo">Nova disciplina</h2>
         <button type="button" class="btn-x" data-fechar aria-label="Fechar">
           <svg class="icone" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
@@ -192,7 +178,7 @@
       </header>
 
       <div class="editor-corpo">
-        <h3 class="editor-sub">Dados e regras de aprovação</h3>
+        <h3 class="editor-sub"><span class="editor-num" aria-hidden="true">1</span>Dados e regras de aprovação</h3>
         <div class="grade-campos">
           <label class="campo campo-largo">Nome da disciplina
             <input name="nome" required maxlength="80" placeholder="Ex.: Cálculo II" autocomplete="off">
@@ -215,7 +201,7 @@
           </label>
         </div>
 
-        <h3 class="editor-sub">Fórmula da média <small>média ponderada pelos pesos</small></h3>
+        <h3 class="editor-sub"><span class="editor-num" aria-hidden="true">2</span>Fórmula da média <small>média ponderada pelos pesos</small></h3>
         <div class="avaliacoes-cabecalho" aria-hidden="true">
           <span>Avaliação</span><span>Tipo</span><span>Peso</span><span>% da média</span><span></span>
         </div>
@@ -239,8 +225,7 @@
   <!-- Confirmação (exclusões) -->
   <dialog id="dlg-confirmar" class="editor editor-pequeno" aria-labelledby="confirmar-titulo" aria-describedby="confirmar-texto">
     <form id="form-confirmar" method="dialog" novalidate>
-      <header class="editor-topo">
-        <span class="editor-icone editor-icone-perigo" aria-hidden="true"><svg class="icone" viewBox="0 0 24 24" width="20" height="20" focusable="false"><path d="M12 3l10 18H2z"/><path d="M12 10v5"/><path d="M12 18v.01"/></svg></span>
+      <header class="editor-topo editor-topo-perigo">
         <h2 id="confirmar-titulo">Confirmar</h2>
         <button type="button" class="btn-x" data-cancelar aria-label="Fechar">
           <svg class="icone" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
@@ -265,7 +250,7 @@
   <div id="anuncio" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
   <footer class="rodape">
-    <span>Chave Única: <code>P26-2B-8356-94BE-3650-165C</code></span>
+    <span>Chave Única <code>P26-2B-8356-94BE-3650-165C</code></span>
     <span class="rodape-pilha">HTML5, CSS3 e JavaScript puro · Cloudflare Pages Functions + D1 · Login Discord</span>
   </footer>
 </body>

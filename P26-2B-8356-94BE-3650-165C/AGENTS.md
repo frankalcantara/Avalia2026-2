@@ -25,6 +25,10 @@ flowchart LR
   A7 -->|redesenho| A8[8 · Revisão de design]
   A8 -->|nota 8,0 + 15 ajustes| O
   O -->|14 ajustes aceitos| A7
+  O -.->|estudante rejeita: 'cara de IA'| A9[9 · Diretor de arte<br/>Placar & Boletim]
+  A9 --> A10[10 · Revisão de design]
+  A10 -->|nota 7,5 + 15 ajustes| O
+  O -->|15 ajustes aceitos| A9
 ```
 
 | Fase | Agentes | Modo |
@@ -34,6 +38,7 @@ flowchart LR
 | 2 | Teste e Validação | independente, somente leitura do app |
 | 3 | Documentação | independente |
 | 4 | Design visual → Revisão de design (independente, somente leitura) → Design visual | ciclo de crítica e correção |
+| 5 | Diretor de arte (agente novo) → Revisão de design → Diretor de arte | redesenho após rejeição do estudante |
 
 ---
 
@@ -114,6 +119,18 @@ flowchart LR
 - **Resultado:** nota **8,0/10** ("já parece um produto real"), 3 pontos fortes a preservar e 15 problemas priorizados com correção sugerida. Os mais importantes: barra lateral escondida sob o topo no fim da rolagem, cor de "Listas" igual à de alerta, nota do exame aparecendo depois do "Inalcançável", informação principal abaixo da dobra no celular.
 - **Decisão do orquestrador:** 14 itens aceitos e devolvidos ao Agente 7, que os corrigiu e verificou de novo. O item 15 (desabilitar o botão de excluir conta até digitar EXCLUIR) foi **recusado** porque contradiz um defeito confirmado pelo Agente 5 (desabilitado, o Enter com a palavra errada não dava aviso nenhum).
 
+### Agente 9: Diretor de Arte — identidade "Placar & Boletim"
+- **Por que existiu:** o estudante avaliou o design dos Agentes 7/8 e o **rejeitou por parecer "design genérico de IA"** (índigo com degradê, cartões arredondados, sombras suaves, landing com cartões flutuantes). Entre três direções propostas pelo orquestrador (caderno acadêmico, editorial suíço, placar/boletim), escolheu **placar/boletim**. A skill `design-visual` foi reescrita com uma lista explícita do que é **proibido** e o trabalho foi dado a um agente **novo, sem contexto do design anterior**, para não herdar os vícios.
+- **Skills:** [`skills/design-visual/SKILL.md`](./skills/design-visual/SKILL.md), [`skills/vanilla-dom-ui/SKILL.md`](./skills/vanilla-dom-ui/SKILL.md)
+- **Podia alterar:** apresentação em `public/` (CSS, markup, ícones, microcopy) e `public/img/**`. Proibido mudar comportamento, cálculo, API e CSP.
+- **Referências:** tabela de classificação do ge.globo (coluna principal, cor de zona por linha), torre de tempos da F1 e placares de TV (número grande + rótulo pequeno, siglas de 3 letras → APR/AND/EXA/REP), quadros *split-flap* (amarelo sobre preto, número que "vira"), tabelas editoriais suíças e boletins impressos (linhas pontilhadas, carimbos).
+- **Entregas:** papel `#f3efe6` + painel de placar `#121210` + um único destaque amarelo `#ffc21a`; Bahnschrift condensada com números tabulares; cantos ≤ 2 px, sem sombras nem degradês. Placar **AGORA → META** com **PRECISA TIRAR** como maior elemento da tela; carimbos GARANTIDO / EXAME / SEM CHANCE quando não há número a buscar; régua REPROVADO | EXAME | APROVADO com "no ritmo atual" e "máximo possível"; boletim de notas com linhas pontilhadas; visão geral como **classificação por risco**; landing com placar de exemplo coerente; simulação com hachura e fita "SIMULAÇÃO".
+- **Verificação:** 4 larguras × 2 temas × 15–16 estados: **0 falhas AA**, 0 rolagem horizontal, 0 erros, **0 violações de CSP**, 0 ocorrências da lista "proibido"; simulação sem requisições; 52/52 e 30/30.
+
+### Agente 10: Revisão de Design (independente) da identidade "Placar & Boletim"
+- **Podia alterar:** nada. Avaliou por capturas de tela em 4 larguras e 2 temas, respondendo: *isto ainda parece template/IA?*
+- **Resultado:** **7,5/10 — "já parece de autor, não de template"**. Achado principal: **a lógica do placar contava uma história errada** ("7,20 → 7,00" ao lado de "FALTA 6,69", e "0,00" gigante em amarelo comemorando reprovação). 15 itens priorizados, **todos aceitos** pelo orquestrador e aplicados pelo Agente 9 (ex.: "FALTA" → "PRECISA TIRAR", carimbos no lugar de 0,00, número principal primeiro no celular, "/100" nas escalas 0–100, classificação ordenada por risco).
+
 ### Fase 0: versão inicial e primeira validação
 Antes das fases acima, o orquestrador construiu a primeira versão do sistema e um **agente de validação inicial** (subagente somente leitura) a auditou: nenhum problema crítico; 8 achados (`.gitignore` ausente, arredondamento antes da validação, cookie malformado gerando 500, edição de fórmula sobrescrevendo notas, entre outros), todos corrigidos naquela rodada.
 
@@ -128,7 +145,7 @@ Antes das fases acima, o orquestrador construiu a primeira versão do sistema e 
 | `node validar-local.mjs P26-2B-8356-94BE-3650-165C` | 9/9 itens |
 | Falhas críticas/altas de segurança | **0** |
 | Contraste AA / violações de CSP (8 combinações de tela e tema) | **0 / 0** |
-| Nota da revisão de design independente | **8,0/10**, com 14 ajustes aplicados |
+| Revisões de design independentes | 1ª identidade: 8,0/10 (rejeitada pelo estudante); "Placar & Boletim": **7,5/10, "de autor, não de template"**, 15 ajustes aplicados |
 
 ## 4. Skills (pasta `skills/`)
 
@@ -140,4 +157,4 @@ Antes das fases acima, o orquestrador construiu a primeira versão do sistema e 
 | `seguranca-web` | Agentes 1 e 4 |
 | `teste-validacao` | Agente 5 e agente de validação inicial |
 | `documentacao-tecnica` | Agente 6 |
-| `design-visual` | Agentes 7 e 8 |
+| `design-visual` | Agentes 7, 8, 9 e 10 (reescrita para "Placar & Boletim" antes do Agente 9) |

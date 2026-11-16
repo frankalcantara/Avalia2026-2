@@ -70,10 +70,15 @@ export const ICONES = {
   calendario: ["M4 6h16v14H4z", "M4 10h16", "M8 3v4", "M16 3v4"],
 };
 
-/** Anel de progresso (conic-gradient) com conteúdo no centro. `p` em 0–100. */
-export function anel(p, conteudo, classe = "") {
+/**
+ * Medidor de placar: `n` blocos acesos proporcionalmente a `p` (0–100), como os pontos de um painel de LED.
+ * Decorativo (aria-hidden): o valor em texto vai sempre ao lado.
+ */
+export function medidor(p, n = 10, classe = "") {
   const v = Math.max(0, Math.min(100, Number(p) || 0));
-  return el("span", { class: `anel ${classe}`.trim(), style: `--p:${v}` }, el("span", { class: "anel-centro" }, conteudo));
+  const acesos = Math.round((v / 100) * n);
+  return el("span", { class: `medidor ${classe}`.trim(), "aria-hidden": "true" },
+    Array.from({ length: n }, (_, i) => el("i", { class: i < acesos ? "aceso" : null })));
 }
 
 /** Clona uma ilustração SVG de um <template> do index.html (sem innerHTML). */
