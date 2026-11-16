@@ -1,0 +1,52 @@
+/* corrige: display:flex dos componentes anulava o atributo hidden */
+[hidden] { display: none !important; }
+
+#cosmos { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+/* ===== viagem de dobra: saída e chegada ===== */
+main, .topbar, footer { transition: opacity .9s ease, filter 1.2s ease, transform 1.3s var(--ease); }
+html.warping main { opacity: 0; transform: scale(1.7); transition: opacity .9s ease-in, transform 1.3s cubic-bezier(.5, 0, 1, .6); }
+html.warping .topbar, html.warping footer { opacity: 0; }
+html.arriving main, html.arriving .topbar, html.arriving footer { opacity: 0; filter: blur(16px); transition: none; }
+#flash { position: fixed; inset: 0; z-index: 200; pointer-events: none; opacity: 0; transition: opacity 1.3s ease;
+  background: radial-gradient(circle at 50% 50%, rgba(236, 233, 255, .95) 0, rgba(124, 58, 237, .75) 30%, rgba(3, 3, 20, .96) 72%); }
+html.warping #flash { opacity: 1; transition: opacity .9s ease-in .45s; }
+html.arriving #flash { opacity: 1; transition: none; }
+
+/* ===== movimento ligado ao mouse (--sx e --sy vão de -1 a 1) ===== */
+.login h1 { transform: perspective(900px) rotateY(calc(var(--sx, 0) * 7deg)) rotateX(calc(var(--sy, 0) * -5deg)); transform-origin: left center; }
+.hc { translate: calc(var(--sx, 0) * var(--d, 1) * -26px) calc(var(--sy, 0) * var(--d, 1) * -26px); }
+.hc:nth-child(2n) { --d: 1.8; }
+.hc:nth-child(3n) { --d: .6; }
+.orbits { translate: calc(var(--sx, 0) * 22px) calc(var(--sy, 0) * 22px); }
+.sky .planet { translate: calc(var(--sx, 0) * -44px) calc(var(--sy, 0) * -34px); }
+.sky::before { translate: calc(var(--sx, 0) * 36px) calc(var(--sy, 0) * 28px); }
+.sky::after { translate: calc(var(--sx, 0) * -30px) calc(var(--sy, 0) * -24px); }
+.game .board { transform: rotateX(calc(var(--sy, 0) * -2.5deg)) rotateY(calc(var(--sx, 0) * 3deg)); }
+
+/* ===== jornada ao rolar ===== */
+.journey { display: flex; flex-direction: column; gap: clamp(40px, 10vh, 120px); margin-top: 4vh; }
+.stop { position: relative; min-height: 84vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(24px, 6vw, 80px); }
+.stop.right .obj { order: 2; }
+.stop .txt { opacity: 0; transform: translateY(70px); transition: opacity 1s ease, transform 1.2s var(--ease); }
+.stop.in .txt { opacity: 1; transform: none; }
+.stop h2 { letter-spacing: .22em; transition: letter-spacing 1.8s var(--ease); }
+.stop.in h2 { letter-spacing: -.03em; }
+.obj { justify-self: center; width: clamp(170px, 30vw, 320px); aspect-ratio: 3 / 4; padding: 11%; border-radius: 26px; border: 2px solid rgba(167, 139, 250, .7);
+  background: radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--c2, #6d28d9) 45%, #060720), color-mix(in srgb, var(--c1, #1e1b4b) 30%, #030314));
+  box-shadow: 0 0 50px rgba(124, 58, 237, .45), 0 30px 60px rgba(0, 0, 0, .6); opacity: 0; scale: .7; transition: opacity 1s ease, scale 1.2s var(--ease); }
+.stop.in .obj { opacity: 1; scale: 1; }
+.obj svg { width: 100%; height: 100%; display: block; animation: float 4s ease-in-out infinite alternate; }
+.orb { position: absolute; border-radius: 50%; pointer-events: none; }
+.o-a { width: 110px; height: 110px; left: 6%; top: 10%; background: radial-gradient(circle at 30% 30%, #fff, var(--cyan) 28%, transparent 70%); opacity: .85; }
+.o-b { width: 150px; height: 150px; right: 8%; bottom: 12%; background: radial-gradient(circle at 30% 30%, #fff, var(--magenta) 28%, transparent 70%); opacity: .75; }
+.final { grid-template-columns: 1fr; justify-items: center; text-align: center; min-height: 90vh; }
+.final .obj { width: clamp(150px, 22vw, 240px); }
+.final .txt { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+.final .btn { padding: 22px 52px; font-size: 1.25rem; animation: spin 5s linear infinite, beat 2.6s ease-in-out infinite; }
+
+@media (max-width: 760px) {
+  .stop { grid-template-columns: 1fr; min-height: auto; padding-block: 8vh; text-align: center; justify-items: center; }
+  .stop.right .obj { order: 0; }
+  .o-a, .o-b { opacity: .4; }
+}
