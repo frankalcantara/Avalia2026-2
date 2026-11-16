@@ -17,6 +17,26 @@
   <main class="wrap">
     <div id="notice" class="notice" role="status" hidden></div>
 
+    <section id="viewLoading" class="panel page-state" role="status" aria-live="polite">
+      <span class="loading-mark" aria-hidden="true"></span>
+      <div>
+        <h1>Carregando o clube...</h1>
+        <p>Estamos buscando sua sessão e os dados da rodada.</p>
+      </div>
+    </section>
+
+    <section id="viewError" class="panel page-state" role="alert" hidden>
+      <h1>Não foi possível carregar o clube</h1>
+      <p id="loadErrorMessage">Tente novamente em instantes.</p>
+      <button id="retryLoad" class="btn" type="button">Tentar novamente</button>
+    </section>
+
+    <section id="viewNoBook" class="panel" role="status" hidden>
+      <h1>Nenhum livro ativo nesta rodada</h1>
+      <p>A próxima leitura ainda não foi configurada. Você pode tentar novamente mais tarde.</p>
+      <button id="retryBookLoad" class="btn" type="button">Verificar novamente</button>
+    </section>
+
     <section id="viewGuest" class="panel" hidden>
       <h1>Leia junto, sem spoiler</h1>
       <p>Entre com o Discord, inscreva-se no livro da rodada e registre o capítulo em que está. As discussões de cada capítulo só abrem para quem já chegou lá.</p>
@@ -37,7 +57,8 @@
 
       <section class="panel">
         <h2>Fórum por capítulo</h2>
-        <div id="tabs" class="tabs" role="tablist"></div>
+        <div id="tabs" class="tabs" role="group" aria-label="Selecionar capítulo"></div>
+        <p id="forumStatus" class="empty" role="status" aria-live="polite"></p>
         <ul id="posts" class="posts"></ul>
         <form id="postForm" class="post-form" hidden>
           <label for="postText">Sua mensagem no capítulo <span id="postChapter"></span></label>

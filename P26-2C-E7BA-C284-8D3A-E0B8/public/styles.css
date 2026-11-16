@@ -36,12 +36,30 @@ main { flex: 1; padding-top: 1.5rem; padding-bottom: 2rem; }
 
 .user { display: flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 0.9rem; }
 .user img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--blue); }
+.user span { min-width: 0; overflow-wrap: anywhere; }
 
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.5rem; margin-bottom: 1.25rem; }
 h1 { font-family: Georgia, "Times New Roman", serif; font-size: 1.8rem; line-height: 1.2; margin-bottom: 0.75rem; }
 h2 { font-family: Georgia, "Times New Roman", serif; font-size: 1.25rem; margin-bottom: 1rem; }
 p { color: var(--muted); max-width: 60ch; margin-bottom: 1rem; }
 .label { font-size: 0.85rem; font-weight: 700; color: var(--spice); margin-bottom: 0.25rem; }
+
+.page-state { display: flex; align-items: center; gap: 1rem; }
+.page-state p { margin-bottom: 0; }
+.page-state .btn { flex: 0 0 auto; }
+.loading-mark {
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  border: 3px solid var(--line);
+  border-top-color: var(--spice);
+  border-radius: 50%;
+  animation: loading-spin 0.8s linear infinite;
+}
+@keyframes loading-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .loading-mark { animation: none; }
+}
 
 .btn, .btn-ghost {
   display: inline-block; cursor: pointer; text-decoration: none; font: inherit; font-weight: 800;
@@ -76,7 +94,7 @@ p { color: var(--muted); max-width: 60ch; margin-bottom: 1rem; }
 
 .tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
 .tab { font: inherit; font-weight: 700; font-size: 0.85rem; min-width: 2.6rem; padding: 0.4rem 0.7rem; border-radius: 8px; cursor: pointer; background: var(--night); color: var(--sand); border: 1px solid var(--line); }
-.tab[aria-selected="true"] { background: var(--blue); color: #08202b; border-color: var(--blue); }
+.tab[aria-pressed="true"] { background: var(--blue); color: #08202b; border-color: var(--blue); }
 .tab:disabled { cursor: not-allowed; color: var(--muted); border-style: dashed; opacity: 0.7; }
 
 .posts { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
@@ -98,4 +116,6 @@ footer code { color: var(--spice); }
   h1 { font-size: 1.45rem; }
   .panel { padding: 1.1rem; }
   .track { margin: 0 22px; }
+  .page-state { align-items: flex-start; flex-direction: column; }
+  .user { max-width: 100%; flex-wrap: wrap; }
 }

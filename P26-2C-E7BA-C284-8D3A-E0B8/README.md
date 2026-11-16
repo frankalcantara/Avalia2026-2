@@ -4,7 +4,7 @@
 - **Estudante:** JOAO GABRIEL ROSA DE SOUZA
 - **Turma:** 2C
 - **Chave Única:** `P26-2C-E7BA-C284-8D3A-E0B8`
-- **URL_CLOUDFLARE:** `https://p26-2c-e7ba-c284-8d3a-e0b8.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://clube-de-leitura.pages.dev`
 
 ---
 
@@ -40,11 +40,12 @@ O sistema conta com fóruns de discussão divididos por capítulos no Cloudflare
    - Na aba **OAuth2**:
      - Copie o **Client ID** e gere o **Client Secret**.
      - Em **Redirects**, adicione a URL exata do deploy:
-       `https://p26-2c-e7ba-c284-8d3a-e0b8.pages.dev/api/auth/discord/callback`
+       `https://clube-de-leitura.pages.dev/api/auth/discord/callback`
    - No painel do seu projeto no Cloudflare Pages:
-     - Acesse **Settings** → **Environment variables**.
-     - Adicione as variáveis de ambiente:
+     - Acesse **Settings** → **Variables and secrets** no ambiente **Production**.
+     - Adicione estas variáveis como **Secrets**:
        - `DISCORD_CLIENT_ID`
        - `DISCORD_CLIENT_SECRET`
+       - `SESSION_SECRET` (gere um valor aleatório forte; não use o Client Secret do Discord).
 6. Atualize o campo **URL_CLOUDFLARE** no topo deste `README.md` com o endereço público gerado pela Cloudflare.
 7. Na raiz do repositório, execute `node validar-local.mjs P26-2C-E7BA-C284-8D3A-E0B8` para validar todos os critérios antes de fazer o commit e abrir o Pull Request.

@@ -1,6 +1,7 @@
 const $ = (id) => document.getElementById(id);
 const DEFAULT_AVATAR = "https://cdn.discordapp.com/embed/avatars/0.png";
 const state = { me: null, book: null, readers: [], chapter: 1 };
+let forumRequestId = 0;
 
 const MENSAGENS = {
   invalid_state: "O login não pôde ser confirmado. Tente entrar de novo.",
@@ -16,6 +17,7 @@ const MENSAGENS = {
   invalid_chapter: "Informe um número de capítulo válido.",
   empty_content: "Escreva uma mensagem antes de publicar.",
   content_too_long: "A mensagem passa de 2000 caracteres.",
+  network_error: "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.",
 };
 
 function notice(text, ok = false) {
@@ -35,10 +37,21 @@ async function api(path, body) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   };
-  const res = await fetch(path, options);
+  let res;
+  try {
+    res = await fetch(path, options);
+  } catch {
+    return { ok: false, status: 0, data: { error: "network_error" } };
+  }
   let data = {};
   try { data = await res.json(); } catch { /* resposta sem corpo */ }
   return { ok: res.ok, status: res.status, data };
+}
+
+function showPageView(viewId) {
+  ["viewLoading", "viewError", "viewNoBook", "viewGuest", "viewApp"].forEach((id) => {
+    $(id).hidden = id !== viewId;
+  });
 }
 
 function safeAvatar(url) {
@@ -139,7 +152,11 @@ async function renderTrack() {
   r.data.readers.forEach((reader) => {
     const lane = lanes[reader.currentChapter] || 0;
     lanes[reader.currentChapter] = lane + 1;
-    const img = avatar(reader.avatar, "runner" + (reader.isMe ? " me" : ""), reader.username);
+    const img = avatar(
+      reader.avatar,
+      "runner" + (reader.isMe ? " me" : ""),
+      reader.username + " — capítulo " + reader.currentChapter + (reader.isMe ? ", você" : ""),
+    );
     img.title = reader.username + " — capítulo " + reader.currentChapter;
     img.style.left = (reader.currentChapter / total) * 100 + "%";
     img.style.setProperty("--lane", String(lane));
@@ -159,8 +176,10 @@ function renderTabs() {
   for (let n = 1; n <= totalChapters; n++) {
     const tab = el("button", "tab", n > current ? "🔒 " + n : String(n));
     tab.type = "button";
-    tab.setAttribute("role", "tab");
-    tab.setAttribute("aria-selected", String(n === state.chapter));
+    tab.setAttribute("aria-label", n > current
+      ? "Capítulo " + n + " — bloqueado até seu progresso"
+      : "Capítulo " + n);
+    tab.setAttribute("aria-pressed", String(n === state.chapter));
     tab.disabled = n > current;
     tab.addEventListener("click", () => { state.chapter = n; renderForum(); });
     tabs.append(tab);
@@ -171,20 +190,28 @@ async function renderForum() {
   renderTabs();
   const list = $("posts");
   const form = $("postForm");
+  const status = $("forumStatus");
+  const requestId = ++forumRequestId;
   if (!state.me.subscribed) {
-    list.replaceChildren(el("li", "empty", "Inscreva-se no livro para ver e escrever no fórum."));
+    status.textContent = "Inscreva-se no livro para ver e escrever no fórum.";
+    list.replaceChildren();
     form.hidden = true;
     return;
   }
-  const r = await api("/api/forum/list?chapter=" + state.chapter);
+  const chapter = state.chapter;
+  status.textContent = "Carregando discussões do capítulo " + chapter + "...";
   list.replaceChildren();
+  form.hidden = true;
+  const r = await api("/api/forum/list?chapter=" + chapter);
+  if (requestId !== forumRequestId) return;
   if (!r.ok) {
-    list.append(el("li", "empty", erro(r.data)));
-    form.hidden = true;
+    status.textContent = erro(r.data);
     return;
   }
   if (r.data.posts.length === 0) {
-    list.append(el("li", "empty", "Ninguém escreveu neste capítulo ainda. Comece a conversa."));
+    status.textContent = "Ninguém escreveu neste capítulo ainda. Comece a conversa.";
+  } else {
+    status.textContent = "";
   }
   r.data.posts.forEach((p) => {
     const item = el("li", "post");
@@ -192,7 +219,7 @@ async function renderForum() {
     const head = el("div");
     head.append(el("b", "", p.username), el("small", "", formatDate(p.created_at)));
     body.append(head, el("p", "", p.content));
-    item.append(avatar(p.avatar, "", p.username), body);
+    item.append(avatar(p.avatar, "", ""), body);
     list.append(item);
   });
   $("postChapter").textContent = String(state.chapter);
@@ -210,29 +237,34 @@ $("postForm").addEventListener("submit", async (e) => {
 });
 
 async function load() {
+  showPageView("viewLoading");
   const me = await api("/api/me");
   if (!me.ok) {
     state.me = null;
-    $("viewApp").hidden = true;
-    $("viewGuest").hidden = false;
     renderHeader();
+    if (me.status === 401) {
+      showPageView("viewGuest");
+    } else {
+      $("loadErrorMessage").textContent = erro(me.data);
+      showPageView("viewError");
+    }
     return;
   }
   state.me = me.data;
   if (!state.me.book) {
-    $("viewGuest").hidden = true;
-    $("viewApp").hidden = true;
-    notice("Ainda não há livro ativo nesta rodada.");
+    showPageView("viewNoBook");
     return renderHeader();
   }
   if (!state.me.subscribed) state.chapter = 1;
   else if (state.chapter > state.me.currentChapter || !state.chapter) state.chapter = state.me.currentChapter;
-  $("viewGuest").hidden = true;
-  $("viewApp").hidden = false;
+  showPageView("viewApp");
   renderHeader();
   renderBook();
   await Promise.all([renderTrack(), renderForum()]);
 }
+
+$("retryLoad").addEventListener("click", load);
+$("retryBookLoad").addEventListener("click", load);
 
 const authError = new URLSearchParams(location.search).get("auth_error");
 if (authError) {
