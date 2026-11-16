@@ -95,6 +95,8 @@ $("apagarPasta").onclick = agir(async () => {
 $("salvar").onclick = agir(async () => {
   await api("/api/references", envio("POST", { folder_id: pasta, norma: ultimo.norma, tipo: ultimo.tipo, dados: ultimo }));
   aviso("Referência salva na pasta.");
+  campos.forEach((k) => ($(k).value = ""));
+  tocado = false;
   await carregarPastas();
 });
 $("compilar").onclick = agir(async () => {
