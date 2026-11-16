@@ -5,7 +5,7 @@
 - **Estudante:** Joao Siedlarczyk
 - **Turma:** 3A
 - **Chave Única:** `P26-3A-0CED-4ACD-47F7-EDA9`
-- **URL_CLOUDFLARE:** https://cypher-p26.pages.dev
+- **URL_CLOUDFLARE:** https://avalia2026-2-5rz.pages.dev
 - **Licença:** MIT
 
 <p align="center">

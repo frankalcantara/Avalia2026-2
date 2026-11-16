@@ -171,7 +171,7 @@ Saída de `node validar-local.mjs P26-3A-0CED-4ACD-47F7-EDA9` (cópia temporári
 ✅ [OK]     6. Arquivos de Skills na pasta skills/
 ✅ [OK]     7. Frontend HTML/CSS/JS Puro (Sem frameworks proibidos)
 ✅ [OK]     8. Backend Cloudflare Functions + D1 + Discord OAuth2
-⚠️ [PENDENTE] 9. Deploy Online na Cloudflare (https://cypher-p26.pages.dev)
+⚠️ [PENDENTE] 9. Deploy Online na Cloudflare (https://avalia2026-2-5rz.pages.dev)
 ```
 
 O item 9 fica pendente porque o deploy ainda não foi feito (esperado nesta etapa). Detalhes do validador: 4 skills, agentes detectados ≥ 3, sem framework proibido.

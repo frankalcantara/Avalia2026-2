@@ -1,13 +1,13 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "cypher-p26",
+  "name": "avalia2026-2",
   "compatibility_date": "2026-03-01",
   "pages_build_output_dir": "./public",
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "db-p26-3a-0ced-4acd-47f7-eda9",
-      "database_id": "COLE-AQUI-O-DATABASE-ID"
+      "database_id": "d73ae774-1b98-4031-94f9-ed7a9d90b561"
     }
   ]
 }
