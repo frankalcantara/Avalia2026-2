@@ -4,7 +4,6 @@ const $ = (id) => document.getElementById(id);
 const state = { user: null, game: null, busy: false };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const NS = "http://www.w3.org/2000/svg";
 
 const AUTH_ERRORS = {
   access_denied: "Login cancelado.",
@@ -35,52 +34,45 @@ function setStatus(msg, isError = false) {
   el.classList.toggle("error", isError);
 }
 
-/* ---------- Ilustrações dos astros (SVG montado por nós, sem dados do servidor) ---------- */
-// id: [cor clara, cor escura, traços: c=crateras b=faixas r=anel l=continentes s=raios k=cauda]
-const BODIES = {
-  mercurio: ["#cfc9be", "#4f4a44", "c"], venus: ["#ffd98a", "#b8571a", "b"], terra: ["#6fd3ff", "#0a3d91", "l"],
-  marte: ["#ff9a6b", "#7d2412", "c"], jupiter: ["#f6dcb4", "#9a5a33", "b"], saturno: ["#f7e4a8", "#a8842f", "br"],
-  urano: ["#b2fbf5", "#2b9c9a", "r"], netuno: ["#7f9bff", "#1a2796", "b"], lua: ["#f1f1f6", "#6f6f7c", "c"],
-  sol: ["#fff3b0", "#ff6a00", "s"], plutao: ["#ecd3c4", "#8a5a4a", "c"], cometa: ["#e0f7ff", "#3aa0ff", "k"],
+/* ---------- Ilustrações (SVG fixo no código; nenhum dado do servidor entra no HTML) ---------- */
+// id: [cor 1 do fundo, cor 2 do fundo, desenho]
+const ART = {
+  foguete: ["#3b1d8f", "#ff4d8d", `<path d="M50 6C68 22 70 48 64 72H36C30 48 32 22 50 6Z" fill="#fff"/><circle cx="50" cy="38" r="9" fill="#5ee7ff"/><path d="M36 54L18 76L36 72ZM64 54L82 76L64 72Z" fill="#ff4d6d"/><path d="M41 76L50 98L59 76Z" fill="#ffb703"/>`],
+  astronauta: ["#0f4c81", "#5ee7ff", `<rect x="28" y="72" width="44" height="24" rx="10" fill="#e8ecff"/><circle cx="50" cy="42" r="30" fill="#fff"/><rect x="28" y="30" width="44" height="26" rx="13" fill="#1b1f4b"/><ellipse cx="38" cy="40" rx="6" ry="3" fill="#fff" stroke="none"/><circle cx="50" cy="84" r="4" fill="#ff4d6d"/>`],
+  ovni: ["#12324a", "#7cfc5b", `<path d="M30 48A20 20 0 0 1 70 48Z" fill="#9ff3ff"/><ellipse cx="50" cy="52" rx="42" ry="13" fill="#b0b8d8"/><circle cx="26" cy="54" r="3.5" fill="#ffd60a"/><circle cx="50" cy="58" r="3.5" fill="#ffd60a"/><circle cx="74" cy="54" r="3.5" fill="#ffd60a"/><path d="M38 66L24 96H76L62 66Z" fill="#fff" opacity=".35" stroke="none"/>`],
+  buraco: ["#2a0a4a", "#ff7a00", `<circle cx="50" cy="50" r="40" fill="none" stroke="#a259ff" stroke-width="4"/><ellipse cx="50" cy="50" rx="46" ry="13" fill="none" stroke="#ffb703" stroke-width="8" transform="rotate(-20 50 50)"/><circle cx="50" cy="50" r="22" fill="#000"/>`],
+  alien: ["#0b3d2e", "#ffe14d", `<path d="M50 10C80 10 90 46 66 68C58 76 42 76 34 68C10 46 20 10 50 10Z" fill="#7cfc5b"/><ellipse cx="36" cy="44" rx="9" ry="14" fill="#000" transform="rotate(20 36 44)"/><ellipse cx="64" cy="44" rx="9" ry="14" fill="#000" transform="rotate(-20 64 44)"/><circle cx="34" cy="40" r="3" fill="#fff" stroke="none"/><circle cx="62" cy="40" r="3" fill="#fff" stroke="none"/><path d="M42 64Q50 70 58 64M34 12L26 4M66 12L74 4" fill="none"/><circle cx="26" cy="4" r="3" fill="#ffe14d"/><circle cx="74" cy="4" r="3" fill="#ffe14d"/>`],
+  lua: ["#1a1f6b", "#6f7bff", `<path d="M60 10A40 40 0 1 0 90 66A36 36 0 0 1 60 10Z" fill="#ffe27a"/><circle cx="30" cy="42" r="4" fill="#e0b84a"/><circle cx="38" cy="66" r="6" fill="#e0b84a"/><circle cx="78" cy="22" r="4" fill="#fff" stroke="none"/><circle cx="88" cy="40" r="2.5" fill="#fff" stroke="none"/>`],
+  saturno: ["#5b2a86", "#ff9d00", `<ellipse cx="50" cy="50" rx="46" ry="12" fill="none" stroke="#ffe0a3" stroke-width="7" transform="rotate(-20 50 50)"/><circle cx="50" cy="50" r="27" fill="#ffb347"/><path d="M26 42Q50 52 74 40M25 56Q50 66 75 54" fill="none" stroke="#e07b00" stroke-width="3"/><path d="M4 50A46 12 0 0 0 96 50" fill="none" stroke="#ffe0a3" stroke-width="7" transform="rotate(-20 50 50)"/>`],
+  cometa: ["#001a4d", "#00b4d8", `<path d="M72 30C48 40 26 62 6 94C36 86 64 66 80 46Z" fill="#90e0ef"/><path d="M70 34C52 46 40 58 26 78C46 70 62 58 76 44Z" fill="#fff" stroke="none" opacity=".7"/><circle cx="76" cy="32" r="16" fill="#ffd60a"/><circle cx="71" cy="27" r="4" fill="#fff" stroke="none"/>`],
+  satelite: ["#2b1055", "#ff5fa2", `<rect x="4" y="38" width="30" height="24" fill="#2a6bff"/><rect x="66" y="38" width="30" height="24" fill="#2a6bff"/><path d="M19 38V62M4 50H34M81 38V62M66 50H96M50 34V18" fill="none" stroke="#9ec1ff" stroke-width="2"/><rect x="36" y="34" width="28" height="32" rx="6" fill="#e8ecff"/><circle cx="50" cy="50" r="7" fill="#ff4d6d"/><circle cx="50" cy="15" r="4" fill="#ffd60a"/>`],
+  sol: ["#ff4d00", "#ffb703", `<path d="M50 4V16M50 84V96M4 50H16M84 50H96M17 17L25 25M75 75L83 83M83 17L75 25M25 75L17 83" fill="none" stroke="#fff3b0" stroke-width="5"/><circle cx="50" cy="50" r="28" fill="#ffd60a"/><rect x="28" y="40" width="20" height="12" rx="4" fill="#111"/><rect x="52" y="40" width="20" height="12" rx="4" fill="#111"/><path d="M47 45H53M36 62Q50 72 64 62" fill="none"/>`],
+  galaxia: ["#10002b", "#c77dff", `<circle cx="50" cy="50" r="40" fill="#240046" stroke="none"/><path d="M50 50C50 38 64 36 68 46C74 60 58 74 42 70C22 64 20 38 38 26C58 14 84 32 82 56" fill="none" stroke="#ff7ad9" stroke-width="6"/><path d="M50 50C50 62 36 64 32 54C26 40 42 26 58 30C78 36 80 62 62 76" fill="none" stroke="#5ee7ff" stroke-width="5"/><circle cx="50" cy="50" r="7" fill="#fff"/>`],
+  telescopio: ["#0b3d91", "#ffb703", `<path d="M44 58L30 96M52 60V96M60 58L74 94" fill="none" stroke="#e8ecff" stroke-width="5"/><rect x="10" y="30" width="62" height="22" rx="5" fill="#ff9d00" transform="rotate(-25 40 41)"/><rect x="60" y="20" width="12" height="26" rx="3" fill="#ffd60a" transform="rotate(-25 40 41)"/><circle cx="84" cy="16" r="4" fill="#fff" stroke="none"/><circle cx="16" cy="60" r="3" fill="#fff" stroke="none"/>`],
 };
 
-function el(tag, attrs = {}, kids = []) {
-  const n = document.createElementNS(NS, tag);
-  for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
-  n.append(...kids);
-  return n;
+function buildArt(id) {
+  const d = ART[id];
+  if (!d) return null;
+  const doc = new DOMParser().parseFromString(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#0b0d1c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">' + d[2] + "</g></svg>",
+    "image/svg+xml"
+  );
+  return document.importNode(doc.documentElement, true);
 }
 
-function buildArt(id) {
-  const def = BODIES[id];
-  if (!def) return null;
-  const [a, b, f] = def;
-  const gid = "g-" + id, cid = "c-" + id;
-  const R = f.includes("s") ? 24 : 30;
-  const svg = el("svg", { viewBox: "0 0 100 100", "aria-hidden": "true" });
-  const grad = el("radialGradient", { id: gid, cx: ".35", cy: ".3", r: ".85" }, [
-    el("stop", { offset: "0", "stop-color": a }), el("stop", { offset: "1", "stop-color": b })]);
-  svg.append(el("defs", {}, [grad, el("clipPath", { id: cid }, [el("circle", { cx: 50, cy: 50, r: R })])]));
-  const ringT = "rotate(" + (f.includes("r") && id === "urano" ? 70 : -20) + " 50 50)";
-  if (f.includes("r")) svg.append(el("ellipse", { cx: 50, cy: 50, rx: 46, ry: 12, fill: "none", stroke: a, "stroke-width": 4, opacity: ".55", transform: ringT }));
-  if (f.includes("s")) for (let i = 0; i < 12; i++) svg.append(el("line", { x1: 50, y1: 12, x2: 50, y2: 2, stroke: a, "stroke-width": 3, "stroke-linecap": "round", transform: "rotate(" + i * 30 + " 50 50)" }));
-  if (f.includes("k")) {
-    svg.append(el("path", { d: "M62 38 C40 50 22 70 6 94 C30 84 52 66 70 50Z", fill: b, opacity: ".55" }));
-    svg.append(el("path", { d: "M60 40 C46 52 34 62 22 76 C40 68 54 58 66 46Z", fill: a, opacity: ".8" }));
-    svg.append(el("circle", { cx: 68, cy: 38, r: 13, fill: "url(#" + gid + ")" }));
-    return svg;
-  }
-  svg.append(el("circle", { cx: 50, cy: 50, r: R, fill: "url(#" + gid + ")" }));
-  const clip = el("g", { "clip-path": "url(#" + cid + ")" });
-  if (f.includes("b")) [38, 48, 58].forEach((y, i) => clip.append(el("rect", { x: 20, y, width: 60, height: 5 + i * 1.5, fill: b, opacity: ".35" })));
-  if (f.includes("c")) [[40, 42, 5], [58, 54, 7], [47, 64, 3.5]].forEach(([x, y, r]) => clip.append(el("circle", { cx: x, cy: y, r, fill: b, opacity: ".45" })));
-  if (f.includes("l")) {
-    clip.append(el("path", { d: "M34 38 Q44 32 52 40 Q48 50 38 52 Q30 46 34 38Z", fill: "#4cc26a" }));
-    clip.append(el("path", { d: "M56 56 Q68 52 72 62 Q66 72 56 68Z", fill: "#4cc26a" }));
-  }
-  svg.append(clip);
-  if (f.includes("r")) svg.append(el("path", { d: "M4 50 A46 12 0 0 0 96 50", fill: "none", stroke: a, "stroke-width": 4, transform: ringT }));
-  return svg;
+function heroArt() {
+  const box = document.createElement("div");
+  box.className = "hero-art";
+  box.setAttribute("aria-hidden", "true");
+  [["foguete", 4, 0, -10], ["ovni", 40, 6, 8], ["alien", 66, 32, -6], ["lua", 2, 40, 7], ["galaxia", 32, 52, -9], ["sol", 62, 66, 10]].forEach(([id, x, y, r], k) => {
+    const c = document.createElement("div");
+    c.className = "hc";
+    c.style.cssText = `--x:${x}%;--y:${y}%;--r:${r}deg;--k:${k};--c1:${ART[id][0]};--c2:${ART[id][1]}`;
+    c.append(buildArt(id));
+    box.append(c);
+  });
+  $("loginPrompt").append(box);
 }
 
 /* ---------- Cabeçalho, login e título animado ---------- */
@@ -190,20 +182,16 @@ function createCard(token, i) {
 
 function reveal(face) {
   const el = state.game.cards.get(face.token).el;
-  const art = el.querySelector(".memory-art");
-  const name = el.querySelector(".memory-name");
+  const art = el.querySelector(".memory-art"), name = el.querySelector(".memory-name");
   art.replaceChildren();
   name.textContent = "";
-  let desc;
-  if (String(face.text).startsWith("img:")) {
-    const svg = buildArt(face.text.slice(4));
-    if (svg) art.append(svg);
-    desc = "Imagem de " + face.text.slice(4);
-  } else {
-    name.textContent = face.text;
-    desc = "Nome: " + face.text;
-  }
-  el.setAttribute("aria-label", desc);
+  const isImg = String(face.text).startsWith("img:");
+  if (isImg) {
+    const id = face.text.slice(4), svg = buildArt(id);
+    if (svg) { art.append(svg); el.style.setProperty("--c1", ART[id][0]); el.style.setProperty("--c2", ART[id][1]); }
+  } else name.textContent = face.text;
+  el.dataset.kind = isImg ? "img" : "name";
+  el.setAttribute("aria-label", (isImg ? "Imagem de " : "Nome: ") + (isImg ? face.text.slice(4) : face.text));
   el.classList.add("flipped");
 }
 
@@ -215,6 +203,7 @@ function hide(token) {
     if (!el.classList.contains("flipped")) {
       el.querySelector(".memory-art").replaceChildren();
       el.querySelector(".memory-name").textContent = "";
+      delete el.dataset.kind;
     }
   }, 900);
 }
@@ -246,6 +235,7 @@ function markMatched(token) {
 }
 
 function updateStats(moves, found, total, efficiency) {
+  $("gameSection").style.setProperty("--p", total ? found / total : 0);
   const set = (id, v) => {
     const n = $(id);
     if (n.textContent === v) return;
@@ -388,6 +378,7 @@ async function init() {
   }
   if (params.has("auth_error") || params.has("login")) history.replaceState(null, "", "/");
 
+  heroArt();
   pointerFx();
   $("newGameBtn").addEventListener("click", startGame);
   await loadMe();
