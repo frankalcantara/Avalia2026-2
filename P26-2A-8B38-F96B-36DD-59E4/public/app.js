@@ -96,6 +96,8 @@ $("salvar").onclick = agir(async () => {
   await api("/api/references", envio("POST", { folder_id: pasta, norma: ultimo.norma, tipo: ultimo.tipo, dados: ultimo }));
   aviso("Referência salva na pasta.");
   campos.forEach((k) => ($(k).value = ""));
+  $("norma").value = "";
+  $("tipo").value = "";
   tocado = false;
   await carregarPastas();
 });
