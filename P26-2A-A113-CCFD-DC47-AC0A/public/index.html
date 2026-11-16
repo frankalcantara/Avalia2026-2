@@ -10,15 +10,27 @@
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <div class="sky" aria-hidden="true"><i class="layer l1"></i><i class="layer l2"></i><i class="layer l3"></i></div>
+  <div class="sky" aria-hidden="true">
+    <i class="layer l1"></i><i class="layer l2"></i><i class="layer l3"></i>
+    <b class="fl" style="--x:6%;--d:16s;--s:1.8rem;--c:#ff2e93">✦</b>
+    <b class="fl" style="--x:16%;--d:22s;--s:1.2rem;--c:#ffe600">●</b>
+    <b class="fl" style="--x:28%;--d:18s;--s:2.2rem;--c:#00e5ff">▲</b>
+    <b class="fl" style="--x:40%;--d:25s;--s:1.4rem;--c:#7cff4b">★</b>
+    <b class="fl" style="--x:52%;--d:15s;--s:2rem;--c:#ff7a1a">■</b>
+    <b class="fl" style="--x:63%;--d:21s;--s:1.6rem;--c:#b388ff">✦</b>
+    <b class="fl" style="--x:74%;--d:19s;--s:2.4rem;--c:#ff2e93">●</b>
+    <b class="fl" style="--x:84%;--d:24s;--s:1.3rem;--c:#00e5ff">★</b>
+    <b class="fl" style="--x:93%;--d:17s;--s:1.9rem;--c:#ffe600">▲</b>
+  </div>
 
   <header class="topbar" id="topbar" hidden>
-    <strong class="brand">Memória Celeste</strong>
+    <strong class="brand" data-split>Memória Celeste</strong>
     <div id="discordProfile"></div>
   </header>
 
   <main>
     <section class="login" id="loginPrompt">
+      <div class="sticker" aria-hidden="true"><span>Jogue agora! ✦ Jogue agora! ✦</span></div>
       <h1 data-split>Memória Celeste</h1>
       <p class="lead">Vire as cartas, ligue cada imagem ao seu nome e entre para o ranking com o menor número de movimentos.</p>
       <p id="loginMessage" class="status" role="status" aria-live="polite"></p>
@@ -46,7 +58,7 @@
     </section>
 
     <section class="ranking" id="rankingSection" hidden>
-      <h2>Ranking</h2>
+      <h2 data-split>Ranking</h2>
       <ol class="records" id="leaderboard"><li>Carregando…</li></ol>
     </section>
   </main>
