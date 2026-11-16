@@ -1,118 +1,107 @@
-/* --- RESET & TEMA FUTURISTA (AWWWARDS STYLE) --- */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
-
-:root {
-  --bg-primary: #07080c;
-  --bg-card: rgba(18, 20, 32, 0.85);
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --accent-cyan: #00f0ff;
-  --accent-purple: #7000ff;
-  --accent-pink: #ff007f;
-  --text-main: #f0f2f5;
-  --text-muted: #8b92a5;
-  --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+/* --- TABULEIRO E CARTAS (VERSÃO À PROVA DE FALHAS) --- */
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  width: 100%;
+  max-width: 700px;
+  margin: 20px auto;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
+.memory-card {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  perspective: 1000px;
+  height: 140px; /* Altura fixa garantida para nunca sumirem */
+  width: 100%;
   padding: 0;
 }
 
-body {
-  font-family: 'Space Grotesk', sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-main);
-  min-height: 100vh;
+.memory-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Quando a carta for virada ou combinada, roda 180 graus */
+.memory-card.flipped .memory-inner,
+.memory-card.matched .memory-inner {
+  transform: rotateY(180deg);
+}
+
+.memory-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  overflow-x: hidden;
-  position: relative;
-}
-
-/* Fundo dinâmico com orbes luminosos */
-body::before, body::after {
-  content: '';
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  filter: blur(140px);
-  z-index: -1;
-  opacity: 0.22;
-  animation: floatOrb 14s infinite alternate ease-in-out;
-}
-
-body::before {
-  background: var(--accent-purple);
-  top: -150px;
-  left: -150px;
-}
-
-body::after {
-  background: var(--accent-cyan);
-  bottom: -150px;
-  right: -150px;
-  animation-delay: -7s;
-}
-
-@keyframes floatOrb {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(40px, 60px) scale(1.1); }
-}
-
-/* Topbar / Header */
-.topbar {
-  width: 100%;
-  background: rgba(7, 8, 12, 0.85);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-glass);
-  padding: 16px 24px;
-  display: flex;
   justify-content: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  border-radius: 12px;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-.topbar-inner {
-  width: 100%;
-  max-width: 1000px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Verso da carta (visível inicialmente) */
+.memory-back {
+  background: linear-gradient(135deg, #161b22, #0d1117);
+  color: var(--accent-cyan, #00f0ff);
+  border: 2px solid rgba(0, 240, 255, 0.4);
+  font-size: 1.8rem;
 }
 
-.topbar-inner strong {
-  font-size: 0.95rem;
-  letter-spacing: -0.3px;
-  color: var(--text-main);
+.memory-back::after {
+  content: '⚡';
 }
 
-.profile {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+/* Frente da carta (revelada após virar) */
+.memory-front {
+  background: linear-gradient(135deg, #1f2430, #11151c);
+  color: #ffffff;
+  border: 2px solid rgba(255, 0, 127, 0.6);
+  transform: rotateY(180deg);
+  text-align: center;
+  gap: 6px;
 }
 
-.profile img {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 2px solid var(--accent-cyan);
-  box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+/* Quando formam par */
+.memory-card.matched .memory-front {
+  border-color: #00f0ff;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
 }
 
-.profile span {
-  font-size: 0.9rem;
-  font-weight: 600;
+.memory-kind {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: var(--accent-cyan, #00f0ff);
+  background: rgba(0, 240, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
-.profile small {
-  color: var(--text-muted);
+.memory-text {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
+  word-break: break-word;
+  color: #f0f2f5;
 }
 
-.btn-ghost {
+@media (max-width: 768px) {
+  .board {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .memory-card {
+    height: 120px;
+  }
+}
