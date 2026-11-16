@@ -261,26 +261,30 @@ h2 { font-size: 1.5rem; font-weight: 600; }
 .stat-card span { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
 .stat-card strong { font-size: 1.3rem; color: var(--accent-cyan); }
 
-/* --- TABULEIRO E CARTAS COM BORDAS NEON E FLIP 3D --- */
+/* --- TABULEIRO E CARTAS COM BORDAS NEON VISÍVEIS E FLIP 3D --- */
 .board {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  gap: 16px;
   width: 100%;
-  perspective: 1400px;
-  margin-top: 10px;
+  max-width: 750px;
+  margin: 20px auto;
+  perspective: 1000px;
 }
 
-.board.busy { pointer-events: none; }
+.board.busy { 
+  pointer-events: none; 
+}
 
 .memory-card {
   width: 100%;
-  height: 150px;
+  height: 140px;
   background: transparent;
   border: none;
   cursor: pointer;
   perspective: 1000px;
   padding: 0;
+  margin: 0;
   outline: none;
 }
 
@@ -289,10 +293,9 @@ h2 { font-size: 1.5rem; font-weight: 600; }
   width: 100%;
   height: 100%;
   text-align: center;
-  transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
   transform-style: preserve-3d;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  border-radius: 14px;
 }
 
 .memory-card.flipped .memory-inner,
@@ -312,64 +315,56 @@ h2 { font-size: 1.5rem; font-weight: 600; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
-  padding: 16px;
+  border-radius: 14px;
+  padding: 12px;
   box-sizing: border-box;
 }
 
-/* Verso da carta (Iniciada com borda neon ciano evidente) */
+/* Verso da carta (Iniciada com borda neon ciano forte) */
 .memory-back {
-  background: linear-gradient(135deg, rgba(16, 22, 45, 0.95), rgba(7, 10, 22, 0.95));
-  border: 2px solid var(--border-neon);
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-  color: var(--accent-cyan);
+  background: linear-gradient(135deg, #0f172a, #090d16);
+  border: 3px solid #00f0ff !important;
+  color: #00f0ff;
   font-size: 2rem;
-  transition: var(--transition-smooth);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
 }
 
 .memory-back::after {
   content: '⚡';
-  filter: drop-shadow(0 0 10px var(--accent-cyan));
+  filter: drop-shadow(0 0 8px #00f0ff);
 }
 
-.memory-card:hover .memory-back {
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
-  transform: translateY(-4px);
-}
-
-/* Frente da carta (Revelada com borda neon rosa/magenta evidente) */
+/* Frente da carta (Revelada com borda neon rosa/magenta forte) */
 .memory-front {
-  background: linear-gradient(135deg, #18132d, #0b0816);
-  border: 2px solid var(--border-pink);
-  box-shadow: 0 0 15px rgba(255, 0, 128, 0.25);
-  color: var(--text-main);
+  background: linear-gradient(135deg, #1e1b4b, #0d0b21);
+  border: 3px solid #ff007f !important;
+  color: #ffffff;
   transform: rotateY(180deg);
+  box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+  gap: 6px;
   text-align: center;
-  gap: 8px;
 }
 
-.memory-card.matched .memory-front,
-.memory-card.matched .memory-back {
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 35px rgba(0, 240, 255, 0.7);
+/* Quando forma par bem-sucedido */
+.memory-card.matched .memory-front {
+  border-color: #00f0ff !important;
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.8);
 }
 
 .memory-kind {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.65rem;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--accent-cyan);
+  color: #00f0ff;
   background: rgba(0, 240, 255, 0.15);
   padding: 3px 8px;
   border-radius: 6px;
-  border: 1px solid var(--border-neon);
+  border: 1px solid rgba(0, 240, 255, 0.4);
 }
 
 .memory-text {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   word-break: break-word;
   color: #f3f6fc;
 }
@@ -416,123 +411,6 @@ footer .hash-code {
 
 @media (max-width: 768px) {
   .board { grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .memory-card { height: 130px; }
+  .memory-card { height: 120px; }
   .galaxy-card { padding: 24px; }
-}
-/* --- CARTAS GALÁCTICAS (VERSÃO BLINDADA COM BORDAS E FLIP 3D) --- */
-.board {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  width: 100%;
-  max-width: 750px;
-  margin: 20px auto;
-  perspective: 1000px;
-}
-
-.board.busy {
-  pointer-events: none;
-}
-
-.memory-card {
-  width: 100%;
-  height: 140px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  perspective: 1000px;
-  padding: 0;
-  margin: 0;
-  outline: none;
-}
-
-.memory-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-  transform-style: preserve-3d;
-  border-radius: 14px;
-}
-
-/* Rotação quando a carta é virada ou combinada */
-.memory-card.flipped .memory-inner,
-.memory-card.matched .memory-inner {
-  transform: rotateY(180deg);
-}
-
-.memory-face {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 14px;
-  padding: 12px;
-  box-sizing: border-box;
-}
-
-/* Verso da carta (Visível inicialmente - Borda Ciano Forte) */
-.memory-back {
-  background: linear-gradient(135deg, #0f172a, #090d16);
-  border: 3px solid #00f0ff !important;
-  color: #00f0ff;
-  font-size: 2rem;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-}
-
-.memory-back::after {
-  content: '⚡';
-  filter: drop-shadow(0 0 8px #00f0ff);
-}
-
-/* Frente da carta (Revelada - Borda Rosa/Magenta Forte) */
-.memory-front {
-  background: linear-gradient(135deg, #1e1b4b, #0d0b21);
-  border: 3px solid #ff007f !important;
-  color: #ffffff;
-  transform: rotateY(180deg);
-  box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
-  gap: 6px;
-  text-align: center;
-}
-
-/* Quando forma par bem-sucedido */
-.memory-card.matched .memory-front {
-  border-color: #00f0ff !important;
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.8);
-}
-
-.memory-kind {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  color: #00f0ff;
-  background: rgba(0, 240, 255, 0.15);
-  padding: 3px 8px;
-  border-radius: 6px;
-  border: 1px solid rgba(0, 240, 255, 0.4);
-}
-
-.memory-text {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  word-break: break-word;
-  color: #f3f6fc;
-}
-
-@media (max-width: 768px) {
-  .board {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .memory-card {
-    height: 120px;
-  }
 }
