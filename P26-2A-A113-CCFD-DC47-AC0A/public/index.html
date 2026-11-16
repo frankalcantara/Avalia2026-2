@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jogo da Memória — P26-2A-A113-CCFD-DC47-AC0A</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <strong>Projeto #7: Jogo da Memória Temático</strong>
+      <div class="discord-badge" id="discordProfile">
+        <a id="discordLoginLink" href="/api/auth/discord">Entrar com Discord</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card" id="loginPrompt">
+      <span class="pill">Código ↔ Saída</span>
+      <h1>Jogo da Memória Temático</h1>
+      <p class="desc">Encontre os pares formados por um trecho de código JavaScript e o valor que ele produz. Entre com sua conta do Discord para jogar. O embaralhamento e a conferência dos pares acontecem no servidor.</p>
+      <p id="loginMessage" class="status" role="status" aria-live="polite"></p>
+      <a class="btn-primary btn-link" href="/api/auth/discord">Entrar com Discord</a>
+    </section>
+
+    <section class="card" id="gameSection" hidden>
+      <div class="game-head">
+        <h1>Código ↔ Saída</h1>
+        <button class="btn-primary" id="newGameBtn" type="button">Nova partida</button>
+      </div>
+      <p class="desc">Vire duas cartas por vez e encontre cada código com a sua saída.</p>
+      <div class="stats">
+        <div class="stat"><span>Movimentos</span><strong id="movesCount">0</strong></div>
+        <div class="stat"><span>Pares</span><strong id="pairsCount">0/0</strong></div>
+        <div class="stat"><span>Eficiência</span><strong id="efficiency">—</strong></div>
+      </div>
+      <div id="board" class="board" role="group" aria-label="Tabuleiro de cartas"></div>
+      <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="rankingSection" hidden>
+      <h2>Melhores partidas</h2>
+      <ol class="records-list" id="leaderboard"><li>Carregando...</li></ol>
+    </section>
+  </main>
+
+  <footer id="projectFooter">
+    Chave Única de Auditoria: <code>P26-2A-A113-CCFD-DC47-AC0A</code> · Turma 2A · Licenciado sob MIT
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

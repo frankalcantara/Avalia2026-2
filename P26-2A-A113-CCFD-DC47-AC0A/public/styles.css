@@ -1,0 +1,208 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Regra estrita de tipografia: ZERO sombras em textos */
+h1, h2, h3, p, span, label, button, input, textarea, code, strong, a, footer {
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: #eef2f6;
+  color: #0f172a;
+  line-height: 1.5;
+}
+
+.topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #dce4ef;
+  padding: 0.9rem 1.5rem;
+}
+
+.topbar-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.discord-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+main {
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #dce4ef;
+  border-radius: 20px;
+  padding: 1.75rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 10px 26px -10px rgba(15, 23, 42, 0.07);
+}
+
+.pill {
+  display: inline-block;
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+h1 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.desc {
+  color: #475569;
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.input-text {
+  flex: 1;
+  min-width: 220px;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1.4rem;
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #1e293b;
+}
+
+.records-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.records-list li {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+}
+
+footer {
+  text-align: center;
+  padding: 1.25rem;
+  background: #ffffff;
+  border-top: 1px solid #dce4ef;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+/* ---------- Jogo da Memória ---------- */
+[hidden] { display: none !important; }
+
+h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.85rem; }
+
+.btn-link { display: inline-block; text-decoration: none; }
+
+.discord-badge a { color: inherit; text-decoration: none; }
+.profile { display: inline-flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.profile img { width: 32px; height: 32px; border-radius: 50%; }
+.profile small { font-weight: 600; color: #475569; }
+.btn-ghost {
+  background: #ffffff; color: #1d4ed8; border: 1px solid #bfdbfe;
+  border-radius: 999px; padding: 0.25rem 0.75rem; font-size: 0.78rem; font-weight: 800; cursor: pointer;
+}
+
+.game-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.status { font-size: 0.92rem; font-weight: 700; color: #166534; margin: 0.9rem 0 0.25rem; min-height: 1.4em; }
+.status.error { color: #b91c1c; }
+
+.stats { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.stat { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 0.5rem 0.9rem; display: flex; flex-direction: column; min-width: 96px; }
+.stat span { font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+.stat strong { font-size: 1.2rem; font-weight: 800; }
+
+.board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; max-width: 640px; margin: 0 auto; }
+.board.busy { pointer-events: none; }
+
+.memory-card { perspective: 800px; background: none; border: 0; padding: 0; width: 100%; aspect-ratio: 3 / 4; cursor: pointer; }
+.memory-card:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; border-radius: 14px; }
+.memory-card:disabled { cursor: default; }
+
+.memory-inner { position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.5s; }
+.memory-card.flipped .memory-inner { transform: rotateY(180deg); }
+
+.memory-face {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: 14px; padding: 0.35rem; text-align: center; overflow: hidden;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.memory-back { background: #0f172a; color: #ffffff; font-size: 2rem; font-weight: 800; }
+.memory-card:not(:disabled):hover .memory-back { background: #1e293b; }
+.memory-front { transform: rotateY(180deg); background: #eff6ff; border: 2px solid #bfdbfe; color: #0f172a; }
+.memory-card[data-kind="output"] .memory-front { background: #f0fdf4; border-color: #bbf7d0; }
+.memory-card.matched .memory-front { border-color: #16a34a; }
+.memory-kind { font-size: 0.6rem; font-weight: 800; color: #475569; letter-spacing: 0.04em; margin-bottom: 0.25rem; }
+.memory-text { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: clamp(0.62rem, 2.3vw, 0.92rem); font-weight: 700; word-break: break-word; }
+
+.records-list { counter-reset: pos; }
+.records-list li { counter-increment: pos; }
+
+@media (max-width: 520px) {
+  .board { gap: 0.45rem; }
+  .card { padding: 1.1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .memory-inner { transition: none; }
+}
