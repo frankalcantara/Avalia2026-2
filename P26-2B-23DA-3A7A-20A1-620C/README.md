@@ -1,34 +1,57 @@
-# Projeto #7: Jogo da Memória Temático
+# Projeto #7: Jogo da Memória Temático (Código ↔ Saída)
 
-- **Modalidade:** Projeto Oficial Sorteado (Valendo 100 pontos)
-- **Estudante:** Julio Cesar dos Santos Ventura
-- **Turma:** 2B
+- **Estudante:** Julio Cesar dos Santos Ventura (Turma 2B)
 - **Chave Única:** `P26-2B-23DA-3A7A-20A1-620C`
-- **URL_CLOUDFLARE:** `https://p26-2b-23da-3a7a-20a1-620c.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** https://p26-2b-23da-3a7a-20a1-620c.pages.dev
+- **Licença:** MIT
 
----
+## O jogo
 
-## Especificação do Projeto
+Jogo da memória em que cada trecho de código JavaScript combina com a saída que ele produz. O jogador faz login com o Discord, vira duas cartas por jogada e o servidor confirma se formam um par.
 
-Projete um jogo de memória baseado em pares de cartas que exigem correspondência visual ou conceitual (ex: código e sua saída). A interface deve empregar transformações CSS 3D acionadas via JavaScript vanilla para o efeito de virar as cartas, mantendo o cabeçalho com os dados do usuário obtidos via login do Discord.
+## Arquitetura
 
-A disposição das cartas é embaralhada no servidor Cloudflare no início da sessão, enviando apenas identificadores opacos para o frontend. Quando o jogador seleciona duas cartas, uma requisição consulta o backend para verificar se os identificadores formam um par válido, incrementando o contador de movimentos no banco D1 e registrando a eficiência do jogador ao descobrir todos os pares.
+- **Frontend:** HTML5, CSS3 e JavaScript puro, sem frameworks. As cartas giram com `transform-style: preserve-3d` e `rotateY`, acionadas por JavaScript.
+- **Backend:** Cloudflare Pages Functions em `functions/`.
+- **Banco:** Cloudflare D1, com migrations em `migrations/`.
+- **Autenticação:** exclusivamente Discord OAuth2 (escopo `identify`), importando `user_id`, nome e avatar.
 
----
+## Rotas
 
-## Como Publicar esta Subpasta no Cloudflare Pages + D1
+| Rota | Função |
+|---|---|
+| `GET /api/auth/discord` | Inicia o login (com `state` anti-CSRF) |
+| `GET /api/auth/discord/callback` | Conclui o login e cria a sessão |
+| `POST /api/auth/logout` | Encerra a sessão |
+| `GET /api/me` | Usuário logado |
+| `POST /api/game/start` | Embaralha no servidor e devolve só IDs opacos |
+| `POST /api/game/reveal` | Revela uma carta (máximo de 2 por turno) |
+| `POST /api/game/check` | Valida o par, incrementa movimentos e fecha a partida |
+| `GET /api/game/state` | Retoma a partida ativa |
 
-1. No painel da Cloudflare (**Workers & Pages** → **Create** → **Pages** → **Connect to Git**), selecione o seu fork do repositório `Avalia2026-2`.
-2. Configure os parâmetros de build apontando para esta subpasta:
-   - **Root directory (Diretório raiz):** `P26-2B-23DA-3A7A-20A1-620C`
-   - **Build command:** *(deixe em branco — HTML/CSS/JS puro)*
-   - **Build output directory:** `public`
-3. Crie o banco de dados D1 e aplique a migração inicial (no terminal do laboratório usando Scoop):
-   ```powershell
-   cd P26-2B-23DA-3A7A-20A1-620C
-   npx.cmd wrangler d1 create db-p26-2b-23da-3a7a-20a1-620c
-   # Copie o database_id gerado para o arquivo wrangler.jsonc e execute:
-   npx.cmd wrangler d1 migrations apply DB --remote
-   ```
-4. Atualize o campo **URL_CLOUDFLARE** no topo deste `README.md` com o endereço público gerado pela Cloudflare.
-5. Na raiz do repositório, execute `node validar-local.mjs P26-2B-23DA-3A7A-20A1-620C` para validar todos os critérios antes de fazer o commit e abrir o Pull Request.
+## Anti-manipulação (validado no servidor)
+
+- O `pair_key` e o conteúdo das cartas ocultas nunca chegam ao navegador.
+- O embaralhamento usa `crypto.getRandomValues`.
+- O token de sessão fica só no cookie `HttpOnly`; no D1 é guardado apenas o hash SHA-256.
+- O servidor só compara as cartas que ele mesmo registrou como viradas.
+- Tempo oficial e eficiência (`pares / movimentos`) são calculados no servidor.
+
+## Executar localmente
+
+```powershell
+npm.cmd install
+# crie .dev.vars com DISCORD_CLIENT_ID e DISCORD_CLIENT_SECRET (nunca versionar)
+npx.cmd wrangler d1 migrations apply db-p26-2b-23da-3a7a-20a1-620c --local
+npx.cmd wrangler pages dev
+```
+
+Acesse `http://localhost:8788` (o redirect do Discord usa `localhost`).
+
+## Agentes e harness
+
+Veja [`AGENTS.md`](./AGENTS.md) e a pasta [`skills/`](./skills/).
+
+## Licença
+
+MIT (veja `LICENSE`).

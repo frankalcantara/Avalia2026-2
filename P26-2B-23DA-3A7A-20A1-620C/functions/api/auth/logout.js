@@ -1,5 +1,6 @@
 /**
  * POST /api/auth/logout - apaga a sessao no D1 e limpa o cookie.
+ * Outros metodos recebem 405.
  */
 import { getCookie, sha256Hex } from "../../_lib/auth.js";
 
@@ -21,5 +22,12 @@ export async function onRequestPost({ request, env }) {
         "Cache-Control": "no-store",
       },
     }
+  );
+}
+
+export function onRequest() {
+  return Response.json(
+    { ok: false, error: "method_not_allowed" },
+    { status: 405, headers: { Allow: "POST" } }
   );
 }
