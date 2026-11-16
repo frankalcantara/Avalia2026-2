@@ -2,7 +2,8 @@
 
 - **Estudante:** Julio Cesar dos Santos Ventura (Turma 2B)
 - **Chave Única:** `P26-2B-23DA-3A7A-20A1-620C`
-- **URL_CLOUDFLARE:** https://p26-2b-23da-3a7a-20a1-620c.pages.dev
+- **URL_CLOUDFLARE:** `https://p26-2b-23da-3a7a-20a1-620c.pages.dev`
+- **Site em execução:** [Abrir o jogo](https://p26-2b-23da-3a7a-20a1-620c.pages.dev)
 - **Licença:** MIT
 
 ## O jogo
