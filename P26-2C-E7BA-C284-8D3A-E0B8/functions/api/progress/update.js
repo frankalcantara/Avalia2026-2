@@ -41,6 +41,19 @@ export async function onRequestPost(context) {
       return Response.json({ ok: false, error: "not_subscribed" }, { status: 403 });
     }
 
+    // Só é possível avançar um capítulo por vez (voltar é permitido).
+    const progress = await env.DB.prepare(
+      "SELECT current_chapter FROM reading_progress WHERE user_id = ? AND book_id = ?"
+    ).bind(userId, activeBook.id).first();
+
+    if (progress && chapter > progress.current_chapter + 1) {
+      return Response.json({
+        ok: false,
+        error: "chapter_jump_not_allowed",
+        currentChapter: progress.current_chapter,
+      }, { status: 400 });
+    }
+
     await env.DB.prepare(
       "UPDATE reading_progress SET current_chapter = ?, updated_at = CURRENT_TIMESTAMP WHERE user_id = ? AND book_id = ?"
     ).bind(chapter, userId, activeBook.id).run();

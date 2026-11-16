@@ -3,42 +3,49 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projeto #45 — P26-2C-E7BA-C284-8D3A-E0B8</title>
+  <title>Clube de Leitura — P26-2C-E7BA-C284-8D3A-E0B8</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="topbar">
-    <div class="topbar-inner">
-      <div>
-        <strong>Projeto #45: Clube de Leitura Acadêmico com Progresso Sincronizado</strong>
-      </div>
-      <div class="discord-badge" id="discordProfile">
-        <a id="discordLoginLink" href="/api/auth/discord" style="color:inherit;text-decoration:none;">
-          <span id="discordUserText">Entrar com Discord OAuth2</span>
-        </a>
-      </div>
+    <div class="wrap topbar-inner">
+      <strong class="brand">Clube de Leitura</strong>
+      <div id="userArea"></div>
     </div>
   </header>
 
-  <main>
-    <section class="card">
-      <span class="pill">Projeto Oficial #45</span>
-      <h1>Clube de Leitura Acadêmico com Progresso Sincronizado</h1>
-      <p class="desc">Desenvolva uma plataforma para organizar a leitura conjunta de livros técnicos ou de ficção científica ao longo do semestre. Após o login via Discord OAuth2, os membros inscrevem-se no livro da rodada atual e atualizam regularmente a página ou capítulo em que se encontram, gerando uma pista visual em CSS com os avatares do Discord posicionados proporcionalmente ao avanço de cada leitor. O sistema conta com fóruns de discussão divididos por capítulos no Cloudflare D1, aplicando uma trava anti-spoiler no backend: uma Cloudflare Function só retorna as mensagens e análises de um determinado capítulo se o registro de progresso atual daquele usuário no banco de dados for igual ou superior ao capítulo que ele está tentando visualizar.</p>
+  <main class="wrap">
+    <div id="notice" class="notice" role="status" hidden></div>
 
-      <div class="form-row">
-        <input class="input-text" id="recordInput" type="text" placeholder="Digite um registro para gravar na Cloudflare Function + D1...">
-        <button class="btn-primary" id="sendBtn" type="button">Registrar no Cloudflare D1</button>
-      </div>
-      <div id="statusMessage" style="font-size:0.88rem;font-weight:700;color:#166534;margin-bottom:0.75rem;"></div>
+    <section id="viewGuest" class="panel" hidden>
+      <h1>Leia junto, sem spoiler</h1>
+      <p>Entre com o Discord, inscreva-se no livro da rodada e registre o capítulo em que está. As discussões de cada capítulo só abrem para quem já chegou lá.</p>
+      <a class="btn" href="/api/auth/discord">Entrar com Discord</a>
     </section>
 
-    <section class="card">
-      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:0.85rem;">Registros Persistidos (Cloudflare Pages Functions + D1)</h2>
-      <ul class="records-list" id="recordsList">
-        <li>Carregando status da API serverless...</li>
-      </ul>
-    </section>
+    <div id="viewApp" hidden>
+      <section class="panel">
+        <p class="label">Livro da rodada</p>
+        <h1 id="bookTitle"></h1>
+        <div id="bookActions"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Pista de leitura</h2>
+        <div id="track" class="track"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Fórum por capítulo</h2>
+        <div id="tabs" class="tabs" role="tablist"></div>
+        <ul id="posts" class="posts"></ul>
+        <form id="postForm" class="post-form" hidden>
+          <label for="postText">Sua mensagem no capítulo <span id="postChapter"></span></label>
+          <textarea id="postText" maxlength="2000" rows="3" required></textarea>
+          <button class="btn" type="submit">Publicar</button>
+        </form>
+      </section>
+    </div>
   </main>
 
   <footer id="projectFooter">
