@@ -3,71 +3,57 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Galactic Memory — Projeto #7</title>
+  <title>Memória Celeste — Projeto #7</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <!-- Fundo Sideral Animado -->
-  <div class="galaxy-bg">
-    <div class="stars"></div>
-    <div class="nebula-glow"></div>
-  </div>
+  <div class="sky" aria-hidden="true"><i class="layer l1"></i><i class="layer l2"></i><i class="layer l3"></i></div>
 
   <header class="topbar" id="topbar" hidden>
-    <div class="topbar-inner">
-      <div class="brand">
-        <span class="galaxy-icon">🌌</span>
-        <strong>Galactic Memory · Turma 2A</strong>
-      </div>
-      <div class="discord-badge" id="discordProfile"></div>
-    </div>
+    <strong class="brand">Memória Celeste</strong>
+    <div id="discordProfile"></div>
   </header>
 
   <main>
-    <!-- TELA DE LOGIN CÓSMICA -->
-    <section class="galaxy-card login-box" id="loginPrompt">
-      <div class="portal-ring"></div>
-      <span class="cosmic-pill">Secure OAuth2 · Cloudflare D1</span>
-      <h1>Portal Galáctico</h1>
-      <p class="desc">Entre com sua conta do Discord para acessar o setor de inteligência, embaralhar as cartas quânticas no servidor e registrar sua eficiência no Cloudflare D1.</p>
+    <section class="login" id="loginPrompt">
+      <h1 data-split>Memória Celeste</h1>
+      <p class="lead">Vire as cartas, ligue cada astro ao seu nome e entre para o ranking com o menor número de movimentos.</p>
       <p id="loginMessage" class="status" role="status" aria-live="polite"></p>
-      <a class="btn-cosmic" href="/api/auth/discord">
-        <span>Conectar com Discord</span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
+      <a class="btn magnetic" href="/api/auth/discord"><span>Entrar com Discord</span></a>
+      <div class="marquee" aria-hidden="true"><div><span>Mercúrio ✦ Vênus ✦ Terra ✦ Marte ✦ Júpiter ✦ Saturno ✦ Urano ✦ Netuno ✦ Lua ✦ Sol ✦ Plutão ✦ Cometa ✦ </span><span>Mercúrio ✦ Vênus ✦ Terra ✦ Marte ✦ Júpiter ✦ Saturno ✦ Urano ✦ Netuno ✦ Lua ✦ Sol ✦ Plutão ✦ Cometa ✦ </span></div></div>
     </section>
 
-    <!-- TELA DO JOGO DA MEMÓRIA -->
-    <section class="galaxy-card game-box" id="gameSection" hidden>
+    <section class="game" id="gameSection" hidden>
       <div class="game-head">
         <div>
-          <span class="cosmic-pill">Desafio de Código & Output</span>
-          <h2>Setor de Correspondência Quântica</h2>
+          <h2 data-split>Encontre os pares</h2>
+          <p class="lead">Combine a imagem de cada astro com o nome dele.</p>
         </div>
-        <button class="btn-cosmic-small" id="newGameBtn" type="button">Reiniciar Partida</button>
-      </div>
-      <p class="desc">Vire duas cartas por vez para encontrar o código JavaScript e a sua respectiva saída correspondente.</p>
-      
-      <div class="stats-grid">
-        <div class="stat-card"><span>Movimentos</span><strong id="movesCount">0</strong></div>
-        <div class="stat-card"><span>Pares Encontrados</span><strong id="pairsCount">0/0</strong></div>
-        <div class="stat-card"><span>Eficiência</span><strong id="efficiency">—</strong></div>
+        <button class="btn small magnetic" id="newGameBtn" type="button"><span>Nova partida</span></button>
       </div>
 
-      <div id="board" class="board" role="group" aria-label="Tabuleiro de cartas galácticas"></div>
+      <dl class="stats">
+        <div><dt>Movimentos</dt><dd id="movesCount">0</dd></div>
+        <div><dt>Pares</dt><dd id="pairsCount">0/0</dd></div>
+        <div><dt>Eficiência</dt><dd id="efficiency">—</dd></div>
+      </dl>
+
+      <div id="board" class="board" role="group" aria-label="Tabuleiro de cartas"></div>
       <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
     </section>
 
-    <!-- RANKING DE PARTIDAS -->
-    <section class="galaxy-card ranking-box" id="rankingSection" hidden>
-      <h2>🌟 Hall da Fama Galáctico</h2>
-      <ol class="records-list" id="leaderboard"><li>Analisando transmissões estelares...</li></ol>
+    <section class="ranking" id="rankingSection" hidden>
+      <h2>Ranking</h2>
+      <ol class="records" id="leaderboard"><li>Carregando…</li></ol>
     </section>
   </main>
 
   <footer id="projectFooter">
-    <p>Julia Letícia Ribeiro de Paula · Turma 2A · Licenciado sob MIT</p>
-    <p class="hash-code">Chave Única de Auditoria: P26-2A-A113-CCFD-DC47-AC0A</p>
+    <p>Julia Letícia Ribeiro de Paula · Turma 2A · Licença MIT</p>
+    <p class="hash">Chave única: P26-2A-A113-CCFD-DC47-AC0A</p>
   </footer>
 
   <script src="/app.js"></script>
