@@ -1,3 +1,424 @@
+/* --- TEMA GALÁCTICO & AWWWARDS UI --- */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+  --bg-space: #03050b;
+  --card-bg: rgba(13, 17, 33, 0.75);
+  --border-neon: rgba(0, 240, 255, 0.45);
+  --border-pink: rgba(255, 0, 128, 0.5);
+  --accent-cyan: #00f0ff;
+  --accent-purple: #8a2be2;
+  --accent-pink: #ff0080;
+  --text-main: #f3f6fc;
+  --text-muted: #8b9bb4;
+  --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-space);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Fundo Galáctico Dinâmico com Estrelas e Nebulosas */
+.galaxy-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 20%, #0d0f24 0%, #03050b 80%);
+}
+
+.stars {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image: radial-gradient(white 1px, transparent 0);
+  background-size: 50px 50px;
+  opacity: 0.25;
+  animation: driftStars 100s linear infinite;
+}
+
+@keyframes driftStars {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+.nebula-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.2) 0%, rgba(0, 240, 255, 0.05) 60%, transparent 100%);
+  top: -200px;
+  right: -100px;
+  filter: blur(80px);
+  animation: pulseNebula 12s ease-in-out infinite alternate;
+}
+
+@keyframes pulseNebula {
+  0% { transform: scale(1); opacity: 0.3; }
+  100% { transform: scale(1.25); opacity: 0.6; }
+}
+
+/* Topbar */
+.topbar {
+  width: 100%;
+  background: rgba(3, 5, 11, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px 32px;
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-inner {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-cyan);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+.profile span {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.profile small {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+/* Botões Estilizados */
+.btn-cosmic {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  color: #03050b;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+  font-size: 1rem;
+}
+
+.btn-cosmic:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.6);
+}
+
+.btn-cosmic-small {
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--accent-cyan);
+  border: 1px solid var(--border-neon);
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-family: 'Outfit', sans-serif;
+}
+
+.btn-cosmic-small:hover {
+  background: var(--accent-cyan);
+  color: #03050b;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: var(--transition-smooth);
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent-pink);
+  color: var(--accent-pink);
+}
+
+/* Layout Principal & Cards de Vidro Fosco */
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 950px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 30px;
+}
+
+.galaxy-card {
+  width: 100%;
+  background: var(--card-bg);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 45px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+}
+
+.cosmic-pill {
+  align-self: flex-start;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--accent-cyan);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border-neon);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -1px; }
+h2 { font-size: 1.5rem; font-weight: 600; }
+.desc { color: var(--text-muted); font-size: 1rem; line-height: 1.6; }
+
+.status {
+  font-size: 0.9rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-cyan);
+  min-height: 24px;
+}
+
+.status.error { color: var(--accent-pink); }
+
+/* Estatísticas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.stat-card span { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+.stat-card strong { font-size: 1.3rem; color: var(--accent-cyan); }
+
+/* --- TABULEIRO E CARTAS COM BORDAS NEON E FLIP 3D --- */
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  width: 100%;
+  perspective: 1400px;
+  margin-top: 10px;
+}
+
+.board.busy { pointer-events: none; }
+
+.memory-card {
+  width: 100%;
+  height: 150px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  perspective: 1000px;
+  padding: 0;
+  outline: none;
+}
+
+.memory-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.memory-card.flipped .memory-inner,
+.memory-card.matched .memory-inner {
+  transform: rotateY(180deg);
+}
+
+.memory-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Verso da carta (Iniciada com borda neon ciano evidente) */
+.memory-back {
+  background: linear-gradient(135deg, rgba(16, 22, 45, 0.95), rgba(7, 10, 22, 0.95));
+  border: 2px solid var(--border-neon);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+  color: var(--accent-cyan);
+  font-size: 2rem;
+  transition: var(--transition-smooth);
+}
+
+.memory-back::after {
+  content: '⚡';
+  filter: drop-shadow(0 0 10px var(--accent-cyan));
+}
+
+.memory-card:hover .memory-back {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
+  transform: translateY(-4px);
+}
+
+/* Frente da carta (Revelada com borda neon rosa/magenta evidente) */
+.memory-front {
+  background: linear-gradient(135deg, #18132d, #0b0816);
+  border: 2px solid var(--border-pink);
+  box-shadow: 0 0 15px rgba(255, 0, 128, 0.25);
+  color: var(--text-main);
+  transform: rotateY(180deg);
+  text-align: center;
+  gap: 8px;
+}
+
+.memory-card.matched .memory-front,
+.memory-card.matched .memory-back {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.7);
+}
+
+.memory-kind {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent-cyan);
+  background: rgba(0, 240, 255, 0.15);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border-neon);
+}
+
+.memory-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  word-break: break-word;
+  color: #f3f6fc;
+}
+
+/* Ranking */
+.records-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+}
+
+.records-list li {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Footer com chave exigida */
+footer {
+  width: 100%;
+  padding: 24px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: rgba(3, 5, 11, 0.9);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+footer .hash-code {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-cyan);
+  letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+  .board { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .memory-card { height: 130px; }
+  .galaxy-card { padding: 24px; }
+}
 /* --- CARTAS GALÁCTICAS (VERSÃO BLINDADA COM BORDAS E FLIP 3D) --- */
 .board {
   display: grid;
