@@ -2,10 +2,11 @@
 
 - **Modalidade:** Projeto Oficial Sorteado (Valendo 100 pontos)
 - **Estudante:** João Vitor do Nascimento Martins
+- **RA:** 2026108385
 - **Turma:** 2B
 - **Chave Única:** `P26-2B-8356-94BE-3650-165C`
-- **URL_CLOUDFLARE:** `https://p26-2b-8356-94be-3650-165c.pages.dev` *(confirmar após o deploy na Cloudflare)*
-- **Repositório:** `https://github.com/SalgadoH2/Avalia2026-2`
+- **URL_CLOUDFLARE:** `https://p26-2b-8356-94be-3650-165c.pages.dev`
+- **Repositório:** `https://github.com/salgadoH2/Avalia2026-2`
 
 ---
 
