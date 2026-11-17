@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title">
+  <title id="title">Peixe assado com limão</title>
+  <rect width="640" height="400" fill="#f2dfbf"/>
+  <circle cx="520" cy="70" r="115" fill="#fffdf7" opacity=".22"/>
+  <circle cx="84" cy="330" r="150" fill="#768f5c" opacity=".12"/>
+  <ellipse cx="320" cy="215" rx="194" ry="125" fill="#fffdf7" opacity=".92"/><ellipse cx="320" cy="208" rx="151" ry="88" fill="#b96c45"/><path d="M205 211c33-53 77-72 114-40 40-48 83-24 110 17-28 48-69 76-122 71-45 0-78-16-102-48z" fill="#768f5c" opacity=".72"/><circle cx="307" cy="216" r="11" fill="#f7e9be" opacity=".9"/><circle cx="350" cy="245" r="7" fill="#768f5c" opacity=".9"/><circle cx="393" cy="199" r="7" fill="#f7e9be" opacity=".9"/><circle cx="286" cy="228" r="11" fill="#768f5c" opacity=".9"/><circle cx="329" cy="182" r="7" fill="#f7e9be" opacity=".9"/><circle cx="372" cy="211" r="7" fill="#768f5c" opacity=".9"/><circle cx="265" cy="240" r="11" fill="#f7e9be" opacity=".9"/>
+  <rect x="22" y="338" width="596" height="42" rx="12" fill="#fffdf7" opacity=".9"/>
+  <text x="42" y="365" fill="#313b32" font-family="Arial,sans-serif" font-size="17" font-weight="700">Peixe assado com limão</text>
+</svg>

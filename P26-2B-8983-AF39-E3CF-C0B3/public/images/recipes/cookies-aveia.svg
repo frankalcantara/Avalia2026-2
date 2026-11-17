@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title">
+  <title id="title">Cookies de aveia e passas</title>
+  <rect width="640" height="400" fill="#e6dcf3"/>
+  <circle cx="520" cy="70" r="115" fill="#fffdf7" opacity=".22"/>
+  <circle cx="84" cy="330" r="150" fill="#c48b51" opacity=".12"/>
+  <ellipse cx="320" cy="210" rx="190" ry="118" fill="#fffdf7" opacity=".92"/><path d="M190 238c0-66 44-111 104-111 33 0 55 15 68 39 48 0 86 37 86 82 0 38-32 66-75 66H260c-42 0-70-29-70-76z" fill="#78639a"/><path d="m258 160 24 48m35-59 18 42m35-26 14 35" stroke="#c48b51" stroke-width="9" stroke-linecap="round"/><circle cx="373" cy="183" r="11" fill="#f7e9be" opacity=".9"/><circle cx="266" cy="212" r="7" fill="#c48b51" opacity=".9"/><circle cx="309" cy="241" r="7" fill="#f7e9be" opacity=".9"/><circle cx="352" cy="195" r="11" fill="#c48b51" opacity=".9"/><circle cx="245" cy="224" r="7" fill="#f7e9be" opacity=".9"/><circle cx="288" cy="178" r="7" fill="#c48b51" opacity=".9"/><circle cx="331" cy="207" r="11" fill="#f7e9be" opacity=".9"/>
+  <rect x="22" y="338" width="596" height="42" rx="12" fill="#fffdf7" opacity=".9"/>
+  <text x="42" y="365" fill="#313b32" font-family="Arial,sans-serif" font-size="17" font-weight="700">Cookies de aveia e passas</text>
+</svg>

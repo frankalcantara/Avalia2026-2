@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="title">
+  <title id="title">Panqueca de banana e aveia</title>
+  <rect width="640" height="400" fill="#e6dcf3"/>
+  <circle cx="520" cy="70" r="115" fill="#fffdf7" opacity=".22"/>
+  <circle cx="84" cy="330" r="150" fill="#c48b51" opacity=".12"/>
+  <ellipse cx="320" cy="265" rx="183" ry="52" fill="#fffdf7" opacity=".92"/><path d="M207 235V165l113-63 113 63v70z" fill="#78639a"/><path d="m207 165 113 66 113-66-113-63z" fill="#c48b51"/><path d="M207 195 320 260l113-65" fill="none" stroke="#fff4d9" stroke-width="12" opacity=".8"/><circle cx="393" cy="173" r="11" fill="#f7e9be" opacity=".9"/><circle cx="286" cy="202" r="7" fill="#c48b51" opacity=".9"/><circle cx="329" cy="231" r="7" fill="#f7e9be" opacity=".9"/><circle cx="372" cy="185" r="11" fill="#c48b51" opacity=".9"/><circle cx="265" cy="214" r="7" fill="#f7e9be" opacity=".9"/><circle cx="308" cy="243" r="7" fill="#c48b51" opacity=".9"/><circle cx="351" cy="197" r="11" fill="#f7e9be" opacity=".9"/>
+  <rect x="22" y="338" width="596" height="42" rx="12" fill="#fffdf7" opacity=".9"/>
+  <text x="42" y="365" fill="#313b32" font-family="Arial,sans-serif" font-size="17" font-weight="700">Panqueca de banana e aveia</text>
+</svg>
