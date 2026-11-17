@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Gerenciador de Horas Complementares: registre atividades de ensino, pesquisa e extensão e acompanhe o progresso até a integralização curricular.">
+  <title>Projeto #20 — Gerenciador de Horas Complementares</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <strong>Projeto #20: Gerenciador de Horas Complementares</strong>
+      <div class="discord-badge" id="discordProfile">
+        <a id="discordLoginLink" href="/api/auth/discord">
+          <img id="discordAvatar" class="avatar" alt="Avatar do Discord" width="24" height="24" hidden>
+          <span id="discordUserText">Entrar com Discord</span>
+        </a>
+        <button id="logoutLink" class="logout" type="button" hidden>Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card" id="authCard">
+      <span class="pill">Projeto Oficial #20</span>
+      <h1>Gerenciador de Horas Complementares</h1>
+      <p class="desc">
+        Controle das atividades formativas exigidas para a graduação. Entre com o Discord,
+        registre eventos, cursos ou projetos de extensão informando a categoria
+        (ensino, pesquisa ou extensão), a carga horária total e o link do certificado digital.
+        O servidor aplica o teto de 60 h por categoria antes de gravar no banco.
+      </p>
+      <div id="authMessage" class="status-msg" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="card" id="dashboardCard" hidden>
+      <h2>Painel de Progresso</h2>
+      <p class="desc">Horas validadas em cada eixo e quanto falta para integralizar a exigência curricular.</p>
+      <div id="progressContainer"></div>
+      <div id="totalProgress" class="total-progress"></div>
+    </section>
+
+    <section class="card" id="formCard" hidden>
+      <h2>Registrar Atividade</h2>
+      <form id="activityForm" novalidate>
+        <div class="form-grid">
+          <label>Categoria
+            <select id="categoryInput" class="input-text" required>
+              <option value="ensino">Ensino</option>
+              <option value="pesquisa">Pesquisa</option>
+              <option value="extensao">Extensão</option>
+            </select>
+          </label>
+          <label>Título / descrição
+            <input class="input-text" id="titleInput" type="text" placeholder="Ex.: Curso de Python, Seminário…" maxlength="200" required>
+          </label>
+          <label>Carga horária (h)
+            <input class="input-text" id="hoursInput" type="number" min="0.01" step="any" inputmode="decimal" placeholder="Ex.: 20" required>
+          </label>
+          <label>Link do certificado digital
+            <input class="input-text" id="certInput" type="url" placeholder="https://…" required>
+          </label>
+        </div>
+        <div class="form-row">
+          <button class="btn-primary" id="sendBtn" type="submit">Registrar atividade</button>
+        </div>
+        <div id="statusMessage" class="status-msg" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="card" id="listCard" hidden>
+      <h2>Atividades Registradas</h2>
+      <ul class="records-list" id="recordsList"></ul>
+    </section>
+  </main>
+
+  <footer id="projectFooter">
+    Projeto Oficial - Chave P26-3A-3337-3158-1523-6DA7 - Turma 3A - Licença MIT
+  </footer>
+
+  <noscript>Este aplicativo requer JavaScript habilitado.</noscript>
+  <script src="/app.js"></script>
+</body>
+</html>
