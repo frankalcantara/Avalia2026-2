@@ -44,11 +44,17 @@ export const onRequestPost = secured(async ({ env }, user, { start, end }) => {
   if (![start, end].every(Number.isInteger)) return json({ error: "Datas inválidas." }, 400);
   if (start % STEP || end % STEP) return json({ error: "Use horários em múltiplos de 30 minutos." }, 400);
   if (end <= start || end - start > MAX_WINDOW) return json({ error: "A janela deve ter entre 30 min e 8 h." }, 400);
-  if (start <= Date.now()) return json({ error: "A janela precisa estar no futuro." }, 400);
+if (start <= Date.now()) return json({ error: "A janela precisa estar no futuro." }, 400);
+  if (start > Date.now() + 60 * DAY) return json({ error: "Abra horários com até 60 dias de antecedência." }, 400);
 
-  const stmt = env.DB.prepare("INSERT OR IGNORE INTO slots (monitor_id, start_ts, end_ts) VALUES (?, ?, ?)");
+    const now = Date.now(), MAX_FUTURE_SLOTS = 200;
+  const stmt = env.DB.prepare(
+    `INSERT INTO slots (monitor_id, start_ts, end_ts)
+     SELECT ?1, ?2, ?3
+      WHERE (SELECT COUNT(*) FROM slots WHERE monitor_id = ?1 AND start_ts > ?4) < ?5
+     ON CONFLICT (monitor_id, start_ts) DO NOTHING`
+  );
   const batch = [];
-  for (let t = start; t < end; t += STEP) batch.push(stmt.bind(user.id, t, t + STEP));
+  for (let t = start; t < end; t += STEP) batch.push(stmt.bind(user.id, t, t + STEP, now, MAX_FUTURE_SLOTS));
   const res = await env.DB.batch(batch); // atômico
-  return json({ created: res.reduce((n, r) => n + r.meta.changes, 0) }, 201);
-}, { body: true });
+  return json({ created: res.reduce((n, r) => n + r.meta.changes, 0), requested: batch.length }, 201);}, { body: true });
