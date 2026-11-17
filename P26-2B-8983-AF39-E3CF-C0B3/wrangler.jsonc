@@ -1,14 +1,14 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "projeto-p26-2b-8983-af39-e3cf-c0b3",
+  "name": "p26-2b-8983-af39-e3cf-c0b3",
+  "account_id": "831cfa23a685c176ef5bbb0431fb51de",
   "compatibility_date": "2026-03-01",
   "pages_build_output_dir": "./public",
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "db-p26-2b-8983-af39-e3cf-c0b3",
-      // Replace with the ID returned by `wrangler d1 create`; no credentials belong in this file.
-      "database_id": "00000000-0000-0000-0000-000000000000"
+      "database_id": "f6679b0f-a66c-415b-b70b-98b907531330"
     }
   ]
 }
