@@ -38,7 +38,8 @@ O contrato compartilhado define as rotas `/api/auth/me`, `/api/auth/logout`, `/a
 - `node --test tests/backend.test.mjs` (executado na pasta do projeto): 10 testes passaram; repetido nesta retomada.
 - `npx wrangler@4 pages functions build ./functions --project-directory . --build-output-directory ./public --outdir ./.wrangler/pages-build` (executado na pasta do projeto): compilação Cloudflare Pages Functions aprovada; repetida nesta retomada.
 - Migrações aplicadas em SQLite local; constraints e busca `PÃO`/`pão` verificadas.
-- Migração de catálogo aplicada em SQLite local: 50 receitas, com ingredientes e etapas, e 50 ilustrações SVG locais verificadas.
+- Todas as migrações aplicadas em SQLite temporário e no D1 remoto: 106 receitas, 515 ingredientes, 319 etapas, 50 ilustrações SVG locais, fotografias do catálogo anterior e 31 créditos Wikimedia. Nenhuma receita ficou sem ingredientes ou etapas.
 - Chromium com API local simulada verificou o escalonamento de 2 para 5 e depois 3 porções e uma viewport móvel sem overflow horizontal. A captura gerada usa dados fictícios e não representa um deploy.
 - A validação estrutural pode ser executada com `node validar-local.mjs P26-2B-8983-AF39-E3CF-C0B3` a partir da raiz do repositório, onde o diretório da entrega está localizado.
-- O login Wrangler foi concluído, mas a conta autenticada não tem autorização para o projeto Pages nem para o D1 configurados. Nenhuma migração remota, alteração de secret ou publicação foi feita; OAuth de produção e D1 remoto continuam pendentes.
+- O login Wrangler foi concluído na conta que possui o Pages/D1. As migrações foram aplicadas e verificadas no D1 de produção, o deploy de Pages Functions foi publicado e `/api/status` confirmou a conexão. O `SESSION_SECRET` forte e `DISCORD_CLIENT_ID` estão configurados; falta `DISCORD_CLIENT_SECRET` para completar o OAuth real.
+- A consulta de receitas foi ajustada para dividir a busca de ingredientes/etapas em grupos de no máximo 90 IDs, abaixo do limite de variáveis do D1; um teste cobre catálogos com mais de 100 receitas.

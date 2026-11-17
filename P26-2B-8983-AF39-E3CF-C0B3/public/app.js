@@ -79,9 +79,33 @@ function normalizeRecipe(recipe) {
 }
 
 function recipeImagePath(imageUrl) {
-  return typeof imageUrl === "string" && /^\/images\/recipes\/[a-z0-9-]+\.svg$/.test(imageUrl)
-    ? imageUrl
-    : "/images/recipes/placeholder.svg";
+  if (typeof imageUrl === "string" && /^\/images\/recipes\/[a-z0-9-]+\.svg$/.test(imageUrl)) {
+    return imageUrl;
+  }
+  try {
+    const url = new URL(imageUrl);
+    return url.protocol === "https:" &&
+      ["images.unsplash.com", "thumb.wikimedia.org", "upload.wikimedia.org"].includes(url.hostname)
+      ? url.href
+      : "/images/recipes/placeholder.svg";
+  } catch {
+    return "/images/recipes/placeholder.svg";
+  }
+}
+
+function appendPhotoCredit(target, recipe, className) {
+  if (!recipe.imageCredit || typeof recipe.imageCreditUrl !== "string") return;
+  try {
+    const url = new URL(recipe.imageCreditUrl);
+    if (url.protocol !== "https:" || url.hostname !== "commons.wikimedia.org") return;
+    const credit = makeElement("a", className, `Foto: ${recipe.imageCredit}`);
+    credit.href = url.href;
+    credit.target = "_blank";
+    credit.rel = "noopener noreferrer";
+    target.append(credit);
+  } catch {
+    return;
+  }
 }
 
 function updateAccount() {
@@ -121,7 +145,6 @@ function emptyState(title, message, needsLogin = false) {
 function recipeCard(recipe) {
   const article = makeElement("article", "recipe-card");
   const image = makeElement("div", "recipe-art");
-  image.setAttribute("aria-hidden", "true");
   const cover = makeElement("img", "recipe-cover");
   cover.src = recipeImagePath(recipe.imageUrl);
   cover.alt = `Ilustração de ${recipe.title || "receita"}`;
@@ -131,6 +154,7 @@ function recipeCard(recipe) {
     cover.src = "/images/recipes/placeholder.svg";
   }, { once: true });
   image.append(cover);
+  appendPhotoCredit(image, recipe, "photo-credit card-photo-credit");
 
   const favoriteButton = makeElement("button", `favorite-toggle${recipe.isFavorite ? " is-favorite" : ""}`, recipe.isFavorite ? "♥" : "♡");
   favoriteButton.type = "button";
@@ -262,6 +286,7 @@ function renderRecipeDetail(recipe, desiredServings) {
     cover.src = "/images/recipes/placeholder.svg";
   }, { once: true });
   heading.append(cover);
+  appendPhotoCredit(heading, recipe, "photo-credit detail-photo-credit");
   if (recipe.description) heading.append(makeElement("p", "detail-description", recipe.description));
   const byline = makeElement("p", "detail-byline", `${recipe.prepTime || "—"} minutos · ${recipe.author?.username || "Comunidade Panela"}`);
   heading.append(byline);

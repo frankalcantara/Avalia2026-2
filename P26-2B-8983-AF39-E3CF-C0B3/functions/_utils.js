@@ -249,48 +249,57 @@ export async function listRecipes(db, userId, filters = {}) {
 
   const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
   const query = await db.prepare(`
-    SELECT r.id, r.title, r.description, r.image_url AS imageUrl, r.prep_time AS prepTime, r.servings,
+    SELECT r.id, r.title, r.description, r.image_url AS imageUrl,
+      r.image_credit AS imageCredit, r.image_credit_url AS imageCreditUrl,
+      r.prep_time AS prepTime, r.servings,
       u.user_id AS authorUserId, u.username AS authorUsername, u.avatar AS authorAvatar,
       EXISTS (SELECT 1 FROM favorites f WHERE f.recipe_id = r.id AND f.user_id = ?) AS isFavorite
     FROM recipes r
     JOIN discord_users u ON u.user_id = r.author_user_id
     ${where}
     ORDER BY r.created_at DESC, r.id DESC
-    LIMIT 100
+    LIMIT 150
   `).bind(...bindings).all();
   const rows = query.results || [];
   if (!rows.length) return [];
 
   const ids = rows.map((row) => row.id);
-  const placeholders = ids.map(() => "?").join(", ");
-  const [ingredientsResult, stepsResult] = await Promise.all([
-    db.prepare(`
+  const idGroups = [];
+  for (let index = 0; index < ids.length; index += 90) {
+    idGroups.push(ids.slice(index, index + 90));
+  }
+  const [ingredientGroups, stepGroups] = await Promise.all([
+    Promise.all(idGroups.map((group) => db.prepare(`
       SELECT recipe_id AS recipeId, name, quantity, unit
-      FROM recipe_ingredients WHERE recipe_id IN (${placeholders})
+      FROM recipe_ingredients WHERE recipe_id IN (${group.map(() => "?").join(", ")})
       ORDER BY recipe_id, position
-    `).bind(...ids).all(),
-    db.prepare(`
+    `).bind(...group).all())),
+    Promise.all(idGroups.map((group) => db.prepare(`
       SELECT recipe_id AS recipeId, content
-      FROM recipe_steps WHERE recipe_id IN (${placeholders})
+      FROM recipe_steps WHERE recipe_id IN (${group.map(() => "?").join(", ")})
       ORDER BY recipe_id, position
-    `).bind(...ids).all(),
+    `).bind(...group).all())),
   ]);
+  const ingredientRows = ingredientGroups.flatMap((result) => result.results || []);
+  const stepRows = stepGroups.flatMap((result) => result.results || []);
   const ingredientsByRecipe = new Map(ids.map((id) => [id, []]));
   const stepsByRecipe = new Map(ids.map((id) => [id, []]));
-  for (const item of ingredientsResult.results || []) {
+  for (const item of ingredientRows) {
     ingredientsByRecipe.get(item.recipeId)?.push({
       name: item.name,
       quantity: Number(item.quantity),
       unit: item.unit,
     });
   }
-  for (const item of stepsResult.results || []) stepsByRecipe.get(item.recipeId)?.push(item.content);
+  for (const item of stepRows) stepsByRecipe.get(item.recipeId)?.push(item.content);
 
   return rows.map((row) => ({
     id: row.id,
     title: row.title,
     description: row.description,
     imageUrl: row.imageUrl,
+    imageCredit: row.imageCredit,
+    imageCreditUrl: row.imageCreditUrl,
     prepTime: Number(row.prepTime),
     servings: Number(row.servings),
     author: {

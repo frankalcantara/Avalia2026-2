@@ -488,6 +488,35 @@ input::placeholder, textarea::placeholder {
   background-image: radial-gradient(ellipse at 47% 54%, #f5f0dc 0 18%, transparent 18.5%), radial-gradient(ellipse at 47% 54%, #b4c29d 0 25%, transparent 25.5%), linear-gradient(135deg, #c2d0c0, #e4e6d5 65%, #d1cfb9);
 }
 
+.photo-credit {
+  color: #fff;
+  font-size: .68rem;
+  text-decoration: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .9);
+}
+
+.photo-credit:hover {
+  text-decoration: underline;
+}
+
+.card-photo-credit {
+  position: absolute;
+  right: 58px;
+  bottom: 10px;
+  left: 10px;
+  width: fit-content;
+  padding: .2rem .35rem;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, .42);
+}
+
+.detail-photo-credit {
+  display: inline-block;
+  margin-top: .35rem;
+  color: #59664f;
+  text-shadow: none;
+}
+
 .recipe-art-mark {
   position: absolute;
   top: 12px;

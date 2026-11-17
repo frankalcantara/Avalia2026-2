@@ -39,7 +39,44 @@ test("recipe title search normalizes Portuguese accents before binding SQL", asy
   await listRecipes(db, "viewer-id", { q: "PÃO" });
 
   assert.match(statement.sql, /r\.title_key LIKE/);
+  assert.match(statement.sql, /r\.image_credit AS imageCredit/);
+  assert.match(statement.sql, /LIMIT 150/);
   assert.equal(statement.values[1], "%pão%");
+});
+
+test("recipe list chunks related queries within the D1 bind-parameter limit", async () => {
+  const calls = [];
+  const recipes = Array.from({ length: 106 }, (_, index) => ({
+    id: `recipe-${index}`,
+    title: `Recipe ${index}`,
+    imageUrl: "/images/recipes/placeholder.svg",
+    prepTime: 10,
+    servings: 2,
+    authorUserId: "panela-editorial",
+    authorUsername: "Caderno Panela",
+    isFavorite: 0,
+  }));
+  const db = {
+    prepare(sql) {
+      const statement = { sql, values: [] };
+      return {
+        bind(...values) {
+          statement.values = values;
+          return this;
+        },
+        async all() {
+          calls.push(statement);
+          if (sql.includes("FROM recipes r")) return { results: recipes };
+          return { results: [] };
+        },
+      };
+    },
+  };
+
+  const result = await listRecipes(db, "viewer-id");
+
+  assert.equal(result.length, 106);
+  assert.deepEqual(calls.map((call) => call.values.length), [1, 90, 16, 90, 16]);
 });
 
 test("recipe creation validation rejects non-positive ingredient quantities", () => {

@@ -12,7 +12,7 @@ Projeto oficial **#28** — catálogo gastronômico colaborativo com autenticaç
 
 - Login OAuth2 exclusivo pelo Discord; o perfil (`user_id`, nome e avatar) é persistido no D1.
 - Catálogo compartilhado com busca por nome, ingrediente e tempo máximo de preparo.
-- 50 receitas editoriais iniciais, cada uma com ilustração SVG local original; novas receitas recebem uma imagem de fallback.
+- 106 receitas iniciais: o catálogo atual inclui as 69 receitas da versão anterior e 37 receitas editoriais adicionais; 50 têm ilustrações SVG locais e as fotografias Wikimedia exibem seus créditos.
 - Receitas com ingredientes estruturados (quantidade numérica e unidade separada), rendimento e etapas ordenadas.
 - Controle de porções que recalcula as quantidades no navegador a partir do rendimento original, sem acumular erros de arredondamento.
 - Favoritos privados por usuário, persistidos no Cloudflare D1.
@@ -25,6 +25,7 @@ Projeto oficial **#28** — catálogo gastronômico colaborativo com autenticaç
 - `functions/api/` — rotas serverless e OAuth2.
 - `migrations/0001_init.sql` — esquema relacional do D1.
 - `migrations/0003_seed_catalog.sql` — 50 receitas iniciais, ingredientes, etapas e caminhos das imagens.
+- `migrations/0004_legacy_catalog.sql` — restaura as receitas exclusivas do catálogo anterior com ingredientes, etapas, fotografias e créditos; combinadas ao catálogo editorial existente, são 106 receitas.
 - `public/images/recipes/` — ilustrações locais das receitas.
 - `scripts/generate-seed-catalog.mjs` — gerador reproduzível da migração e das ilustrações.
 - `wrangler.jsonc` — configuração Pages e binding `DB`.
@@ -33,7 +34,7 @@ Projeto oficial **#28** — catálogo gastronômico colaborativo com autenticaç
 
 ## Publicação no Cloudflare Pages + D1
 
-O projeto Pages e o banco D1 já existem na conta Cloudflare do estudante. O upload manual de assets pelo painel publica somente o frontend; para ativar as Pages Functions, use Wrangler a partir desta pasta. A autenticação Wrangler disponível neste ambiente ainda não tem acesso à conta desses recursos, então não execute as etapas remotas até confirmar no `wrangler whoami` que a conta correta está selecionada.
+O projeto Pages e o banco D1 já existem na conta Cloudflare do estudante. O upload manual de assets pelo painel publica somente o frontend; para ativar as Pages Functions, use Wrangler a partir desta pasta. Confirme com `npx wrangler whoami` que a conta `831cfa23a685c176ef5bbb0431fb51de` está selecionada antes de executar comandos remotos.
 
 1. Confirme no painel que o projeto Pages é `p26-2b-8983-af39-e3cf-c0b3`, com o binding D1 `DB` para `db-p26-2b-8983-af39-e3cf-c0b3`.
 2. Aplique as migrações no banco D1 existente:
@@ -69,7 +70,7 @@ node validar-local.mjs P26-2B-8983-AF39-E3CF-C0B3
 
 A suíte usa o runner nativo do Node.js e cobre busca Unicode, validação de payload, sessão obrigatória em favoritos, state OAuth e resposta do endpoint de status. O login de produção depende de `DISCORD_CLIENT_SECRET` e `SESSION_SECRET` configurados como secrets do Pages.
 
-Neste momento, a suíte local e a compilação das Functions passam, mas o deploy com Functions, as migrações remotas e o OAuth de produção ainda não foram validados. O token Wrangler autenticado não tem autorização para o projeto/D1 configurados; não foi aplicado nenhum comando remoto nem alterado nenhum secret.
+As migrações foram aplicadas ao D1 de produção e conferidas: 106 receitas, 515 ingredientes, 319 etapas, 31 créditos Wikimedia, além das ilustrações locais. O Pages Functions foi publicado; o endpoint de status confirmou D1 conectado. O Client ID e o segredo de sessão estão configurados. O login de produção segue pendente até cadastrar `DISCORD_CLIENT_SECRET`. O catálogo exige agrupar as consultas de detalhes em blocos para respeitar o limite de parâmetros do D1.
 
 As receitas iniciais aparecem como publicadas por **Caderno Panela**, um autor editorial reservado para o conteúdo de demonstração — não é uma conta Discord nem permite login.
 

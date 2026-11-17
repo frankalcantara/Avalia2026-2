@@ -1,7 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "p26-2b-8983-af39-e3cf-c0b3",
-  "account_id": "831cfa23a685c176ef5bbb0431fb51de",
   "compatibility_date": "2026-03-01",
   "pages_build_output_dir": "./public",
   "d1_databases": [
