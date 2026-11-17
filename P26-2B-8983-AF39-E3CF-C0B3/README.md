@@ -5,7 +5,7 @@ Projeto oficial **#28** — catálogo gastronômico colaborativo com autenticaç
 - **Estudante:** WESLEY DOS SANTOS DE SOUZA
 - **Turma informada pelo validador oficial:** 2B
 - **Chave Única:** `P26-2B-8983-AF39-E3CF-C0B3`
-- **URL_CLOUDFLARE:** https://p26-2b-8983-af39-e3cf-c0b3.pages.dev (publicação atual; Functions ainda precisam ser implantadas e verificadas)
+- **URL_CLOUDFLARE:** https://p26-2b-8983-af39-e3cf-c0b3.pages.dev (Pages Functions e D1 ativos; redirecionamento OAuth verificado)
 - **Repositório público:** https://github.com/wesleysantos847317-sketch/Avalia2026-2-
 
 ## Funcionalidades
@@ -70,7 +70,7 @@ node validar-local.mjs P26-2B-8983-AF39-E3CF-C0B3
 
 A suíte usa o runner nativo do Node.js e cobre busca Unicode, validação de payload, sessão obrigatória em favoritos, state OAuth e resposta do endpoint de status. O login de produção depende de `DISCORD_CLIENT_SECRET` e `SESSION_SECRET` configurados como secrets do Pages.
 
-As migrações foram aplicadas ao D1 de produção e conferidas: 106 receitas, 515 ingredientes, 319 etapas, 31 créditos Wikimedia, além das ilustrações locais. O Pages Functions foi publicado; o endpoint de status confirmou D1 conectado. O Client ID e o segredo de sessão estão configurados. O login de produção segue pendente até cadastrar `DISCORD_CLIENT_SECRET`. O catálogo exige agrupar as consultas de detalhes em blocos para respeitar o limite de parâmetros do D1.
+As migrações foram aplicadas ao D1 de produção e conferidas: 106 receitas, 515 ingredientes, 319 etapas, 31 créditos Wikimedia, além das ilustrações locais. As Pages Functions estão publicadas; `/api/status` confirmou o D1 conectado, `/api/recipes` retornou as 106 receitas com ingredientes e etapas, e `/api/auth/discord` redirecionou ao Discord com o callback configurado. `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` e `SESSION_SECRET` estão configurados como valores de produção no Cloudflare Pages, sem serem versionados. O fluxo final de consentimento e sessão deve ser validado por um usuário autenticado no Discord. O catálogo exige agrupar as consultas de detalhes em blocos para respeitar o limite de parâmetros do D1.
 
 As receitas iniciais aparecem como publicadas por **Caderno Panela**, um autor editorial reservado para o conteúdo de demonstração — não é uma conta Discord nem permite login.
 
