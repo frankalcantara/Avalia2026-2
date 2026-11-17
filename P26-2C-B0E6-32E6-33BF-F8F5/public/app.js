@@ -196,8 +196,9 @@ $("#windowForm").onsubmit = (e) => {
   if (!(f > s)) return toast("O horário final deve ser depois do inicial.", true);
   if (s <= Date.now()) return toast("Escolha um horário no futuro.", true);
   act(async () => {
-    await api("/slots", "POST", { start: s, end: f });
+        const r = await api("/slots", "POST", { start: s, end: f });
     state.week = mondayOf(new Date(s)); // leva o monitor à semana que acabou de abrir
+    if (r.created < r.requested) throw Object.assign(new Error(`Foram criados ${r.created} de ${r.requested} horários (limite de 200 futuros ou horários repetidos).`), { status: 409 });
   }, "Horários disponibilizados.");
 };
 
