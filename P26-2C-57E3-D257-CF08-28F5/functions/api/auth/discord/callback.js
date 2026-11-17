@@ -34,7 +34,7 @@ export async function onRequestGet({ request, env }) {
   let failureMessage = "Falha ao concluir a autenticação Discord.";
   let failureStatus = 502;
   try {
-    const redirectUri = new URL("/api/auth/discord/callback", url.origin).href;
+    const redirectUri = env.DISCORD_REDIRECT_URI || new URL("/api/auth/discord/callback", url.origin).href;
     const tokenResponse = await fetch("https://discord.com/api/oauth2/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -63,9 +63,13 @@ export async function onRequestGet({ request, env }) {
     const profile = await profileResponse.json();
     if (
       typeof profile.id !== "string" ||
-      !/^\d+$/.test(profile.id) ||
+      !/^\d{1,20}$/.test(profile.id) ||
       typeof profile.username !== "string" ||
-      !profile.username.trim()
+      !profile.username.trim() ||
+      profile.username.length > 128 ||
+      (profile.avatar !== null &&
+        profile.avatar !== undefined &&
+        (typeof profile.avatar !== "string" || !/^[A-Za-z0-9_]{1,128}$/.test(profile.avatar)))
     ) {
       return fail("O perfil retornado pelo Discord está incompleto.", 502);
     }
@@ -75,7 +79,7 @@ export async function onRequestGet({ request, env }) {
       username: profile.username,
       avatar_url: profile.avatar
         ? `https://cdn.discordapp.com/avatars/${profile.id}/${encodeURIComponent(profile.avatar)}.png?size=96`
-        : `https://cdn.discordapp.com/embed/avatars/${Number(profile.id) % 6}.png`,
+        : `https://cdn.discordapp.com/embed/avatars/${Number(BigInt(profile.id) % 6n)}.png`,
     };
 
     failureMessage = "Não foi possível registrar o usuário no banco D1.";

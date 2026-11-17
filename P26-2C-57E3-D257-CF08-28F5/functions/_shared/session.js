@@ -70,7 +70,14 @@ export async function getSessionUser(request, secret) {
     const session = JSON.parse(new TextDecoder().decode(base64UrlDecode(payload)));
     if (
       typeof session.user?.id !== "string" ||
+      !/^\d{1,20}$/.test(session.user.id) ||
       typeof session.user?.username !== "string" ||
+      !session.user.username.trim() ||
+      session.user.username.length > 128 ||
+      typeof session.user?.avatar_url !== "string" ||
+      !/^https:\/\/cdn\.discordapp\.com\/(?:avatars\/\d{1,20}\/[A-Za-z0-9_%.-]+\.png\?size=96|embed\/avatars\/[0-5]\.png)$/.test(
+        session.user.avatar_url,
+      ) ||
       !Number.isSafeInteger(session.exp) ||
       session.exp <= Date.now() / 1000
     ) {

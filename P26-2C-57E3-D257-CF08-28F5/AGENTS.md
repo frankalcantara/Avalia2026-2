@@ -17,7 +17,7 @@ O trabalho foi desenvolvido no VS Code com Copilot SDK. Os papéis definidos nos
 
 - **Escopo:** interface responsiva em HTML/CSS e JavaScript puro, integração com os endpoints, sessão Discord, formulário de movimentação e aba de estoque crítico.
 - **Skill:** [`skills/vanilla-dom-ui/SKILL.md`](./skills/vanilla-dom-ui/SKILL.md)
-- **Arquivos:** `public/index.html`, `public/styles.css` e `public/app.js`.
+- **Arquivos:** `public/index.html`, `public/style.css` e `public/app.js`.
 - **Validações:** sintaxe do JavaScript e conferência de acessibilidade, caminhos dos assets e ausência de frameworks de interface.
 
 ### Agente 3: Teste, Auditoria e Validação

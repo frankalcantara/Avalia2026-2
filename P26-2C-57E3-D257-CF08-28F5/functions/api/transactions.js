@@ -36,6 +36,12 @@ export async function onRequestPost({ request, env }) {
   if (!parsed.data || typeof parsed.data !== "object" || Array.isArray(parsed.data)) {
     return json({ error: "O corpo deve ser um objeto JSON." }, 400);
   }
+  if (Object.keys(parsed.data).some((key) => !["item_id", "quantity", "type"].includes(key))) {
+    return json(
+      { error: "O corpo aceita somente item_id, quantity e type; a identidade vem da sessão." },
+      400,
+    );
+  }
 
   const { item_id: itemId, quantity, type } = parsed.data;
   if (!Number.isSafeInteger(itemId) || itemId < 1) {
@@ -49,6 +55,14 @@ export async function onRequestPost({ request, env }) {
   }
 
   const delta = type === "retirada" ? -quantity : quantity;
+  const upsertUser = env.DB.prepare(
+    `INSERT INTO discord_users (user_id, username, avatar)
+     VALUES (?, ?, ?)
+     ON CONFLICT(user_id) DO UPDATE SET
+       username = excluded.username,
+       avatar = excluded.avatar,
+       updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')`,
+  ).bind(user.id, user.username, user.avatar_url || null);
   const update = env.DB.prepare(
     "UPDATE itens SET quantidade_atual = quantidade_atual + ?, atualizado_em = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ? AND quantidade_atual + ? >= 0",
   ).bind(delta, itemId, delta);
@@ -57,17 +71,12 @@ export async function onRequestPost({ request, env }) {
      SELECT ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
      WHERE changes() = 1`,
   ).bind(itemId, quantity, type, user.id, user.username);
-  const rollbackIfUnaudited = env.DB.prepare(
-    "UPDATE itens SET quantidade_atual = -1 WHERE id = ? AND changes() = 0",
-  ).bind(itemId);
 
   const describeFailedMovement = async () => {
     try {
       const item = await env.DB.prepare(
         "SELECT id, quantidade_atual FROM itens WHERE id = ?",
-      )
-        .bind(itemId)
-        .first();
+      ).bind(itemId).first();
       if (!item) return json({ error: "Item não encontrado." }, 404);
       if (type === "retirada" && item.quantidade_atual < quantity) {
         return json({ error: "Quantidade indisponível para retirada." }, 409);
@@ -79,12 +88,7 @@ export async function onRequestPost({ request, env }) {
   };
 
   try {
-    const [updateResult, insertResult] = await env.DB.batch([
-      update,
-      insert,
-      rollbackIfUnaudited,
-    ]);
-
+    const [, updateResult, insertResult] = await env.DB.batch([upsertUser, update, insert]);
     if (updateResult.meta?.changes !== 1 || insertResult.meta?.changes !== 1) {
       return describeFailedMovement();
     }
@@ -92,4 +96,16 @@ export async function onRequestPost({ request, env }) {
   } catch {
     return describeFailedMovement();
   }
+}
+
+export function onRequestPut() {
+  return json({ error: "Método não permitido." }, 405, { Allow: "GET, POST" });
+}
+
+export function onRequestPatch() {
+  return json({ error: "Método não permitido." }, 405, { Allow: "GET, POST" });
+}
+
+export function onRequestDelete() {
+  return json({ error: "Método não permitido." }, 405, { Allow: "GET, POST" });
 }

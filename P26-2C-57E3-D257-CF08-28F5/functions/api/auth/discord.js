@@ -16,7 +16,8 @@ export async function onRequestGet({ request, env }) {
   const authorizeUrl = new URL("https://discord.com/oauth2/authorize");
   authorizeUrl.search = new URLSearchParams({
     client_id: env.DISCORD_CLIENT_ID,
-    redirect_uri: new URL("/api/auth/discord/callback", request.url).href,
+    redirect_uri:
+      env.DISCORD_REDIRECT_URI || new URL("/api/auth/discord/callback", request.url).href,
     response_type: "code",
     scope: "identify",
     state,

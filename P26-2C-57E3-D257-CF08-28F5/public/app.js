@@ -14,6 +14,7 @@ const elements = {
   userName: document.querySelector("#user-name"),
   notice: document.querySelector("#notice"),
   grid: document.querySelector("#inventory-grid"),
+  inventoryLoading: document.querySelector("#inventory-loading"),
   empty: document.querySelector("#empty-state"),
   search: document.querySelector("#search-input"),
   activity: document.querySelector("#activity-body"),
@@ -114,7 +115,9 @@ function showDashboard(user) {
 }
 
 function isCritical(item) {
-  return item.quantidade_atual <= item.limite_minimo;
+  const quantity = Number(item.quantidade_atual);
+  const minimum = Number(item.limite_minimo);
+  return Number.isFinite(quantity) && Number.isFinite(minimum) && quantity <= minimum;
 }
 
 function createItemCard(item) {
@@ -126,17 +129,18 @@ function createItemCard(item) {
   const identity = document.createElement("div");
   identity.className = "item-identity";
   const icon = document.createElement("span");
-  icon.className = `item-icon category-${item.categoria.toLocaleLowerCase("pt-BR")}`;
+  const category = typeof item.categoria === "string" && item.categoria.trim() ? item.categoria : "Outros";
+  icon.className = `item-icon category-${category.toLocaleLowerCase("pt-BR")}`;
   icon.setAttribute("aria-hidden", "true");
-  icon.textContent = categoryIcons[item.categoria.toLocaleLowerCase("pt-BR")] || "▧";
+  icon.textContent = categoryIcons[category.toLocaleLowerCase("pt-BR")] || "▧";
   const details = document.createElement("div");
   const name = document.createElement("h3");
   name.className = "item-name";
-  name.textContent = item.nome;
-  const category = document.createElement("span");
-  category.className = "item-category";
-  category.textContent = item.categoria;
-  details.append(name, category);
+  name.textContent = typeof item.nome === "string" ? item.nome : "Item sem nome";
+  const categoryLabel = document.createElement("span");
+  categoryLabel.className = "item-category";
+  categoryLabel.textContent = typeof category === "string" ? category : "Outros";
+  details.append(name, categoryLabel);
   identity.append(icon, details);
 
   const badge = document.createElement("span");
@@ -150,7 +154,7 @@ function createItemCard(item) {
   quantity.className = "item-quantity";
   quantity.append(document.createTextNode(String(item.quantidade_atual)));
   const unit = document.createElement("small");
-  unit.textContent = item.unidade;
+  unit.textContent = typeof item.unidade === "string" && item.unidade ? item.unidade : "un.";
   quantity.append(unit);
   const minimum = document.createElement("span");
   minimum.className = "item-minimum";
@@ -166,6 +170,8 @@ function renderInventory() {
   const filtered = source.filter((item) =>
     `${item.nome || ""} ${item.categoria || ""}`.toLocaleLowerCase("pt-BR").includes(query),
   );
+  elements.grid.setAttribute("aria-busy", "false");
+  elements.inventoryLoading.hidden = true;
   elements.grid.replaceChildren(...filtered.map(createItemCard));
   elements.empty.hidden = filtered.length !== 0;
 
@@ -189,7 +195,7 @@ function renderInventory() {
 
   document.querySelector("#summary-items").textContent = String(state.items.length);
   document.querySelector("#summary-units").textContent = String(
-    state.items.reduce((total, item) => total + item.quantidade_atual, 0),
+    state.items.reduce((total, item) => total + (Number(item.quantidade_atual) || 0), 0),
   );
   document.querySelector("#summary-critical").textContent = String(state.criticalItems.length);
   document.querySelector("#all-count").textContent = String(state.items.length);
@@ -235,6 +241,10 @@ function renderActivity() {
 }
 
 async function refreshDashboard() {
+  elements.inventoryLoading.hidden = false;
+  elements.grid.setAttribute("aria-busy", "true");
+  elements.grid.replaceChildren();
+  elements.empty.hidden = true;
   const [inventory, critical, activity] = await Promise.all([
     requestJson("/api/inventory"),
     requestJson("/api/inventory/critical"),

@@ -252,6 +252,17 @@ main { flex: 1; }
 .search-box svg { width: 15px; flex: 0 0 auto; fill: none; stroke: #98a2b3; stroke-width: 1.7; }
 .search-box input { width: 100%; border: 0; outline: 0; color: #45516a; background: transparent; font-size: 11px; }
 .search-box input::placeholder { color: #a4acb9; }
+.loading-state {
+  margin-top: 17px;
+  padding: 28px;
+  border: 1px solid #e9edf3;
+  border-radius: 9px;
+  color: var(--muted);
+  background: #fff;
+  text-align: center;
+  font-size: 13px;
+}
+
 .inventory-grid { margin-top: 17px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
 .item-card { min-height: 147px; padding: 17px; border: 1px solid #e9edf3; border-radius: 9px; background: #fff; transition: border-color .2s, transform .2s, box-shadow .2s; }
 .item-card:hover { border-color: #d8dff8; box-shadow: 0 7px 19px #1b2b4a09; transform: translateY(-2px); }
@@ -309,7 +320,18 @@ td:first-child { color: #34425a; font-weight: 600; }
   .login-copy h1 { font-size: 41px; }
   .login-art { width: 310px; transform: scale(.85); transform-origin: center right; }
   .dashboard { width: 90%; }
-  .inventory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .loading-state {
+  margin-top: 17px;
+  padding: 28px;
+  border: 1px solid #e9edf3;
+  border-radius: 9px;
+  color: var(--muted);
+  background: #fff;
+  text-align: center;
+  font-size: 13px;
+}
+
+.inventory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .topbar { padding-right: 5%; padding-left: 5%; }
   .footer { padding-right: 5%; padding-left: 5%; }
 }
@@ -332,7 +354,18 @@ td:first-child { color: #34425a; font-weight: 600; }
   .tabs { margin-top: 25px; gap: 22px; }
   .inventory-toolbar { align-items: stretch; flex-direction: column; }
   .search-box { width: 100%; }
-  .inventory-grid { grid-template-columns: 1fr; }
+  .loading-state {
+  margin-top: 17px;
+  padding: 28px;
+  border: 1px solid #e9edf3;
+  border-radius: 9px;
+  color: var(--muted);
+  background: #fff;
+  text-align: center;
+  font-size: 13px;
+}
+
+.inventory-grid { grid-template-columns: 1fr; }
   .item-card { min-height: 135px; }
   .section-heading { align-items: start; flex-direction: column; }
   .footer { align-items: start; flex-direction: column; gap: 8px; padding-top: 16px; padding-bottom: 16px; }
