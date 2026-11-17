@@ -59,3 +59,4 @@ footer{margin-top:auto;padding:1rem;text-align:center;color:var(--muted);font-si
 .empty{grid-column:1/-1;padding:1.5rem;text-align:center;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){#toast{transition:none}}
 @media (pointer:coarse){.slot{min-height:44px;font-size:.875rem}.weeknav button,.tabs button{min-height:44px;min-width:44px}}
+.tabs [aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
