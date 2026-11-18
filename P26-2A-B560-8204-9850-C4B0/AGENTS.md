@@ -78,16 +78,20 @@
 
 ## 3. Pasta `skills/` e `.opencode/skills/` (Espelhadas)
 
+São **9 skills versionadas** (idênticas nas duas pastas, cada uma com `SKILL.md`) + a skill `opencode`, que é nativa do harness e por isso não é versionada.
+
 | Skill | Descrição | Usada por |
 |-------|-----------|-----------|
 | `serverless-d1-discord` | Cloudflare Functions + D1 + Discord OAuth2 | `@backend-architect`, `@infra-devops` |
 | `discord-oauth2-sessions` | OAuth2 Authorization Code Flow + HMAC-SHA256 stateless | `@backend-architect`, `@security-auditor` |
 | `cors-edge-security` | CORS rigoroso, headers, rate limit | `@backend-architect`, `@security-auditor` |
 | `cloudflare-pages-d1` | Wrangler, D1 migrations, Pages, cota gratuita | `@infra-devops`, `@backend-architect`, `@qa-engineer` |
-| `vanilla-dom-ui` / `vanilla-web-craft` | HTML5/CSS3/Vanilla JS sem frameworks | `@frontend-designer` |
-| `teste-validacao` / `automated-qa-harness` | Protocolo QA, testes offline D1 | `@qa-engineer`, `@security-auditor` |
+| `vanilla-dom-ui` | Componentes e DOM seguro sem frameworks | `@frontend-designer` |
+| `vanilla-web-craft` | HTML5/CSS3/Vanilla JS responsivo e acessível | `@frontend-designer` |
+| `teste-validacao` | Protocolo do agente de teste/validação (rubrica 100 pts) | `@qa-engineer`, `@security-auditor` |
+| `automated-qa-harness` | Harness de testes offline D1 + `node --test` | `@qa-engineer` |
 | `github-cli-actions` | `gh` fork, secrets, workflows, repo description | `@infra-devops`, `@docs-compliance` |
-| `opencode` | Configuração do harness OpenCode | `@orchestrator`, `@docs-compliance` |
+| `opencode` *(nativa do harness)* | Configuração do OpenCode (agentes, permissões, delegação) | `@orchestrator`, `@docs-compliance` |
 
 ---
 
