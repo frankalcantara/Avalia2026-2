@@ -1,0 +1,47 @@
+:root{--bg:#09090b;--glass:rgba(15,23,42,.6);--line:rgba(255,255,255,.1);--tx:#f4f4f5;--tx2:#a1a1aa;--ac:#8b5cf6;--ac2:#a78bfa;--bad:#f87171}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(60rem 30rem at 80% -10%,rgba(139,92,246,.14),transparent),var(--bg);color:var(--tx);font:16px/1.6 system-ui,"Segoe UI",sans-serif}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem clamp(1rem,4vw,3rem);border-bottom:1px solid var(--line);background:rgba(9,9,11,.7);backdrop-filter:blur(12px);position:sticky;top:0}
+.brand{font-size:1.1rem;letter-spacing:.01em}
+.user{display:flex;align-items:center;gap:.6rem;color:var(--tx2)}
+.user img{width:32px;height:32px;border-radius:50%;border:1px solid var(--line)}
+main{max-width:52rem;margin:0 auto;padding:2rem 1rem 3rem;display:grid;gap:1.25rem}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.15;margin:.5rem 0}
+h2{font-size:1.15rem;margin:0 0 .75rem}
+.intro p{color:var(--tx2);max-width:60ch;margin:0}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:16px;padding:1.25rem;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.full{grid-column:1/-1}
+label{display:grid;gap:.35rem;font-size:.9rem;color:var(--tx2)}
+label[hidden]{display:none}
+small{font-size:.8rem;color:var(--tx2)}
+input,select{width:100%;padding:.65rem .8rem;border-radius:10px;border:1px solid var(--line);background:rgba(9,9,11,.6);color:var(--tx);font:inherit;transition:border-color .15s,box-shadow .15s}
+input:hover,select:hover{border-color:rgba(255,255,255,.22)}
+input:focus-visible,select:focus-visible,.btn:focus-visible{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px rgba(139,92,246,.35)}
+.btn{display:inline-block;padding:.65rem 1.1rem;border:0;border-radius:10px;background:var(--ac);color:#fff;font:inherit;font-weight:600;text-decoration:none;cursor:pointer;transition:background .15s,transform .1s}
+.btn:hover:not(:disabled){background:var(--ac2)}
+.btn:active:not(:disabled){transform:translateY(1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.previa{font:1.05rem/1.7 Georgia,"Times New Roman",serif;padding:1rem;border-radius:10px;border:1px dashed var(--line);background:rgba(9,9,11,.45);margin:0 0 1rem;overflow-wrap:anywhere}
+.erro{color:var(--bad);min-height:1.4em;margin:.75rem 0 0;font-size:.9rem}
+footer{text-align:center;color:var(--tx2);font-size:.85rem;padding:1.5rem 1rem;border-top:1px solid var(--line)}
+code{color:var(--ac2)}
+@media (max-width:560px){.grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.linha{display:flex;gap:.75rem;flex-wrap:wrap;margin:.5rem 0 1rem}
+.linha input{flex:1;min-width:12rem}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--tx)}
+.btn.ghost:hover:not(:disabled){background:rgba(255,255,255,.06)}
+.chips{display:flex;gap:.5rem;flex-wrap:wrap;color:var(--tx2);margin-bottom:1rem}
+.chip{padding:.4rem .8rem;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--tx);font:inherit;cursor:pointer;transition:background .15s,border-color .15s}
+.chip:hover{border-color:var(--ac2)}
+.chip.on{background:var(--ac);border-color:var(--ac)}
+.salvas{list-style:none;margin:0 0 1rem;padding:0;display:grid;gap:.6rem}
+.salvas li{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;padding:.7rem .9rem;border:1px solid var(--line);border-radius:10px;font-family:Georgia,serif;overflow-wrap:anywhere}
+.mini{flex:none;background:transparent;border:1px solid var(--line);color:var(--tx2);border-radius:8px;padding:.2rem .6rem;font:.8rem system-ui,sans-serif;cursor:pointer}
+.mini:hover{color:var(--bad);border-color:var(--bad)}
+.aviso{margin:0;min-height:1.4em;color:var(--ac2);font-size:.9rem}
+#compilado{margin-top:1rem}
+#compilado p{margin:0 0 .9rem}
+#compilado[hidden],#copiarComp[hidden],#apagarPasta[hidden]{display:none}
+.user .btn.ghost{padding:.35rem .8rem;font-size:.85rem}
