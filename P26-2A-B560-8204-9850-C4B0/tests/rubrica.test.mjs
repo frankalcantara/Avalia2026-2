@@ -3,7 +3,9 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 
-const PROJECT_DIR = path.resolve("C:\\Users\\leona\\Desktop\\Avaliacao\\Avalia2026-2\\P26-2A-B560-8204-9850-C4B0");
+// Raiz do projeto derivada do próprio arquivo: a suíte precisa rodar em
+// qualquer máquina (Linux/macOS/Windows) e no CI, nunca com caminho absoluto.
+const PROJECT_DIR = path.resolve(import.meta.dirname, "..");
 const read = (rel) => fs.existsSync(path.join(PROJECT_DIR, rel)) ? fs.readFileSync(path.join(PROJECT_DIR, rel), "utf8") : "";
 
 describe("Validação estática da Rubrica (100 pontos)", () => {
@@ -19,7 +21,7 @@ describe("Validação estática da Rubrica (100 pontos)", () => {
     assert.ok(readme.toUpperCase().includes("P26-2A-B560-8204-9850-C4B0"));
   });
 
-  it("public/index.html tem <footer> com a Chave Ãšnica", () => {
+  it("public/index.html tem <footer> com a Chave Única", () => {
     const html = read("public/index.html");
     assert.ok(/<footer\b[^>]*>/i.test(html), "Elemento <footer> não encontrado");
     const footerMatch = html.match(/<footer\b[^>]*>([\s\S]*?)<\/footer>/i);

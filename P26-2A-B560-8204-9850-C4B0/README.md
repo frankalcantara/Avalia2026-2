@@ -164,7 +164,7 @@ npm run db:migrate:local        # wrangler d1 migrations apply DB --local
 # 3. Sobe o dev server (Pages + D1 local)
 npm run dev                     # wrangler pages dev public --d1 DB --local
 # 4. Roda a suíte de testes (97 testes, ~390 ms)
-npm test                        # node --test tests/
+npm test                        # node --test tests/*.test.mjs
 ```
 
 **Variáveis de ambiente** (copie `.dev.vars.example` → `.dev.vars` e preencha):
@@ -184,7 +184,7 @@ Workflow: `.github/workflows/ci-deploy.yml`
   2. `actions/setup-node@v4` (Node 24)
   3. `npm ci` (sem deps)
   4. `npx wrangler d1 migrations apply DB --local`
-  5. `node --test tests/` (97 testes)
+  5. `node --test tests/*.test.mjs` (97 testes)
 - **Job `deploy`** (needs `build-test`, só `push` na `main` ou `workflow_dispatch`, `environment: production-cloudflare`):
   1. Mesmos passos de setup
   2. `npx wrangler d1 migrations apply DB --remote`
