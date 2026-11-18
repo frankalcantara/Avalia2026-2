@@ -4,7 +4,7 @@
 - **Estudante:** Lorenzzo Oliveira Figueiredo de Freitas
 - **Turma:** 2C
 - **Chave Única:** `P26-2C-7195-ACC2-3B49-1AE1`
-- **URL_CLOUDFLARE:** `https://p26-2c-7195-acc2-3b49-1ae1.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://avalia2026-2-5ff.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
 - **Licença:** [MIT](LICENSE)
 - **Agentes, harness e skills:** [AGENTS.md](AGENTS.md) · [skills/](skills/)
 
@@ -82,7 +82,7 @@ Formato de `GET /api/dashboard`:
 
 1. No painel da Cloudflare (**Workers & Pages** → **Create** → **Pages** → **Connect to Git**), selecione o seu fork do repositório `Avalia2026-2`.
 2. Configure os parâmetros de build apontando para esta subpasta:
-   - **Project name:** `p26-2c-7195-acc2-3b49-1ae1` (define a URL `https://p26-2c-7195-acc2-3b49-1ae1.pages.dev`; se usar outro nome, atualize a URL acima e o redirect do Discord)
+   - **Project name:** `avalia2026-2` (a Cloudflare gerou o domínio `avalia2026-2-5ff.pages.dev`; se o seu for outro, atualize a URL no topo e o redirect do Discord com o domínio real)
    - **Root directory (Diretório raiz):** `P26-2C-7195-ACC2-3B49-1AE1`
    - **Build command:** *(deixe em branco — HTML/CSS/JS puro)*
    - **Build output directory:** `public`
@@ -96,7 +96,7 @@ Formato de `GET /api/dashboard`:
    - No [Discord Developer Portal](https://discord.com/developers/applications), crie uma Application.
    - Na aba **OAuth2**, copie o **Client ID** e gere o **Client Secret**.
    - Em **Redirects**, adicione exatamente:
-     - `https://p26-2c-7195-acc2-3b49-1ae1.pages.dev/api/auth/discord/callback`
+     - `https://avalia2026-2-5ff.pages.dev/api/auth/discord/callback`
      - `http://localhost:8788/api/auth/discord/callback` (somente para desenvolvimento local)
 6. No projeto Pages: **Settings** → **Variables and Secrets** (ambiente *Production*). Crie como **Secret** (criptografado):
    - `DISCORD_CLIENT_ID`
