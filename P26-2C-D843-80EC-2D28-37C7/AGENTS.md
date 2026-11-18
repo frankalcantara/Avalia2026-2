@@ -4,8 +4,8 @@
 
 ## 1. Ambiente de Orquestração (Harness Utilizado)
 
-- **Harness Principal:** *(Descreva aqui qual harness foi utilizado, ex: Antigravity / Claude Code / Cursor / Cline / GitHub Copilot Workspace / OpenHands)*
-- **Modelo(s) Base:** *(Informe os modelos utilizados pelos agentes)*
+- **Harness Principal:** GitHub Copilot Chat (Agent Mode) / VS Code
+- **Modelo(s) Base:** GPT-4o / Claude 3.5 Sonnet
 - **Estratégia de Coordenação:** Os agentes operaram de forma modular sobre a subpasta `P26-2C-D843-80EC-2D28-37C7/`, compartilhando especificações de banco de dados D1, contratos JSON das Cloudflare Pages Functions e verificação automatizada via `validar-local.mjs`.
 
 ---
@@ -32,3 +32,18 @@
 - **Entregas Realizadas:**
   - Bateria de verificação de integridade dos endpoints e conformidade com a rubrica (`validar-local.mjs` e casos de teste documentados abaixo).
   - Relatório de validação confirmando ausência de frameworks proibidos, presença da licença MIT e funcionamento no Cloudflare.
+
+---
+
+## 3. Casos de Teste e Relatório de Validação (Agente 3)
+
+- **Autenticação e Sessão (`GET /api/me`, `/api/auth/login`, `/api/auth/callback`):**
+  - Utilizador não autenticado recebe `null` em `/api/me` e vê o botão "Entrar com Discord".
+  - Após login via Discord OAuth2, o cookie `user_session` é definido e o cabeçalho exibe o avatar, nome e `user_id`.
+- **Proteção de Escrita (`POST /api/movies` e `POST /api/reviews`):**
+  - Requisições `POST` sem cookie `user_session` válido são bloqueadas no servidor com HTTP `401`.
+  - Notas fora do intervalo de `1` a `5` são rejeitadas com HTTP `400`.
+  - Segunda avaliação do mesmo `user_id` para o mesmo `filme_id` atualiza o registo existente via `ON CONFLICT(user_id, filme_id) DO UPDATE`, mantendo uma única nota por utilizador/filme.
+- **Conformidade de Interface e Rubrica:**
+  - HTML5 semântico, CSS3 sem `text-shadow` e JavaScript Vanilla puro (`fetch` nativo, sem frameworks externos).
+  - Chave única `P26-2C-D843-80EC-2D28-37C7` presente no rodapé de `public/index.html` e licença MIT preservada.
