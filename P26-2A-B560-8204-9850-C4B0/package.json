@@ -1,0 +1,16 @@
+{
+  "name": "p26-2a-b560-8204-9850-c4b0",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Livro de Receitas Colaborativo com Escalonador de Porções — Cloudflare Pages + D1 + Discord OAuth2 (Vanilla JS)",
+  "scripts": {
+    "dev": "wrangler pages dev public --d1 DB --local",
+    "test": "node --test tests/",
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "deploy": "wrangler pages deploy public --project-name=p26-2a-b560-8204-9850-c4b0"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}
