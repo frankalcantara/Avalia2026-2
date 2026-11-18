@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow:
+
+# Chave Única: P26-2A-B560-8204-9850-C4B0
+# Projeto #28 — Livro de Receitas Colaborativo com Escalonador de Porções
