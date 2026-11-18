@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "acervo-bruno-ares",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "acervo-bruno-ares",
+      "database_id": "21b7a63a-e4af-47ce-9e8e-66e2a9a22cf7"
+    }
+  ],
+  "vars": {
+    "DISCORD_CLIENT_ID": "1572435598621413436"
+  }
+}
