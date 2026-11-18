@@ -27,7 +27,7 @@ Painel de acompanhamento de hábitos diários com uma grade matricial dos dias d
 public/                   interface (index.html, styles.css, app.js, _headers)
 functions/api/            rotas: auth/*, me, dashboard, habits/*, status
 lib/                      regras de negócio e utilitários (stats, sessão, Discord, HTTP)
-migrations/0001_init.sql  esquema do D1
+migrations/                esquema do D1 (0001 do scaffold + 0002 do app)
 tests/                    testes (node --test)
 skills/                   skills usados pelos agentes
 .claude/agents/           definição dos 3 agentes

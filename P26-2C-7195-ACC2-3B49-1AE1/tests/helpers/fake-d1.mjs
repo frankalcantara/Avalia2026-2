@@ -1,14 +1,17 @@
 // D1 simulado sobre node:sqlite — expõe a mesma API usada pelas Functions:
 // prepare(sql).bind(...).first()/all()/run() e batch([...]).
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
 
-const MIGRATION = new URL('../../migrations/0001_init.sql', import.meta.url);
+const MIGRATIONS_DIR = new URL('../../migrations/', import.meta.url);
 
 export function createFakeD1() {
   const db = new DatabaseSync(':memory:');
   db.exec('PRAGMA foreign_keys = ON;');
-  db.exec(readFileSync(MIGRATION, 'utf8'));
+  // aplica todas as migrations em ordem, como o `wrangler d1 migrations apply`
+  for (const file of readdirSync(MIGRATIONS_DIR).filter((f) => f.endsWith('.sql')).sort()) {
+    db.exec(readFileSync(new URL(file, MIGRATIONS_DIR), 'utf8'));
+  }
 
   class Statement {
     constructor(sql) {
