@@ -1,0 +1,83 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quadro de Caronas Universitárias · Projeto #31</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="/">Caronas Universitárias</a>
+      <a class="button discord" id="login" href="/api/auth/discord">Entrar com Discord</a>
+      <div class="profile" id="profile" hidden>
+        <img id="avatar" width="40" height="40" alt="">
+        <div><strong id="username"></strong><small id="discord-id"></small></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero" aria-labelledby="title">
+      <h1 id="title">Quadro de Caronas Universitárias</h1>
+      <p>Encontre uma carona para o campus ou ofereça os lugares livres no seu carro.</p>
+      <nav aria-label="Atalhos">
+        <a class="button light" href="#buscar">Buscar carona</a>
+        <a class="button outline" id="offer" href="/api/auth/discord">Oferecer carona</a>
+      </nav>
+    </section>
+
+    <p id="session-status" class="message" role="status"></p>
+    <noscript><p>Ative o JavaScript para consultar e reservar caronas.</p></noscript>
+
+    <div class="workspace">
+      <section class="panel" id="buscar" aria-labelledby="search-title">
+        <h2 id="search-title">Caronas de hoje</h2>
+        <p class="hint">Saídas futuras com vagas e suas reservas de hoje, no horário de Brasília.</p>
+        <form id="search" class="fields">
+          <label>Bairro de origem <input name="origin" maxlength="120" placeholder="Ex.: Centro"></label>
+          <label>Destino <input name="destination" maxlength="120" placeholder="Ex.: Campus"></label>
+          <button class="button" type="submit">Buscar caronas</button>
+        </form>
+        <p id="search-status" class="message" role="status">Carregando caronas…</p>
+        <ul id="results" class="rides" aria-label="Resultados da busca"></ul>
+      </section>
+
+      <div class="driver-column">
+        <section class="panel" id="oferecer" aria-labelledby="offer-title">
+          <h2 id="offer-title">Oferecer carona</h2>
+          <p class="hint" id="guest-hint">Entre com Discord para publicar uma carona.</p>
+          <a class="button discord" id="driver-login" href="/api/auth/discord">Entrar com Discord</a>
+          <form id="create" hidden>
+            <p class="hint">Informe a saída no horário de Brasília.</p>
+            <div class="fields">
+              <label>Bairro de origem <input name="origin" required maxlength="120"></label>
+              <label>Destino <input name="destination" required maxlength="120"></label>
+              <label>Data <input name="date" type="date" required></label>
+              <label>Horário <input name="time" type="time" required></label>
+              <label>Vagas <input name="seats" type="number" required min="1" max="8" step="1" value="1"></label>
+            </div>
+            <button class="button" type="submit">Publicar carona</button>
+          </form>
+          <p id="create-status" class="message" role="status"></p>
+        </section>
+
+        <section class="panel" id="driver-panel" hidden aria-labelledby="driver-title">
+          <div class="panel-heading">
+            <h2 id="driver-title">Minhas caronas</h2>
+            <button class="button secondary" id="refresh-driver" type="button">Atualizar</button>
+          </div>
+          <p id="driver-status" class="message" role="status"></p>
+          <ul id="driver-rides" class="rides" aria-label="Caronas publicadas por você"></ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="shell">Projeto #31 · Turma 2B · Licença MIT<br>
+    Chave oficial <code>P26-2B-DEE4-F0F5-E242-5759</code>
+  </footer>
+</body>
+</html>
