@@ -211,6 +211,20 @@ async function main() {
     process.exit(1);
   }
 
+  // Rejeição prioritária: basta qualquer arquivo estar dentro de uma pasta T26-.
+  // Isso ocorre antes da validação de isolamento para que PRs mistos também sejam fechados.
+  const testFolder = changedFiles
+    .map((file) => file.split("/")[0].toUpperCase())
+    .find((folder) => folder.startsWith("T26-"));
+  if (testFolder) {
+    console.log(`✗ Pasta de teste detectada (${testFolder}). Rejeitando e fechando imediatamente...`);
+    await recusarPullRequestDeTeste({
+      chave: testFolder,
+      motivo: "O Pull Request contém arquivos dentro de uma pasta de teste (T26-...).",
+    });
+    process.exit(0);
+  }
+
   const topFolders = new Set();
   const rootFilesTouched = [];
 
@@ -359,7 +373,7 @@ async function main() {
       `| **1. Deploy Online no Cloudflare** | ${checks.cloudflareOnline ? "✅ OK" : "⚠️ PENDENTE"} | ${checks.cloudflareOnline ? `Online em ${cloudflareUrl}` : "Não foi possível conectar à URL da Cloudflare informada no README"} |`,
       `| **2. Serverless (Functions + D1 + Discord OAuth2)** | ${checks.hasCloudflareFunctions && checks.hasD1BindingOrSql ? "✅ OK" : "⚠️ PENDENTE"} | Functions: ${checks.hasCloudflareFunctions ? "Sim" : "Não"} · D1: ${checks.hasD1BindingOrSql ? "Sim" : "Não"} · Discord OAuth2: ${checks.hasDiscordOAuth ? "Sim" : "Não"} |`,
       `| **3. Frontend HTML5/CSS3/JS Vanilla** | ${checks.hasVanillaFrontend && !checks.hasProhibitedFrameworks ? "✅ OK" : "⚠️ ATENÇÃO"} | ${checks.hasProhibitedFrameworks ? "Frameworks proibidos detectados" : "HTML/CSS/JS puro"} |`,
-      `| **4. Engenharia de Agentes (Mín. 3 Agentes + Teste + Skills)** | ${checks.hasAgentsDoc && checks.hasTestingAgent && checks.skillsCount >= 3 ? "✅ OK" : "⚠️ PENDENTE"} | Agentes: ${checks.agentsCountDetected} · Agente de Teste: ${checks.hasTestingAgent ? "Sim" : "Não"} · Skills: ${checks.skillsCount} |`,
+      `| **4. Engenharia de Agentes (1 Agente + Teste + Skills)** | ${checks.hasAgentsDoc && checks.agentsCountDetected >= 1 && checks.hasTestingAgent && checks.skillsCount >= 1 ? "✅ OK" : "⚠️ PENDENTE"} | Agentes: ${checks.agentsCountDetected} · Agente de Teste: ${checks.hasTestingAgent ? "Sim" : "Não"} · Skills: ${checks.skillsCount} |`,
       `| **5. Licença MIT + Chave no README e Rodapé** | ${checks.hasMitLicense && checks.hasReadmeWithHash && chaveLocalizada ? "✅ OK" : "⚠️ PENDENTE"} | MIT: ${checks.hasMitLicense ? "Sim" : "Não"} · README: ${checks.hasReadmeWithHash ? "Sim" : "Não"} · Rodapé: ${rodapeDiagnostico} |`,
       ``,
       `💡 **Observação:** Seu Pull Request permanece **ABERTO**. Você pode continuar realizando commits e melhorias no seu repositório à vontade (o Pull Request atualizará sozinho a cada \`git push\`). A avaliação por Inteligência Artificial com atribuição de nota final (0 a 100) e o merge oficial serão executados pelo professor na data de encerramento das entregas.`,

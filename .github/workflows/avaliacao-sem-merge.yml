@@ -1,18 +1,18 @@
-name: Avaliador Automático de Projetos 2026
+name: Avaliação automática de PRs (sem merge)
 
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
 
 permissions:
-  contents: write
+  contents: read
   pull-requests: write
   issues: write
   models: read
 
 jobs:
   identificar-aceitar-e-avaliar:
-    name: Identificar Aluno, Aceitar PR e Avaliar com IA
+    name: Identificar, rejeitar testes e avaliar PR oficial
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório oficial (main)
@@ -30,7 +30,6 @@ jobs:
 
       - name: Carregar subpasta do estudante
         run: |
-          cp -r pr-code/T26-* ./ 2>/dev/null || true
           cp -r pr-code/P26-* ./ 2>/dev/null || true
           rm -rf pr-code
 
@@ -39,7 +38,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Executar Pipeline (1. Identificar/Rejeitar -> 2. Avaliar e Atribuir Nota)
+      - name: Executar avaliação sem merge (rejeitar T26 ou avaliar P26)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

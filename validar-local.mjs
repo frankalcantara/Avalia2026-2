@@ -58,7 +58,9 @@ export async function inspecionarSubpasta(rootDir, chave, { checkLiveUrl = true 
   const agentsDoc = readText("AGENTS.md") || readText("AGENTES.md") || readText("docs/AGENTS.md");
   const hasAgentsDoc = agentsDoc.trim().length > 120;
   const agentHeadings = agentsDoc.match(/^#{2,4}\s+.*(?:Agente|Agent)\b.*$/gim) || [];
-  const agentsCountDetected = Math.max(agentHeadings.length, (agentsDoc.match(/\bAgente\s+[1-9]\b/gi) || []).length);
+  const agentsCountDetected = agentHeadings.length > 0
+  ? agentHeadings.length
+  : (agentsDoc.match(/\bAgente\s+[1-9]\b/gi) || []).length;
   const hasTestingAgent = /(?:teste|validação|validacao|qa|testing|auditoria)/i.test(agentsDoc);
   const skillFiles = files.filter((f) => /^skills\/.*\/SKILL\.md$/i.test(f) || /^skills\/.*\.md$/i.test(f));
   const skillsCount = skillFiles.length;
@@ -188,7 +190,7 @@ async function main() {
     ["1. Arquivo LICENSE (MIT)", checks.hasMitLicense],
     ["2. Chave Única no README.md", checks.hasReadmeWithHash],
     ["3. Chave Única no rodapé do HTML", checks.cloudflareHasHashInFooter],
-    ["4. Documento AGENTS.md (Mín. 3 agentes)", checks.hasAgentsDoc && checks.agentsCountDetected >= 3],
+    ["4. Documento AGENTS.md (1 agente)", checks.hasAgentsDoc && checks.agentsCountDetected >= 1],
     ["5. Agente de Teste e Validação documentado", checks.hasTestingAgent],
     ["6. Arquivos de Skills na pasta skills/", checks.skillsCount >= 1],
     ["7. Frontend HTML/CSS/JS Puro (Sem frameworks proibidos)", checks.hasVanillaFrontend && !checks.hasProhibitedFrameworks],

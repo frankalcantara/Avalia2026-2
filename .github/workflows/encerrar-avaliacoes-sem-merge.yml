@@ -1,10 +1,10 @@
-name: Encerrar Entregas e Avaliar Turma
+name: Encerrar avaliações da turma (sem merge)
 
 on:
   workflow_dispatch:
     inputs:
       turma:
-        description: 'Turma para avaliar (os merges são sempre manuais)'
+        description: 'Turma para avaliar; este workflow nunca faz merge'
         required: true
         default: 'todas'
         type: choice
@@ -18,14 +18,14 @@ on:
           - '3B'
 
 permissions:
-  contents: write
+  contents: read
   pull-requests: write
   issues: write
   models: read
 
 jobs:
   avaliar-e-encerrar:
-    name: Avaliar com IA (sem merge — merge é manual)
+    name: Avaliar PRs oficiais e fechar testes (sem merge)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório oficial (main)
@@ -39,7 +39,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Executar Avaliação em Lote (sem merge)
+      - name: Executar avaliação em lote sem merge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

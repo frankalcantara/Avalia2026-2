@@ -217,6 +217,23 @@ async function main() {
     console.log(`--- Processando PR #${prNumber} (${pr.title}) ---`);
 
     const changedFiles = await listarArquivosDoPr(prNumber);
+
+    // Rejeição prioritária: qualquer arquivo sob uma pasta T26- fecha o PR,
+    // mesmo que o PR também viole a regra de isolamento de subpasta.
+    const testFolder = changedFiles
+      .map((file) => file.split("/")[0].toUpperCase())
+      .find((folder) => folder.startsWith("T26-"));
+    if (testFolder) {
+      console.log(`[PR #${prNumber}] Pasta de teste detectada (${testFolder}). Fechando imediatamente.`);
+      await recusarTeste(
+        prNumber,
+        testFolder,
+        null,
+        "O Pull Request contém arquivos dentro de uma pasta de teste (T26-...)."
+      );
+      continue;
+    }
+
     const topFolders = new Set();
     let invalidIsolation = false;
 

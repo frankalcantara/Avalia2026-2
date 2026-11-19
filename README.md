@@ -91,12 +91,14 @@ Antes de entregar o seu projeto oficial, **todos os estudantes fazem um mesmo Pr
 
 ---
 
-## 🔒 Política de Merges
+## 🔒 Política de Merges e Workflows
 
-- **Nenhum Pull Request é mesclado automaticamente.**
-- Os merges oficiais serão feitos **manualmente pelo professor somente a partir de 20/11/2026**.
+- **Nenhum Pull Request é mesclado automaticamente por script ou GitHub Actions.**
+- Os workflows `.github/workflows/avaliacao-sem-merge.yml` e `.github/workflows/encerrar-avaliacoes-sem-merge.yml` apenas validam/avaliam PRs; nenhum deles possui etapa de merge.
+- O workflow `.github/workflows/bloquear-merge-ate-20-11.yml` reprova o status antes de 20/11/2026 (horário de Brasília). Para que esse bloqueio seja efetivo no GitHub, o administrador deve configurar a regra da branch `main` para exigir o check **Merge liberado a partir de 20/11/2026**.
+- Os merges oficiais ficam bloqueados até **20/11/2026** e, a partir dessa data, serão feitos **manualmente pelo professor**.
 - Pull Requests oficiais (`P26-...`) permanecem **abertos** e podem receber novos commits até o encerramento das entregas.
-- Pull Requests de teste (`T26-...`) são **rejeitados e fechados automaticamente**, sem merge, em qualquer data.
+- Pull Requests de teste (`T26-...`), identificados pela pasta ou pela classificação `isTest` retornada pela API, são **rejeitados e fechados automaticamente**, sem avaliação e sem merge, em qualquer data.
 
 ## 🏆 Etapa 2: Entrega do Projeto Oficial Sorteado (Valendo 100 Pontos — Chave `P26-...`)
 

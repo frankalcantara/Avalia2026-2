@@ -1,0 +1,32 @@
+name: Bloqueio de merge até 20/11/2026
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  liberar-merge-na-data:
+    name: Merge liberado a partir de 20/11/2026
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar data oficial (horário de Brasília)
+        run: |
+          node <<'NODE'
+          const agora = new Date();
+          const partes = new Intl.DateTimeFormat('en-CA', {
+            timeZone: 'America/Sao_Paulo',
+            year: 'numeric', month: '2-digit', day: '2-digit'
+          }).formatToParts(agora);
+          const data = Object.fromEntries(partes.map(({ type, value }) => [type, value]));
+          const hoje = `${data.year}-${data.month}-${data.day}`;
+          const liberacao = '2026-11-20';
+          console.log(`Data de Brasília: ${hoje}`);
+          if (hoje < liberacao) {
+            console.error('MERGE BLOQUEADO: os merges oficiais só podem ocorrer a partir de 20/11/2026.');
+            process.exit(1);
+          }
+          console.log('Data atingida: o merge manual poderá ser realizado pelo professor.');
+          NODE
