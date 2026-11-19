@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "loja-creditos-p26-2c-da71",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2c-da71-c3ba-a1ac-470b",
+      "database_id": "3217a4d2-378e-4b2c-9dce-617144af238e",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "INITIAL_BALANCE": "5000"
+  }
+}
