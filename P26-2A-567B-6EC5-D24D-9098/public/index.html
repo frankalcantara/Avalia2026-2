@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bookmark Manager</title>
+  <meta name="description" content="Organize seus links em coleções, acompanhe o que falta ler e compartilhe coleções públicas.">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="/">Bookmark Manager</a>
+
+      <div id="userBar" class="user-bar" hidden>
+        <img id="userAvatar" class="avatar" src="" alt="" width="36" height="36">
+        <span id="userName" class="user-name"></span>
+        <button id="logoutBtn" class="btn btn--secondary" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="page" tabindex="-1">
+
+    <!-- Estado inicial: verificando a sessão -->
+    <section id="bootSection" class="panel panel--center" aria-labelledby="bootTitle">
+      <h1 id="bootTitle" class="panel__title">Bookmark Manager</h1>
+      <p id="bootMessage" class="state state--loading" role="status">Carregando…</p>
+    </section>
+
+    <!-- Tela de login -->
+    <section id="loginSection" class="panel panel--center" aria-labelledby="loginTitle" hidden>
+      <h1 id="loginTitle" class="panel__title">Bookmark Manager</h1>
+      <p class="panel__lead">Guarde seus links em coleções, acompanhe o que ainda falta ler e compartilhe as coleções que quiser tornar públicas.</p>
+      <p id="authError" class="state state--error" role="alert" hidden></p>
+      <a id="loginBtn" class="btn btn--primary btn--large" href="/api/auth/discord">Entrar com Discord</a>
+    </section>
+
+    <!-- Aplicativo (usuário logado) -->
+    <div id="appSection" class="app" hidden>
+
+      <nav id="sidebar" class="sidebar" aria-labelledby="sidebarTitle">
+        <div class="sidebar__head">
+          <h2 id="sidebarTitle" class="sidebar__title">Coleções</h2>
+          <button id="newCollectionBtn" class="btn btn--primary" type="button">Nova coleção</button>
+        </div>
+        <p id="collectionsState" class="state" role="status" hidden></p>
+        <ul id="collectionList" class="collection-list"></ul>
+      </nav>
+
+      <section id="contentSection" class="content" aria-labelledby="contentTitle">
+        <header class="content__head">
+          <div class="content__heading">
+            <h2 id="contentTitle" class="content__title">Todos os links</h2>
+            <p id="contentDesc" class="content__desc" hidden></p>
+          </div>
+          <button id="newLinkBtn" class="btn btn--primary" type="button">Novo link</button>
+        </header>
+
+        <!-- Ações da coleção selecionada (aparecem só quando há uma coleção escolhida) -->
+        <div id="collectionActions" class="collection-actions" hidden>
+          <div class="collection-actions__row">
+            <button id="publishBtn" class="btn btn--secondary" type="button">Tornar pública</button>
+            <button id="copyLinkBtn" class="btn btn--secondary" type="button" hidden>Copiar link</button>
+            <button id="unpublishBtn" class="btn btn--secondary" type="button" hidden>Tornar privada</button>
+            <button id="editCollectionBtn" class="btn btn--secondary" type="button">Renomear</button>
+            <button id="deleteCollectionBtn" class="btn btn--danger" type="button">Excluir coleção</button>
+          </div>
+          <p id="publicLinkText" class="public-link-text" hidden></p>
+          <p id="copyStatus" class="state state--ok" role="status" hidden></p>
+        </div>
+
+        <div class="filter" role="group" aria-labelledby="filterLabel">
+          <span id="filterLabel" class="filter__label">Status</span>
+          <div class="filter__buttons">
+            <button class="filter-btn" type="button" data-status="" aria-pressed="true">Todos</button>
+            <button class="filter-btn" type="button" data-status="Para Ler" aria-pressed="false">Para Ler</button>
+            <button class="filter-btn" type="button" data-status="Lendo" aria-pressed="false">Lendo</button>
+            <button class="filter-btn" type="button" data-status="Concluído" aria-pressed="false">Concluído</button>
+          </div>
+        </div>
+
+        <p id="linksState" class="state" role="status" hidden></p>
+        <ul id="linkList" class="link-list"></ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- Diálogo: criar/editar link -->
+  <dialog id="linkDialog" class="dialog" aria-labelledby="linkDialogTitle">
+    <form id="linkForm" class="form" method="dialog" novalidate>
+      <h2 id="linkDialogTitle" class="dialog__title">Novo link</h2>
+
+      <div class="field">
+        <label for="linkUrl">URL</label>
+        <input id="linkUrl" name="url" type="url" required maxlength="2048" placeholder="https://exemplo.org" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label for="linkTitle">Título</label>
+        <input id="linkTitle" name="title" type="text" required maxlength="200" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label for="linkSummary">Resumo <span class="field__hint">(opcional, até 1000 caracteres)</span></label>
+        <textarea id="linkSummary" name="summary" rows="4" maxlength="1000"></textarea>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="linkCollection">Coleção</label>
+          <select id="linkCollection" name="collection_id" required></select>
+        </div>
+
+        <div class="field">
+          <label for="linkStatus">Status</label>
+          <select id="linkStatus" name="status" required>
+            <option value="Para Ler" selected>Para Ler</option>
+            <option value="Lendo">Lendo</option>
+            <option value="Concluído">Concluído</option>
+          </select>
+        </div>
+      </div>
+
+      <p id="linkFormError" class="state state--error" role="alert" hidden></p>
+
+      <div class="dialog__actions">
+        <button id="linkCancelBtn" class="btn btn--secondary" type="button">Cancelar</button>
+        <button id="linkSaveBtn" class="btn btn--primary" type="submit">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Diálogo: criar/renomear coleção -->
+  <dialog id="collectionDialog" class="dialog" aria-labelledby="collectionDialogTitle">
+    <form id="collectionForm" class="form" method="dialog" novalidate>
+      <h2 id="collectionDialogTitle" class="dialog__title">Nova coleção</h2>
+
+      <div class="field">
+        <label for="collectionName">Nome</label>
+        <input id="collectionName" name="name" type="text" required maxlength="80" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label for="collectionDescription">Descrição <span class="field__hint">(opcional, até 500 caracteres)</span></label>
+        <textarea id="collectionDescription" name="description" rows="3" maxlength="500"></textarea>
+      </div>
+
+      <p id="collectionFormError" class="state state--error" role="alert" hidden></p>
+
+      <div class="dialog__actions">
+        <button id="collectionCancelBtn" class="btn btn--secondary" type="button">Cancelar</button>
+        <button id="collectionSaveBtn" class="btn btn--primary" type="submit">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Diálogo: confirmar exclusão -->
+  <dialog id="confirmDialog" class="dialog dialog--small" aria-labelledby="confirmTitle" aria-describedby="confirmText">
+    <div class="form">
+      <h2 id="confirmTitle" class="dialog__title">Confirmar exclusão</h2>
+      <p id="confirmText" class="dialog__text"></p>
+      <p id="confirmError" class="state state--error" role="alert" hidden></p>
+      <div class="dialog__actions">
+        <button id="confirmCancelBtn" class="btn btn--secondary" type="button">Cancelar</button>
+        <button id="confirmOkBtn" class="btn btn--danger" type="button">Excluir</button>
+      </div>
+    </div>
+  </dialog>
+
+  <noscript>
+    <p class="noscript">Este aplicativo precisa de JavaScript para funcionar.</p>
+  </noscript>
+
+  <footer id="projectFooter">Chave Única de Auditoria: <code>P26-2A-567B-6EC5-D24D-9098</code> · Turma 2A · Licenciado sob MIT</footer>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
