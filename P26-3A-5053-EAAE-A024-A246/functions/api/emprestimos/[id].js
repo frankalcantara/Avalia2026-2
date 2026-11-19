@@ -1,5 +1,30 @@
-
 import { getSessionUser, json } from "../../_lib/session.js";
+
+function validarDataPrevista(data) {
+  if (typeof data !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(data)) {
+    return false;
+  }
+
+  const [ano, mes, dia] = data.split("-").map(Number);
+  const dataTeste = new Date(Date.UTC(ano, mes - 1, dia));
+
+  if (
+    dataTeste.getUTCFullYear() !== ano ||
+    dataTeste.getUTCMonth() !== mes - 1 ||
+    dataTeste.getUTCDate() !== dia
+  ) {
+    return false;
+  }
+
+  const hoje = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date());
+
+  return data > hoje;
+}
 
 export async function onRequestPost({ request, env, params }) {
   try {
@@ -15,7 +40,7 @@ export async function onRequestPost({ request, env, params }) {
 
     const id = Number(params.id);
 
-    if (!Number.isInteger(id) || id <= 0) {
+    if (!Number.isSafeInteger(id) || id <= 0) {
       return json({ ok: false, erro: "ID de empréstimo inválido." }, 400);
     }
 
@@ -43,6 +68,16 @@ export async function onRequestPost({ request, env, params }) {
       return json({ ok: false, erro: "Ação inválida." }, 400);
     }
 
+    if (
+      acao === "aprovar" &&
+      !validarDataPrevista(body.data_prevista_devolucao)
+    ) {
+      return json({
+        ok: false,
+        erro: "Informe uma data válida e futura para a devolução."
+      }, 400);
+    }
+
     const emprestimo = await env.DB.prepare(`
       SELECT
         e.id,
@@ -62,7 +97,6 @@ export async function onRequestPost({ request, env, params }) {
 
     const agora = new Date().toISOString();
 
-    // O dono do livro aprova ou recusa a solicitação.
     if (acao === "aprovar" || acao === "recusar") {
       if (emprestimo.dono_id !== user.user_id) {
         return json({ ok: false, erro: "Você não é o dono deste livro." }, 403);
@@ -78,7 +112,10 @@ export async function onRequestPost({ request, env, params }) {
       const resultado = await env.DB.batch([
         env.DB.prepare(`
           UPDATE emprestimos
-          SET status = ?, decidido_em = ?
+          SET
+            status = ?,
+            decidido_em = ?,
+            data_prevista_devolucao = ?
           WHERE id = ?
             AND status = 'Pendente'
             AND EXISTS (
@@ -88,7 +125,13 @@ export async function onRequestPost({ request, env, params }) {
                 AND livros.dono_id = ?
                 AND livros.status = 'Reservado'
             )
-        `).bind(novoStatus, agora, id, user.user_id),
+        `).bind(
+          novoStatus,
+          agora,
+          acao === "aprovar" ? body.data_prevista_devolucao : null,
+          id,
+          user.user_id
+        ),
 
         env.DB.prepare(`
           UPDATE livros
@@ -120,7 +163,6 @@ export async function onRequestPost({ request, env, params }) {
       });
     }
 
-    // O solicitante pede a devolução do livro.
     if (acao === "solicitar_devolucao") {
       if (emprestimo.solicitante_id !== user.user_id) {
         return json({ ok: false, erro: "Você não é o solicitante deste empréstimo." }, 403);
@@ -162,7 +204,6 @@ export async function onRequestPost({ request, env, params }) {
       });
     }
 
-    // O dono confirma que recebeu o livro.
     if (acao === "confirmar_devolucao") {
       if (emprestimo.dono_id !== user.user_id) {
         return json({ ok: false, erro: "Você não é o dono deste livro." }, 403);

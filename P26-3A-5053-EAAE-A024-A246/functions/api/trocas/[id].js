@@ -1,4 +1,3 @@
-
 import { getSessionUser, json } from "../../_lib/session.js";
 
 export async function onRequestPost({ request, env, params }) {
@@ -33,7 +32,7 @@ export async function onRequestPost({ request, env, params }) {
 
     const acao = body.acao;
 
-    if (!["aceitar", "recusar", "confirmar_conclusao"].includes(acao)) {
+    if (!["aceitar", "recusar", "confirmar_conclusao", "cancelar"].includes(acao)) {
       return json({ ok: false, erro: "Ação inválida." }, 400);
     }
 
@@ -52,6 +51,43 @@ export async function onRequestPost({ request, env, params }) {
 
     if (!ehProponente && !ehDono) {
       return json({ ok: false, erro: "Acesso não autorizado." }, 403);
+    }
+
+    if (acao === "cancelar") {
+      if (!ehProponente) {
+        return json({
+          ok: false,
+          erro: "Somente quem enviou a proposta pode cancelá-la."
+        }, 403);
+      }
+
+      if (troca.status !== "Pendente") {
+        return json({
+          ok: false,
+          erro: "Somente propostas pendentes podem ser canceladas."
+        }, 409);
+      }
+
+      const resultado = await env.DB.prepare(`
+        UPDATE propostas_troca
+        SET status = 'Cancelada',
+            decidida_em = datetime('now')
+        WHERE id = ?
+          AND proponente_id = ?
+          AND status = 'Pendente'
+      `).bind(id, usuario.user_id).run();
+
+      if (resultado.meta.changes !== 1) {
+        return json({
+          ok: false,
+          erro: "A proposta foi alterada. Atualize a página."
+        }, 409);
+      }
+
+      return json({
+        ok: true,
+        mensagem: "Proposta cancelada. Os livros foram liberados."
+      });
     }
 
     if (acao === "aceitar" || acao === "recusar") {

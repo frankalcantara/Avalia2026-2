@@ -20,8 +20,65 @@ const cancelarTrocaBtn = document.getElementById("cancelarTrocaBtn");
 let usuarioAtual = null;
 let livrosAtuais = [];
 let livroAlvoTroca = null;
+let logoutButton = null;
 
 const intervalosChat = new Set();
+
+async function sairDaConta() {
+  if (!logoutButton) return;
+
+  logoutButton.disabled = true;
+  logoutButton.textContent = "Saindo...";
+
+  try {
+    const response = await fetch("/api/auth/logout", {
+      method: "POST"
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(
+        data.error || data.erro || "Não foi possível sair da conta."
+      );
+    }
+
+    usuarioAtual = null;
+    limparIntervalosChat();
+
+    await atualizarDados();
+
+  } catch (error) {
+    alert(error.message || "Ocorreu um erro ao sair da conta.");
+  } finally {
+    if (logoutButton) {
+      logoutButton.disabled = false;
+      logoutButton.textContent = "Sair";
+    }
+  }
+}
+
+function configurarBotaoLogout() {
+  const profile = document.getElementById("discordProfile");
+
+  if (!profile) return null;
+
+  let botao = document.getElementById("discordLogoutBtn");
+
+  if (!botao) {
+    botao = document.createElement("button");
+    botao.id = "discordLogoutBtn";
+    botao.type = "button";
+    botao.className = "btn-secondary";
+    botao.textContent = "Sair";
+
+    profile.appendChild(botao);
+  }
+
+  botao.onclick = sairDaConta;
+
+  return botao;
+}
 
 async function carregarUsuario() {
   const profileText = document.getElementById("discordUserText");
@@ -34,27 +91,55 @@ async function carregarUsuario() {
     if (response.ok && data.ok && data.data) {
       usuarioAtual = data.data;
 
-      profileText.textContent =
-        "Discord: " + (usuarioAtual.global_name || usuarioAtual.username);
+      if (profileText) {
+        profileText.textContent =
+          "Discord: " + (usuarioAtual.global_name || usuarioAtual.username);
+      }
 
       if (loginLink) {
-        loginLink.href = "/api/logout";
+        loginLink.href = "#";
+        loginLink.onclick = (event) => {
+          event.preventDefault();
+        };
+      }
+
+      logoutButton = configurarBotaoLogout();
+
+      if (logoutButton) {
+        logoutButton.hidden = false;
       }
 
       return true;
     }
 
     usuarioAtual = null;
-    profileText.textContent = "Entrar com Discord OAuth2";
+
+    if (profileText) {
+      profileText.textContent = "Entrar com Discord OAuth2";
+    }
 
     if (loginLink) {
       loginLink.href = "/api/auth/discord";
+      loginLink.onclick = null;
+    }
+
+    if (logoutButton) {
+      logoutButton.hidden = true;
     }
 
     return false;
+
   } catch {
     usuarioAtual = null;
-    profileText.textContent = "Não foi possível verificar o login";
+
+    if (profileText) {
+      profileText.textContent = "Não foi possível verificar o login";
+    }
+
+    if (logoutButton) {
+      logoutButton.hidden = true;
+    }
+
     return false;
   }
 }
@@ -225,6 +310,31 @@ async function carregarLivros() {
   }
 }
 
+// Retorna o dia seguinte no horário local do navegador.
+// A devolução precisa estar marcada para uma data futura.
+function obterDataLocalHoje() {
+  const amanha = new Date();
+  amanha.setDate(amanha.getDate() + 1);
+
+  const ano = amanha.getFullYear();
+  const mes = String(amanha.getMonth() + 1).padStart(2, "0");
+  const dia = String(amanha.getDate()).padStart(2, "0");
+
+  return `${ano}-${mes}-${dia}`;
+}
+
+function formatarDataPrevista(data) {
+  if (!data) return "";
+
+  const [ano, mes, dia] = data.split("-");
+
+  if (!ano || !mes || !dia) {
+    return data;
+  }
+
+  return `${dia}/${mes}/${ano}`;
+}
+
 async function enviarSolicitacao(livroId, mensagem) {
   const response = await fetch("/api/emprestimos", {
     method: "POST",
@@ -248,13 +358,23 @@ async function enviarSolicitacao(livroId, mensagem) {
   alert(data.message || "Solicitação enviada com sucesso!");
 }
 
-async function executarAcaoEmprestimo(id, acao) {
+async function executarAcaoEmprestimo(
+  id,
+  acao,
+  dataPrevistaDevolucao = null
+) {
+  const corpo = { acao };
+
+  if (acao === "aprovar") {
+    corpo.data_prevista_devolucao = dataPrevistaDevolucao;
+  }
+
   const response = await fetch(`/api/emprestimos/${id}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ acao })
+    body: JSON.stringify(corpo)
   });
 
   const data = await response.json();
@@ -584,11 +704,42 @@ function renderizarRecebidos(emprestimos) {
       );
     }
 
+    // O dono escolhe a data prevista antes de aprovar.
     if (item.status === "Pendente") {
+      const rotuloData = document.createElement("label");
+      rotuloData.textContent = "Data prevista para devolução:";
+      rotuloData.htmlFor = `data-devolucao-${item.id}`;
+
+      const campoData = document.createElement("input");
+      campoData.type = "date";
+      campoData.id = `data-devolucao-${item.id}`;
+      campoData.min = obterDataLocalHoje();
+      campoData.required = true;
+      campoData.className = "input-text";
+
+      card.appendChild(rotuloData);
+      card.appendChild(campoData);
+
       card.appendChild(
         criarBotao(
           "Aprovar",
-          () => executarAcaoEmprestimo(item.id, "aprovar"),
+          async () => {
+            if (!campoData.value) {
+              campoData.focus();
+              throw new Error("Escolha a data prevista para devolução.");
+            }
+
+            if (campoData.value < obterDataLocalHoje()) {
+              campoData.focus();
+              throw new Error("A data de devolução precisa ser futura.");
+            }
+
+            await executarAcaoEmprestimo(
+              item.id,
+              "aprovar",
+              campoData.value
+            );
+          },
           "btn-primary"
         )
       );
@@ -598,6 +749,17 @@ function renderizarRecebidos(emprestimos) {
           "Recusar",
           () => executarAcaoEmprestimo(item.id, "recusar"),
           "btn-danger"
+        )
+      );
+    }
+
+    // O dono também consegue consultar o prazo depois da aprovação.
+    if (item.status === "Aprovado" && item.data_prevista_devolucao) {
+      card.appendChild(
+        criarElemento(
+          "p",
+          "Devolução prevista para: " +
+          formatarDataPrevista(item.data_prevista_devolucao)
         )
       );
     }
@@ -657,6 +819,17 @@ function renderizarMeusEmprestimos(emprestimos) {
     }
 
     if (item.status === "Aprovado") {
+      // O solicitante consegue consultar a data escolhida pelo dono.
+      if (item.data_prevista_devolucao) {
+        card.appendChild(
+          criarElemento(
+            "p",
+            "Devolução prevista para: " +
+            formatarDataPrevista(item.data_prevista_devolucao)
+          )
+        );
+      }
+
       if (item.devolucao_solicitada_em) {
         card.appendChild(
           criarElemento(
@@ -871,6 +1044,7 @@ async function carregarTrocas() {
   }
 }
 
+
 function criarCardTroca(item, recebida) {
   const card = criarElemento("article", null, "loan-card");
 
@@ -918,6 +1092,7 @@ function criarCardTroca(item, recebida) {
     );
   }
 
+  // Botões para quem recebeu a proposta
   if (recebida && item.status === "Pendente") {
     card.appendChild(
       criarBotao(
@@ -931,6 +1106,25 @@ function criarCardTroca(item, recebida) {
       criarBotao(
         "Recusar proposta",
         () => executarAcaoTroca(item.id, "recusar"),
+        "btn-danger"
+      )
+    );
+  }
+
+  // Botão para quem enviou a proposta
+  if (!recebida && item.status === "Pendente") {
+    card.appendChild(
+      criarBotao(
+        "Cancelar proposta",
+        async () => {
+          const confirmar = confirm(
+            "Tem certeza de que deseja cancelar esta proposta?"
+          );
+
+          if (!confirmar) return;
+
+          await executarAcaoTroca(item.id, "cancelar");
+        },
         "btn-danger"
       )
     );

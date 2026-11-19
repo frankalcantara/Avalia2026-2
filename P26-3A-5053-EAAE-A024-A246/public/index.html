@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
@@ -15,11 +15,26 @@
         <strong>Projeto Oficial #24: Plataforma de Empréstimo e Troca de Livros Físicos</strong>
       </div>
 
-      <div class="discord-badge" id="discordProfile">
-        <a id="discordLoginLink" href="/api/auth/discord" style="color:inherit;text-decoration:none;">
-          <span id="discordUserText">Entrar com Discord OAuth2</span>
-        </a>
-      </div>
+
+<div class="discord-badge" id="discordProfile">
+  <a
+    id="discordLoginLink"
+    href="/api/auth/discord"
+    style="color:inherit;text-decoration:none;"
+  >
+    <span id="discordUserText">Entrar com Discord OAuth2</span>
+  </a>
+
+  <button
+    id="discordLogoutBtn"
+    type="button"
+    class="btn-secondary"
+    hidden
+  >
+    Sair
+  </button>
+</div>
+
     </div>
   </header>
 
