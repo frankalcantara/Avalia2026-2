@@ -1,0 +1,18 @@
+{
+  "name": "p26-2c-7195-acc2-3b49-1ae1",
+  "version": "1.0.0",
+  "description": "Rastreador de Hábitos — Cloudflare Pages + D1 + Discord OAuth2 (Projeto #10)",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "author": "Lorenzzo Oliveira Figueiredo de Freitas",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "dev": "npx wrangler pages dev public",
+    "db:migrate:local": "npx wrangler d1 migrations apply DB --local",
+    "db:migrate:remote": "npx wrangler d1 migrations apply DB --remote",
+    "test": "node --test \"tests/**/*.test.mjs\""
+  }
+}
