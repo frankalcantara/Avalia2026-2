@@ -1304,4 +1304,44 @@ async function iniciarPagina() {
   ]);
 }
 
+
+function mostrarPagina(nomePagina) {
+  const paineis = document.querySelectorAll("[data-page-panel]");
+  const botoes = document.querySelectorAll("[data-page]");
+
+  const painelSelecionado = document.querySelector(
+    `[data-page-panel="${nomePagina}"]`
+  );
+
+  if (!painelSelecionado) return;
+
+  paineis.forEach((painel) => {
+    painel.hidden = painel !== painelSelecionado;
+  });
+
+  botoes.forEach((botao) => {
+    const ativo = botao.dataset.page === nomePagina;
+
+    botao.classList.toggle("active", ativo);
+
+    if (ativo) {
+      botao.setAttribute("aria-current", "page");
+    } else {
+      botao.removeAttribute("aria-current");
+    }
+  });
+}
+
+document.querySelectorAll("[data-page], [data-go-page]")
+  .forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const pagina =
+        botao.dataset.page || botao.dataset.goPage;
+
+      mostrarPagina(pagina);
+    });
+  });
+
+mostrarPagina("inicio");
+
 iniciarPagina();
