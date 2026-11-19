@@ -3,15 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projeto #24 — P26-3A-5053-EAAE-A024-A246</title>
+  <title>Projeto Oficial #24 — Plataforma de Empréstimo e Troca de Livros</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
+
 <body>
+
   <header class="topbar">
     <div class="topbar-inner">
       <div>
-        <strong>Projeto #24: Plataforma de Empréstimo e Troca de Livros Físicos</strong>
+        <strong>Projeto Oficial #24: Plataforma de Empréstimo e Troca de Livros Físicos</strong>
       </div>
+
       <div class="discord-badge" id="discordProfile">
         <a id="discordLoginLink" href="/api/auth/discord" style="color:inherit;text-decoration:none;">
           <span id="discordUserText">Entrar com Discord OAuth2</span>
@@ -21,30 +24,163 @@
   </header>
 
   <main>
+
+    <!-- APRESENTAÇÃO E CADASTRO -->
     <section class="card">
       <span class="pill">Projeto Oficial #24</span>
-      <h1>Plataforma de Empréstimo e Troca de Livros Físicos</h1>
-      <p class="desc">Desenvolva um catálogo comunitário no qual estudantes listam livros técnicos ou literários de seu acervo pessoal que estão dispostos a emprestar ou trocar com colegas da universidade. O login via Discord identifica o proprietário do exemplar e fornece o meio de contato (handle do Discord) para combinar a entrega presencial. O banco de dados Cloudflare D1 mantém o inventário dos livros e seu status atual ("Disponível", "Reservado", "Emprestado"). Quando um usuário autenticado solicita um empréstimo pela interface, o sistema registra o pedido; o proprietário do livro pode aprovar a solicitação em seu painel de controle, registrando no banco quem está com o exemplar e a data prevista para devolução.</p>
 
-      <div class="form-row">
-        <input class="input-text" id="recordInput" type="text" placeholder="Digite um registro para gravar na Cloudflare Function + D1...">
-        <button class="btn-primary" id="sendBtn" type="button">Registrar no Cloudflare D1</button>
-      </div>
-      <div id="statusMessage" style="font-size:0.88rem;font-weight:700;color:#166534;margin-bottom:0.75rem;"></div>
+      <h1>Plataforma de Empréstimo e Troca de Livros Físicos</h1>
+
+      <p class="desc">
+        Desenvolva um catálogo comunitário no qual estudantes listam
+        livros técnicos ou literários de seu acervo pessoal que estão
+        dispostos a emprestar ou trocar com colegas da universidade.
+        O login via Discord identifica o proprietário do exemplar
+        e fornece o meio de contato para combinar a entrega presencial.
+      </p>
+
+      <h2>Cadastrar um livro</h2>
+
+      <form id="bookForm" class="book-form">
+        <label for="bookTitle">Título do livro</label>
+        <input class="input-text" id="bookTitle" type="text"
+          maxlength="150" placeholder="Ex.: Dom Casmurro" required>
+
+        <label for="bookAuthor">Autor</label>
+        <input class="input-text" id="bookAuthor" type="text"
+          maxlength="120" placeholder="Ex.: Machado de Assis" required>
+
+        <label for="bookCategory">Categoria</label>
+        <select class="input-text" id="bookCategory" required>
+          <option value="">Selecione uma categoria</option>
+          <option value="Técnico">Técnico</option>
+          <option value="Literário">Literário</option>
+        </select>
+
+        <label for="bookModality">Modalidade</label>
+        <select class="input-text" id="bookModality" required>
+          <option value="">Selecione uma modalidade</option>
+          <option value="Emprestar">Emprestar</option>
+          <option value="Trocar">Trocar</option>
+          <option value="Ambos">Ambos</option>
+        </select>
+
+        <button class="btn-primary" id="sendBtn" type="submit">
+          Cadastrar livro
+        </button>
+      </form>
+
+      <p id="statusMessage" role="status" aria-live="polite"></p>
     </section>
 
+    <!-- CATÁLOGO -->
     <section class="card">
-      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:0.85rem;">Registros Persistidos (Cloudflare Pages Functions + D1)</h2>
+      <h2>Catálogo de livros</h2>
+
       <ul class="records-list" id="recordsList">
-        <li>Carregando status da API serverless...</li>
+        <li>Carregando livros...</li>
       </ul>
     </section>
+
+    <!-- EMPRÉSTIMOS RECEBIDOS -->
+    <section class="card loans-section">
+      <h2>Solicitações recebidas</h2>
+
+      <p>
+        Aqui aparecem os pedidos de empréstimo feitos por outras
+        pessoas para os seus livros.
+      </p>
+
+      <div id="receivedLoansList">
+        <p>Faça login para consultar suas solicitações.</p>
+      </div>
+    </section>
+
+    <!-- MEUS EMPRÉSTIMOS -->
+    <section class="card loans-section">
+      <h2>Meus empréstimos</h2>
+
+      <p>
+        Acompanhe os livros que você pediu emprestados e o andamento
+        das devoluções.
+      </p>
+
+      <div id="myLoansList">
+        <p>Faça login para consultar seus empréstimos.</p>
+      </div>
+    </section>
+
+    <!-- TROCAS -->
+    <section class="card loans-section" id="trocasSection" hidden>
+      <h2>Minhas trocas</h2>
+
+      <div>
+        <h3>Propostas recebidas</h3>
+        <div id="trocasRecebidasList">
+          <p>As propostas recebidas aparecerão aqui.</p>
+        </div>
+      </div>
+
+      <div>
+        <h3>Minhas propostas enviadas</h3>
+        <div id="minhasTrocasList">
+          <p>As propostas enviadas aparecerão aqui.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL DE TROCA -->
+    <section class="card" id="trocaModal" hidden>
+      <h2>Propor troca</h2>
+
+      <p id="livroDesejadoTexto"></p>
+
+      <form id="trocaForm">
+        <label for="livroOfertadoSelect">
+          Escolha um livro seu para oferecer:
+        </label>
+
+        <select id="livroOfertadoSelect" class="input-text" required>
+          <option value="">Selecione seu livro</option>
+        </select>
+
+        <label for="trocaMensagem">
+          Mensagem para o proprietário (opcional):
+        </label>
+
+        <textarea
+          id="trocaMensagem"
+          class="input-text"
+          maxlength="500"
+          placeholder="Escreva uma mensagem..."
+        ></textarea>
+
+        <button type="submit" class="btn-primary">
+          Enviar proposta
+        </button>
+
+        <button
+          type="button"
+          id="cancelarTrocaBtn"
+          class="btn-secondary"
+        >
+          Cancelar
+        </button>
+      </form>
+
+      <p id="trocaStatusMessage" role="status" aria-live="polite"></p>
+    </section>
+
   </main>
 
   <footer id="projectFooter">
-    Chave Única de Auditoria: <code>P26-3A-5053-EAAE-A024-A246</code> · Turma 3A · Licenciado sob MIT
+    Chave Única de Auditoria:
+    <code>P26-3A-5053-EAAE-A024-A246</code>
+    · Turma 3A · Licenciado sob MIT
   </footer>
 
+  <!-- JAVASCRIPT PRINCIPAL -->
   <script src="/app.js"></script>
+
 </body>
 </html>
