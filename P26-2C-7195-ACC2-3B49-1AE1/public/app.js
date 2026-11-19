@@ -116,9 +116,12 @@
 
   /* ---------- carregamento ---------- */
 
+  let loadSeq = 0;
   async function load(month, { initial = false } = {}) {
+    const seq = ++loadSeq;
     try {
       const data = await api(`/api/dashboard${month ? `?month=${encodeURIComponent(month)}` : ''}`);
+      if (seq !== loadSeq) return; // resposta de uma navegação mais antiga: ignora
       state.data = data;
       state.month = data.month;
       renderUser();
@@ -126,6 +129,7 @@
       buildGrid();
       updateStats();
     } catch (error) {
+      if (seq !== loadSeq) return;
       if (error.status === 401) {
         state.data = null;
         showView('login');
@@ -151,6 +155,7 @@
     const { data } = state;
     const [, m] = data.month.split('-').map(Number);
     const todayDay = data.today.startsWith(`${data.month}-`) ? Number(data.today.slice(8)) : null;
+    const focused = document.activeElement;
 
     $('#month-label').textContent = monthLabel(data.month);
     $('#prev-month').disabled = data.month <= MIN_MONTH;
@@ -158,6 +163,8 @@
     $('#today-btn').disabled = data.month === data.today.slice(0, 7);
     $('#empty-state').hidden = data.habits.length > 0;
     grid.hidden = data.habits.length === 0;
+    // Botão que acabou de ser desabilitado (ex.: "›" ao chegar no mês atual) perde o foco: devolve ao título do mês.
+    if (focused && focused.disabled) $('#month-label').focus();
 
     const headRow = el('tr', {}, el('th', { class: 'habit-col', scope: 'col', text: 'Hábito' }));
     for (let d = 1; d <= data.daysInMonth; d += 1) {
@@ -173,6 +180,7 @@
 
     grid.replaceChildren(el('thead', {}, headRow), body);
     syncChecks();
+    markStreaksStale(state.pending > 0); // grade recriada durante marcações em voo: mantém o aviso
   }
 
   function habitRow(habit, todayDay) {
@@ -196,7 +204,10 @@
         }, el('div', { class: 'progress-fill' })),
         el('div', { class: 'habit-meta' },
           el('span', { class: 'meta-progress' }),
-          el('span', { class: 'meta-streak' }))),
+          el('span', {
+            class: 'meta-streak',
+            title: 'Sequência atual (até hoje) e maior sequência de todos os tempos: não dependem do mês exibido.',
+          }, el('span', { class: 'ms-cur' }), el('span', { class: 'ms-max' })))),
     );
 
     for (let d = 1; d <= data.daysInMonth; d += 1) {
@@ -241,8 +252,8 @@
       row.querySelector('.progress-fill').style.width = `${percent}%`;
       row.querySelector('.progress').setAttribute('aria-valuenow', String(Math.round(percent)));
       row.querySelector('.meta-progress').textContent = `${done}/${eligible} dias · ${fmtPercent(percent)}`;
-      row.querySelector('.meta-streak').textContent =
-        `Atual: ${habit.stats.currentStreak} · Máx: ${habit.stats.maxStreak}`;
+      row.querySelector('.ms-cur').textContent = `Sequência atual: ${habit.stats.currentStreak}`;
+      row.querySelector('.ms-max').textContent = `Maior sequência: ${habit.stats.maxStreak}`;
 
       sumDone += done;
       sumEligible += eligible;
@@ -258,6 +269,14 @@
 
   /* ---------- ações ---------- */
 
+  /** Sequências só são calculadas pelo servidor: enquanto há marcações em voo, sinaliza que estão desatualizadas. */
+  function markStreaksStale(stale) {
+    for (const node of [$('#ind-current').parentElement, $('#ind-max').parentElement, ...grid.querySelectorAll('.meta-streak')]) {
+      node.classList.toggle('is-stale', stale);
+    }
+    $('.indicators').setAttribute('aria-busy', String(stale));
+  }
+
   function onToggle(habitId, date, input) {
     const habit = state.data.habits.find((h) => h.id === habitId);
     if (!habit) return;
@@ -268,6 +287,7 @@
     if (done) set.add(date); else set.delete(date);
     habit.completedDates = [...set].sort();
     updateStats();
+    markStreaksStale(true);
 
     state.pending += 1;
     state.queue = state.queue.then(async () => {
@@ -291,6 +311,7 @@
           state.needsReload = false;
           await load(state.month);
         }
+        if (state.pending === 0) markStreaksStale(false);
       }
     });
   }

@@ -47,7 +47,7 @@
         <div class="toolbar">
           <div class="month-nav" role="group" aria-label="Navegar entre meses">
             <button id="prev-month" type="button" class="btn btn-icon" aria-label="Mês anterior">‹</button>
-            <h2 id="month-label" aria-live="polite"></h2>
+            <h2 id="month-label" aria-live="polite" tabindex="-1"></h2>
             <button id="next-month" type="button" class="btn btn-icon" aria-label="Próximo mês">›</button>
           </div>
           <button id="today-btn" type="button" class="btn btn-ghost">Hoje</button>
@@ -57,12 +57,12 @@
           <article class="card">
             <span class="card-label">Sequência atual</span>
             <strong class="card-value"><span id="ind-current">0</span><small> dias</small></strong>
-            <span class="card-hint">melhor entre seus hábitos</span>
+            <span class="card-hint">até hoje, a melhor entre seus hábitos</span>
           </article>
           <article class="card">
             <span class="card-label">Maior sequência</span>
             <strong class="card-value"><span id="ind-max">0</span><small> dias</small></strong>
-            <span class="card-hint">streak máximo, de todos os tempos</span>
+            <span class="card-hint">de todos os tempos (não depende do mês)</span>
           </article>
           <article class="card">
             <span class="card-label">Cumprimento no mês</span>
@@ -85,7 +85,7 @@
         <p id="empty-state" class="empty" hidden>Você ainda não tem hábitos. Adicione o primeiro acima e comece a marcar os dias!</p>
 
         <div class="grid-wrap">
-          <table id="grid" class="grid"></table>
+          <table id="grid" class="grid" aria-label="Hábitos por dia do mês"></table>
         </div>
       </main>
     </section>

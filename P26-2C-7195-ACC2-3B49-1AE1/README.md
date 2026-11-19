@@ -124,7 +124,7 @@ npm run dev                             # http://localhost:8788
 npm test
 ```
 
-33 testes: regras de streak e taxa (`tests/stats.test.mjs`) e ponta a ponta das Functions com D1 simulado e Discord mockado (`tests/api.test.mjs`). Exige Node 22.13+. Detalhes em [skills/teste-validacao](skills/teste-validacao/SKILL.md).
+49 testes: regras de streak e taxa (`tests/stats.test.mjs`), ponta a ponta das Functions com D1 simulado e Discord mockado (`tests/api.test.mjs`) e casos de borda das sequências (`tests/streak-bordas.test.mjs`). Exige Node 22.13+. Detalhes em [skills/teste-validacao](skills/teste-validacao/SKILL.md).
 
 ## Agentes e skills
 

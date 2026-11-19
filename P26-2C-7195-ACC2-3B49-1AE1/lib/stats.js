@@ -33,14 +33,18 @@ export function daysInMonth(month) {
   return new Date(Date.UTC(y, m, 0)).getUTCDate();
 }
 
-/** "Hoje" (YYYY-MM-DD) no fuso informado. */
+/** "Hoje" (YYYY-MM-DD) no fuso informado. Monta a string a partir das partes, sem depender do formato do locale. */
 export function todayInTimeZone(timeZone = 'America/Sao_Paulo', now = new Date()) {
-  return new Intl.DateTimeFormat('en-CA', {
+  const parts = {};
+  for (const p of new Intl.DateTimeFormat('en-US', {
     timeZone,
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
-  }).format(now);
+  }).formatToParts(now)) {
+    parts[p.type] = p.value;
+  }
+  return `${parts.year.padStart(4, '0')}-${parts.month.padStart(2, '0')}-${parts.day.padStart(2, '0')}`;
 }
 
 /**

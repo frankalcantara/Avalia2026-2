@@ -92,7 +92,7 @@ h1, h2 { margin: 0; line-height: 1.2; }
   flex: 1; min-width: 0; padding: 11px 14px; border-radius: 10px;
   border: 1px solid var(--border); background: var(--surface); color: var(--text); font: inherit;
 }
-.input::placeholder { color: #6c7a99; }
+.input::placeholder { color: #8d9ab6; }
 .color {
   width: 46px; height: 44px; padding: 3px; border-radius: 10px; cursor: pointer;
   border: 1px solid var(--border); background: var(--surface);
@@ -124,6 +124,7 @@ h1, h2 { margin: 0; line-height: 1.2; }
 .card-label { color: var(--muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; }
 .card-value { font-size: 2.2rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .card-value small { font-size: 0.95rem; font-weight: 500; color: var(--muted); }
+.is-stale { opacity: 0.55; }
 .card-hint { color: var(--muted); font-size: 0.8rem; }
 
 /* ---------- Barras de progresso (CSS) ---------- */
@@ -173,6 +174,8 @@ h1, h2 { margin: 0; line-height: 1.2; }
 .habit-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
 .habit-name { font-weight: 600; overflow-wrap: anywhere; }
 .habit-meta { display: flex; flex-direction: column; gap: 2px; margin-top: 8px; font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 400; }
+
+.meta-streak span { display: block; }
 
 .icon-btn {
   flex: none; width: 26px; height: 26px; border-radius: 8px; line-height: 1;
@@ -227,7 +230,7 @@ h1, h2 { margin: 0; line-height: 1.2; }
   .habit-form { flex-wrap: wrap; }
   .habit-form .input { flex-basis: 100%; }
   .habit-form .btn-primary { flex: 1; }
-  .user-name { display: none; }
+  .user-name { max-width: 14ch; }
 }
 
 @media (prefers-reduced-motion: reduce) {

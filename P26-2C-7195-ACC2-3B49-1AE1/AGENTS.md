@@ -92,14 +92,16 @@ O comando `/agents` lista os agentes carregados de `.claude/agents/`.
 
 ## Registro de execução
 
-> **Preencha esta tabela com as execuções reais feitas por você no Claude Code** (data, agente, pedido, resultado). Não registre execuções que não aconteceram.
+**Como foram executados:** em 18 e 19/11/2026, na sessão do Claude (ambiente Claude Code), cada agente rodou como subagente isolado, iniciado com o prompt da sua definição em `.claude/agents/` e instruído a ler o skill correspondente antes de agir. Respeitaram o escopo de escrita descrito acima. Os relatórios abaixo resumem o que cada um devolveu; nada foi verificado em produção (Discord real e D1 remoto ficaram fora do alcance dos agentes).
 
 | Data | Agente | Pedido resumido | Resultado / achados |
 |---|---|---|---|
-| | | | |
-| | | | |
-| | | | |
+| 18/11/2026 | `arquiteto-backend` | Auditar `functions/` e `lib/` pelo checklist do skill e procurar diferenças entre o D1 simulado e o runtime real que afetem streaks e taxa mensal | Checklist OK: SQL parametrizado, filtro por `user_id`, Origin/CSRF, cookies, segredos fora do repositório. Cálculo das sequências correto. **Defeito preventivo corrigido** em `lib/stats.js`: `todayInTimeZone` dependia do formato textual do locale `en-CA`; passou a montar a data com `formatToParts`. Apontou que `.dev.vars.example` citava a rota antiga de callback (corrigido depois). Sem verificação: Workers/D1 reais |
+| 18/11/2026 | `qa-validador` | Rodar a suíte, auditar segurança, conferir a rubrica offline e escrever testes de borda para as sequências | Suíte original 33/33. Auditoria de segurança sem achados. Criou `tests/streak-bordas.test.mjs` (16 testes: meia-noite em America/Sao_Paulo, virada de mês e ano, sequência de 444 dias, vários hábitos, marcar/desmarcar repetido, PUT x GET idênticos). Total **49/49**. Teste ponta a ponta no Chromium com cliques rápidos: estado igual após recarregar. Reportou 2 melhorias de UX (rótulo das sequências em mês passado; indicadores de sequência atrasados em relação às barras). Sem verificação: login real e deploy |
+| 19/11/2026 | `dev-frontend` | Revisar `public/` (teclado, 360px, indicadores e barras, rodapé com a chave, CSP) e avaliar os 2 achados de UX do QA | A 1ª tentativa foi interrompida por limite de uso da conta e foi refeita. Teclado, 360px, rodapé e CSP OK. **Melhorias aplicadas:** rótulos "Sequência atual" e "Maior sequência" com explicação de que não dependem do mês exibido; cards de sequência sinalizados como "atualizando" (`aria-busy` e opacidade) até o servidor responder; descarte de respostas de navegação antiga; foco devolvido ao título do mês. Números continuam vindo só do servidor |
+
+Fluxo entre os agentes: o `qa-validador` reportou à parte de interface (`dev-frontend`) os dois achados de UX, e o `dev-frontend` os tratou. O `arquiteto-backend` sugeriu testes para o `qa-validador`, que os incluiu.
 
 ## Resultado de validação (suíte automatizada)
 
-`npm test` executa 33 testes (`tests/stats.test.mjs` e `tests/api.test.mjs`): 33 passaram, 0 falharam na geração inicial do projeto. Re-execute localmente e registre o resultado atual aqui após cada mudança.
+`npm test` executa 49 testes (`tests/stats.test.mjs`, `tests/api.test.mjs` e `tests/streak-bordas.test.mjs`): 49 passaram, 0 falharam em 19/11/2026. Re-execute localmente e atualize esta linha após cada mudança.
