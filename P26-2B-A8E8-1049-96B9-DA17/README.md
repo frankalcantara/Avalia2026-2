@@ -97,3 +97,41 @@ sessão principal (orquestra, conferindo cada entrega)
      - Opcional, **voz natural em nuvem** (`GOOGLE_TTS_API_KEY`, cadastrada como *secret*; sem ela a função fica inativa e vale a voz do navegador): no Google Cloud, ative a **Cloud Text-to-Speech API**, crie uma chave de API **restrita a essa API** e configure um **orçamento com alerta de cobrança**. Depois de cadastrar o secret, republique o site. Variáveis opcionais de ajuste: `TTS_DAILY_USER_CHARS` (padrão 30 000 caracteres/dia por usuário), `TTS_MONTHLY_CHARS` (padrão 700 000/mês no total, abaixo do plano gratuito), `TTS_VOICE_PT` (padrão `pt-BR-Neural2-A`) e `TTS_VOICE_EN` (padrão `en-US-Neural2-F`). Cada pedido aceita até 1500 caracteres.
 6. Atualize o campo **URL_CLOUDFLARE** no topo deste `README.md` com o endereço público gerado pela Cloudflare.
 7. Na raiz do repositório, execute `node validar-local.mjs P26-2B-A8E8-1049-96B9-DA17` para validar todos os critérios antes de fazer o commit.
+
+---
+
+## English
+
+**Quotes Archive and Reading Notes** is a small web app to save, organize and listen to quotes from the books you read. Everything above is in Portuguese; this section summarizes it in English. The site itself has a **PT | EN** button in the header that switches the whole interface instantly.
+
+- **Live site:** https://p26-2b-a8e8-1049-96b9-da17.pages.dev
+- **Unique key:** `P26-2B-A8E8-1049-96B9-DA17`
+- **Author:** Paulo Cézar Mendonça Molena (class 2B), personal site: [paulomendonca.dev](https://paulomendonca.dev)
+- **Stack:** plain HTML5, CSS3 and JavaScript on the front end (no frameworks); Cloudflare Pages Functions and a D1 database on the back end; sign-in with Discord OAuth2 (session in a signed `HttpOnly` cookie).
+
+### Features
+
+- **Quotes:** author, work, page and your own reflection; public (class feed) or private; instant search and a random public quote.
+- **Import:** drop `.md` or `.txt` files (or paste text), review an editable preview and only then save. Six formats are recognized (blockquote, "Text — Author", Kindle, front matter, labeled fields and free text), with English and Portuguese labels. Everything is imported as private and duplicates are skipped.
+- **Tags and collections:** up to 8 tags per quote and your own collections, with filters.
+- **Listen:** "Listen" on a quote or on a whole list, with pause, next, stop and speed. The browser voice follows the language of the quote text (pt-BR or en-US). A natural cloud voice (Google Cloud Text-to-Speech) is implemented but **inactive**, because no API key was created; the site uses the browser voice. If it is ever enabled, the text being read, including private quotes, is sent to Google Cloud to generate the audio.
+- **Language:** PT | EN button; the choice is remembered and the browser language is used on the first visit. Quote texts are user content and are not translated.
+- **Discord invite:** new users see a single optional prompt to join the community server; the invite also stays in the menu.
+- **Accessibility and theme:** keyboard navigation, large touch targets on mobile and a light and dark theme.
+
+### Agent architecture
+
+The project was built by a team of Claude Code subagents: a goal executor, a design curator, a front-end builder, a back-end engineer, a Discord OAuth integrator, a QA tester, a code and security reviewer, a Cloudflare Pages deployer, a terminal executor and a Discord server builder (which created the community server on 2026-11-18). The main session acts as the orchestrator, because subagents cannot start other subagents. Roles, results, dates and what was actually used are in [`AGENTS.md`](./AGENTS.md); the agent definitions are in [`agents/`](./agents/) and the three skills in [`skills/`](./skills/). The `github-project-publisher` agent was not used.
+
+### Run and deploy
+
+1. Create a D1 database and apply the migrations (no build step): `npx wrangler d1 migrations apply DB --remote` (migrations 0001 to 0005).
+2. Create a Discord application and add the redirect URI `https://<your-pages-url>/api/auth/discord/callback`. Set `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` and `SESSION_SECRET` as secrets (locally in `.dev.vars`, which is git-ignored; see `.dev.vars.example`). `DISCORD_INVITE_URL` is optional and not secret.
+3. Local development: `npx wrangler pages dev public --port 8788`. Tests: `node --test tests/*.test.mjs` (42 tests).
+4. Deploy: `npx wrangler pages deploy public --project-name <your-project> --branch main`.
+
+An English-only copy of this project (code, comments and documentation in English) is kept separately by the author.
+
+### Status
+
+Automated checks pass (42 tests, local pre-validation 9/9). Real speech after the latest voice change, the logged-in screens after it, small mobile widths and Safari/iOS are still to be validated by the author.
