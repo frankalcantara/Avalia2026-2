@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gerenciador de Horas Complementares</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <strong>Gerenciador de Horas Complementares</strong>
+      <div id="userArea"></div>
+    </div>
+  </header>
+
+  <main>
+    <p id="authError" class="msg erro" role="alert" hidden></p>
+
+    <section id="loginPrompt" class="card" hidden>
+      <h1>Controle suas horas complementares</h1>
+      <p>Entre com o Discord para registrar cursos, eventos e projetos de extensão e acompanhar quanto falta em cada eixo.</p>
+      <a class="btn" href="/api/auth/discord">Entrar com Discord</a>
+    </section>
+
+    <div id="app" hidden>
+      <section class="card">
+        <h2>Seu progresso</h2>
+        <div id="bars"></div>
+        <p id="totalGeral" class="total"></p>
+      </section>
+
+      <section class="card">
+        <h2>Registrar atividade</h2>
+        <form id="formAtividade" novalidate>
+          <label for="titulo">Título da atividade</label>
+          <input id="titulo" name="titulo" type="text" maxlength="120" required>
+
+          <div class="linha">
+            <div>
+              <label for="categoria">Categoria</label>
+              <select id="categoria" name="categoria" required>
+                <option value="ensino">Ensino</option>
+                <option value="pesquisa">Pesquisa</option>
+                <option value="extensao">Extensão</option>
+              </select>
+            </div>
+            <div>
+              <label for="horas">Carga horária (h)</label>
+              <input id="horas" name="horas" type="number" min="1" max="60" step="1" required>
+            </div>
+          </div>
+
+          <label for="link">Link do certificado (https)</label>
+          <input id="link" name="link" type="url" placeholder="https://..." required>
+
+          <button class="btn" type="submit" id="btnEnviar">Registrar</button>
+          <p id="formMsg" class="msg" role="status"></p>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Atividades registradas</h2>
+        <ul id="lista" class="lista"></ul>
+      </section>
+    </div>
+  </main>
+
+  <footer id="projectFooter">
+    Chave de Auditoria: <code>P26-2C-7E6D-B4F0-76A5-9594</code> · Turma 2C · Licenciado sob MIT
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
