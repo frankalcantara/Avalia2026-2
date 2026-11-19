@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 /**
  * .github/scripts/encerrar-avaliacoes.mjs
- * Workflow manual/agendado para encerramento de entregas:
+ * Workflow manual para encerramento de entregas:
  * 1. Lista todos os Pull Requests abertos para a branch main.
  * 2. Filtra pela turma solicitada (ou todas as turmas).
- * 3. Inspeciona o código, consulta a IA, registra as notas oficiais no D1 e comenta no PR.
- * 4. Faz o Merge (Squash) de todos os Pull Requests avaliados para a branch main.
+ * 3. Rejeita e fecha imediatamente qualquer Pull Request de teste (T26-...).
+ * 4. Inspeciona o código, consulta a IA, registra as notas oficiais no D1 e comenta no PR.
+ *
+ * IMPORTANTE: este script NUNCA faz merge. O merge oficial é manual, feito pelo professor
+ * somente a partir de 20/11/2026.
  */
 
 import fs from "node:fs";
@@ -22,6 +25,9 @@ const REPO = process.env.GITHUB_REPOSITORY || "frankalcantara/Avalia2026-2";
 const TURMA_FILTRO = (process.env.TURMA_FILTRO || "todas").trim().toUpperCase();
 
 const KEY_REGEX = /^(P26|T26)-(2A|2B|2C|2D|3A|3B)-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/;
+
+// Data a partir da qual o professor fará os merges MANUAIS. Nenhum merge é automatizado.
+const DATA_MERGE_MANUAL = "20/11/2026";
 
 async function githubApi(endpoint, options = {}) {
   const url = endpoint.startsWith("http") ? endpoint : `https://api.github.com${endpoint}`;
@@ -53,6 +59,46 @@ async function adicionarLabelsNoPr(prNumber, labels) {
     method: "POST",
     body: JSON.stringify({ labels }),
   });
+}
+
+async function fecharPr(prNumber) {
+  if (!GITHUB_TOKEN || !prNumber) return false;
+  const { ok, status, data } = await githubApi(`/repos/${REPO}/pulls/${prNumber}`, {
+    method: "PATCH",
+    body: JSON.stringify({ state: "closed" }),
+  });
+  if (!ok) {
+    console.warn(`[PR #${prNumber}] Falha ao fechar o PR (HTTP ${status}):`, JSON.stringify(data));
+    return false;
+  }
+  console.log(`[PR #${prNumber}] ✓ Pull Request fechado (sem merge).`);
+  return true;
+}
+
+async function recusarTeste(prNumber, chave, student, motivo) {
+  const nome = student?.nomeCompleto ? `**${student.nomeCompleto}**` : "estudante";
+  await comentarNoPr(
+    prNumber,
+    [
+      `## ❌ Pull Request de Teste Rejeitado e Fechado`,
+      ``,
+      `Olá, ${nome}! Este repositório **não aceita Pull Requests de teste (\`T26-...\`)**.`,
+      ``,
+      `- **Pasta/Chave detectada:** \`${chave}\``,
+      `- **Motivo:** ${motivo}`,
+      `- **Ação automática:** Pull Request fechado, sem merge e sem avaliação.`,
+      ``,
+      `O Projeto 0 é apenas um treino local/de deploy: **não abra Pull Request com a chave de teste** (\`T26-...\`).`,
+      `Quando receber a sua Chave Oficial (\`P26-...\`), abra um novo Pull Request contendo **apenas** a pasta \`P26-.../\`.`,
+      ``,
+      `> Nenhum Pull Request é mesclado antes de **${DATA_MERGE_MANUAL}**. O merge oficial é feito manualmente pelo professor.`,
+    ].join("\n")
+  );
+  await adicionarLabelsNoPr(prNumber, [
+    "status:teste-bloqueado",
+    ...(student?.turma ? [`turma:${student.turma}`] : []),
+  ]);
+  await fecharPr(prNumber);
 }
 
 async function listarArquivosDoPr(prNumber) {
@@ -194,6 +240,18 @@ async function main() {
       continue;
     }
 
+    // Bloqueio imediato de qualquer entrega de teste (T26-...)
+    if (chave.startsWith("T26-")) {
+      console.log(`[PR #${prNumber}] Entrega de TESTE (${chave}). Rejeitando e fechando — nunca será mesclada.`);
+      await recusarTeste(
+        prNumber,
+        chave,
+        null,
+        "Entregas com chave de teste (T26-...) não são aceitas neste repositório."
+      );
+      continue;
+    }
+
     // 2. Validar a chave no Worker Cloudflare D1
     const headers = {
       Accept: "application/json",
@@ -212,6 +270,18 @@ async function main() {
     }
 
     const { student, project, isTest } = valData;
+
+    // Bloqueio defensivo: a API também pode classificar a entrega como teste
+    if (isTest) {
+      console.log(`[PR #${prNumber}] API classificou como teste (${chave}). Rejeitando e fechando.`);
+      await recusarTeste(
+        prNumber,
+        chave,
+        student,
+        "A API classificou esta entrega como Projeto 0 (teste, sem nota)."
+      );
+      continue;
+    }
 
     // Filtro por turma
     if (TURMA_FILTRO !== "TODAS" && student.turma.toUpperCase() !== TURMA_FILTRO) {
@@ -273,21 +343,10 @@ async function main() {
     // 5. Postar o comentário final de nota no PR
     await comentarNoPr(prNumber, evalData.markdownReport);
 
-    // 6. Fazer o Merge (Squash) do Pull Request
-    let mergedOk = false;
-    try {
-      execSync(
-        `gh pr merge ${prNumber} --squash --repo ${REPO} --subject "Entrega Oficial ${chave} — ${student.nomeCompleto} (RA ${student.ra})"`,
-        {
-          stdio: "inherit",
-          env: { ...process.env, GH_TOKEN: GITHUB_TOKEN },
-        }
-      );
-      mergedOk = true;
-      console.log(`[PR #${prNumber}] ✓ Pull Request mesclado na main via gh CLI!`);
-    } catch (err) {
-      console.warn(`[PR #${prNumber}] Falha no merge via gh CLI:`, err.message);
-    }
+    // 6. NUNCA fazemos merge automático. O merge oficial é manual (a partir de 20/11/2026).
+    console.log(
+      `[PR #${prNumber}] ✓ Avaliado e mantido ABERTO. Merge será manual a partir de ${DATA_MERGE_MANUAL}.`
+    );
 
     const labels = [`turma:${student.turma}`, `nota:${evalData.scoreTotal}`, "status:avaliado"];
     await adicionarLabelsNoPr(prNumber, labels);
@@ -300,7 +359,7 @@ async function main() {
       chave,
       projeto: `#${project.id}`,
       nota: evalData.scoreTotal,
-      merged: mergedOk,
+      merge: "manual",
     });
   }
 

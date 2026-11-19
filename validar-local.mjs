@@ -27,6 +27,16 @@ function listarArquivosRecursivo(dir, baseDir = dir) {
   return results;
 }
 
+function extrairConteudosFooter(html) {
+  const blocos = [];
+  const regex = /<footer\b[^>]*>([\s\S]*?)<\/footer>/gi;
+  let match;
+  while ((match = regex.exec(html)) !== null) {
+    blocos.push(match[1]);
+  }
+  return blocos;
+}
+
 export async function inspecionarSubpasta(rootDir, chave, { checkLiveUrl = true } = {}) {
   const files = listarArquivosRecursivo(rootDir);
   const readText = (rel) => {
@@ -59,6 +69,10 @@ export async function inspecionarSubpasta(rootDir, chave, { checkLiveUrl = true 
   const allHtmlContent = htmlFiles.map(readText).join("\n");
   const hasVanillaFrontend = htmlFiles.length > 0;
   const localHtmlHasHash = allHtmlContent.toUpperCase().includes(chave.toUpperCase());
+  const localHtmlHasFooterElement = /<footer\b[^>]*>/i.test(allHtmlContent);
+  const localHtmlFooterHasHash = extrairConteudosFooter(allHtmlContent).some((bloco) =>
+    bloco.toUpperCase().includes(chave.toUpperCase())
+  );
 
   let hasProhibitedFrameworks = false;
   const pkgJsonText = readText("package.json");
@@ -90,6 +104,8 @@ export async function inspecionarSubpasta(rootDir, chave, { checkLiveUrl = true 
   // 6. Verificação Online na Cloudflare
   let cloudflareOnline = false;
   let cloudflareHasHashInFooter = localHtmlHasHash;
+  let hasFooterElement = localHtmlHasFooterElement;
+  let footerHasHash = localHtmlFooterHasHash;
   if (checkLiveUrl && cloudflareUrl && !cloudflareUrl.includes("seu-projeto.pages.dev")) {
     try {
       const controller = new AbortController();
@@ -101,6 +117,13 @@ export async function inspecionarSubpasta(rootDir, chave, { checkLiveUrl = true 
         const liveHtml = await res.text();
         if (liveHtml.toUpperCase().includes(chave.toUpperCase())) {
           cloudflareHasHashInFooter = true;
+        }
+        const liveFooterBlocks = extrairConteudosFooter(liveHtml);
+        if (liveFooterBlocks.length > 0) {
+          hasFooterElement = true;
+        }
+        if (liveFooterBlocks.some((bloco) => bloco.toUpperCase().includes(chave.toUpperCase()))) {
+          footerHasHash = true;
         }
       }
     } catch {
@@ -126,6 +149,9 @@ export async function inspecionarSubpasta(rootDir, chave, { checkLiveUrl = true 
       cloudflareUrl,
       cloudflareOnline,
       cloudflareHasHashInFooter,
+      localHtmlHasHash,
+      hasFooterElement,
+      footerHasHash,
       hasMitLicense,
       hasReadmeWithHash,
       hasAgentsDoc,

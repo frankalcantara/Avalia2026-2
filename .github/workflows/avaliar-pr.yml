@@ -39,7 +39,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Executar Pipeline (1. Identificar e Merge -> 2. Avaliar e Atribuir Nota)
+      - name: Executar Pipeline (1. Identificar/Rejeitar -> 2. Avaliar e Atribuir Nota)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

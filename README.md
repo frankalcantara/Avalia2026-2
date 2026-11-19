@@ -33,7 +33,7 @@ Antes de entregar o seu projeto oficial, **todos os estudantes fazem um mesmo Pr
 - O funcionamento do Node.js via Scoop na máquina da instituição;
 - A criação automática da subpasta e dos 3 agentes + skills;
 - A publicação da subpasta no Cloudflare Pages + D1 com Discord OAuth2;
-- A abertura do Pull Request e a verificação e aceitação automática pelo robô no GitHub Actions.
+- A validação local da entrega. **Atenção:** o Pull Request de teste **não é aceito** — ele é rejeitado e fechado automaticamente.
 
 ### Passo a Passo do Projeto de Teste (`T26-...`)
 
@@ -87,12 +87,16 @@ Antes de entregar o seu projeto oficial, **todos os estudantes fazem um mesmo Pr
    git commit -m "Atualiza URL Cloudflare do projeto de teste"
    git push origin main
    ```
-11. Abra um **Pull Request** do seu fork para `frankalcantara/Avalia2026-2`. O robô irá:
-   - Ler o Pull Request, identificar você e verificar que apenas a sua pasta `T26-.../` foi alterada;
-   - **Aceitar (fazer merge) automaticamente** do seu Pull Request;
-   - Executar o diagnóstico de conformidade técnica e responder no PR confirmando que seu processo de entrega está 100% aprovado!
+11. **Não abra Pull Request com a chave de teste.** O Projeto 0 é apenas um treino local e de deploy. Qualquer Pull Request contendo uma pasta `T26-.../` será **rejeitado e fechado automaticamente**, sem merge e sem avaliação.
 
 ---
+
+## 🔒 Política de Merges
+
+- **Nenhum Pull Request é mesclado automaticamente.**
+- Os merges oficiais serão feitos **manualmente pelo professor somente a partir de 20/11/2026**.
+- Pull Requests oficiais (`P26-...`) permanecem **abertos** e podem receber novos commits até o encerramento das entregas.
+- Pull Requests de teste (`T26-...`) são **rejeitados e fechados automaticamente**, sem merge, em qualquer data.
 
 ## 🏆 Etapa 2: Entrega do Projeto Oficial Sorteado (Valendo 100 Pontos — Chave `P26-...`)
 
@@ -114,7 +118,7 @@ Após confirmar o recebimento do e-mail de sorteio em [`https://frankalcantara.c
    ```powershell
    node validar-local.mjs P26-2A-XXXX-XXXX-XXXX-XXXX
    ```
-4. Faça o commit/push apenas da sua pasta `P26-.../`, abra o **Pull Request** para `frankalcantara/Avalia2026-2` e poste as URLs do projeto online e do seu repositório GitHub no **AVA da instituição**.
+4. Faça o commit/push apenas da sua pasta `P26-.../`, abra o **Pull Request** para `frankalcantara/Avalia2026-2` e poste as URLs do projeto online e do seu repositório GitHub no **AVA da instituição**. O Pull Request será avaliado e mantido **aberto** — o merge é manual e ocorrerá somente a partir de 20/11/2026.
 
 ---
 
