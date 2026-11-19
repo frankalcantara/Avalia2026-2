@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "achados-app",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "achados-db",
+      "database_id": "53c860b2-9269-4de8-afe2-31ce23dbc7e4"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vitrine de Achados e Perdidos do Campus</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>🔎 Achados e Perdidos <small style="font-weight:400;opacity:.85">· Campus</small></h1>
+    <nav id="auth" aria-label="Conta"></nav>
+  </header>
+
+  <main>
+    <p id="notice" class="notice" role="status" hidden></p>
+
+    <section class="filters" aria-label="Filtros">
+      <select id="f-type" aria-label="Tipo">
+        <option value="">Todos os tipos</option>
+        <option value="perdi">Perdi</option>
+        <option value="encontrei">Encontrei</option>
+      </select>
+      <select id="f-category" aria-label="Categoria">
+        <option value="">Todas as categorias</option>
+        <option value="eletronicos">Eletrônicos</option>
+        <option value="documentos">Documentos</option>
+        <option value="garrafas">Garrafas</option>
+        <option value="vestuario">Vestuário</option>
+      </select>
+      <select id="f-status" aria-label="Status">
+        <option value="">Todos os status</option>
+        <option value="aberto">Aberto</option>
+        <option value="em_andamento">Em andamento</option>
+        <option value="encerrado">Encerrado</option>
+      </select>
+      <input id="f-q" type="search" placeholder="Buscar por título ou descrição" aria-label="Buscar">
+      <input id="f-local" type="search" placeholder="Local" aria-label="Local">
+      <button id="btn-clear" type="button" class="ghost">Limpar</button>
+    </section>
+
+    <div class="actions">
+      <button id="btn-new" type="button">+ Novo item</button>
+      <button id="btn-claims" type="button" class="ghost" hidden>Minhas reivindicações</button>
+    </div>
+
+    <p id="count" class="muted"></p>
+    <section id="list" class="grid" aria-live="polite"></section>
+  </main>
+
+  <dialog id="dlg-detail"></dialog>
+  <dialog id="dlg-new"></dialog>
+  <dialog id="dlg-claims"></dialog>
+
+  <footer>
+    <p>Projeto #34 - Vitrine de Achados e Perdidos do Campus</p>
+    <p>Chave: <strong>P26-2C-D74F-99D3-3096-8A00</strong></p>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
