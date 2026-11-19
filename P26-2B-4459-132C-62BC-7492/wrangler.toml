@@ -1,0 +1,11 @@
+# Cloudflare Pages + D1 — Quiz Competitivo Temporizado
+# Chave Única: P26-2B-4459-132C-62BC-7492
+name = "p26-2b-4459-132c-62bc-7492"
+compatibility_date = "2025-11-01"
+pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "quiz-competitivo-db"
+# Troque pelo ID retornado por: npx wrangler d1 create quiz-competitivo-db
+database_id = "42b98913-41e4-4af1-9520-c0728c4087ba"

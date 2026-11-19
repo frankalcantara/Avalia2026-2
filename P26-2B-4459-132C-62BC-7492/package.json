@@ -1,0 +1,19 @@
+{
+  "name": "p26-2b-4459-132c-62bc-7492",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Quiz Competitivo Temporizado — Cloudflare Pages Functions + D1 + Discord OAuth2 (P26-2B-4459-132C-62BC-7492)",
+  "scripts": {
+    "seed:gen": "node scripts/gen-seed.mjs",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "db:init:local": "wrangler d1 execute quiz-competitivo-db --local --file=schema.sql && wrangler d1 execute quiz-competitivo-db --local --file=db/seed.sql",
+    "db:init:remote": "wrangler d1 execute quiz-competitivo-db --remote --file=schema.sql && wrangler d1 execute quiz-competitivo-db --remote --file=db/seed.sql",
+    "dev": "wrangler pages dev",
+    "deploy": "wrangler pages deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
