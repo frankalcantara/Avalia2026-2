@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projeto #32 — P26-2C-7BBC-0A17-3956-A3BF</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <strong>Projeto #32: Gerenciador de Eventos e Controle de Presença (RSVP)</strong>
+      </div>
+      <div class="discord-badge" id="discordProfile"></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <span class="pill">Projeto Oficial #32</span>
+      <h1>Gerenciador de Eventos e Controle de Presença (RSVP)</h1>
+      <p class="desc">Crie palestras, grupos de estudo e encontros acadêmicos, confirme presença e, se a lotação acabar, entre na fila de espera. Quando um confirmado cancela, o primeiro da fila é promovido automaticamente.</p>
+      <div id="globalMessage" class="message" role="status"></div>
+    </section>
+
+    <section class="card" id="createSection" hidden>
+      <h2>Criar evento</h2>
+      <div class="event-form">
+        <input class="input-text" id="evTitle" type="text" maxlength="120" placeholder="Título">
+        <input class="input-text" id="evLocation" type="text" maxlength="120" placeholder="Local (auditório, sala...)">
+        <input class="input-text" id="evDate" type="date">
+        <input class="input-text" id="evTime" type="time">
+        <input class="input-text" id="evCapacity" type="number" min="1" max="10000" placeholder="Capacidade máxima">
+        <button class="btn-primary" id="createBtn" type="button">Criar evento</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Eventos</h2>
+      <div id="eventsList" class="events-list">Carregando...</div>
+    </section>
+  </main>
+
+  <footer id="projectFooter">
+    Chave Única de Auditoria: <code>P26-2C-7BBC-0A17-3956-A3BF</code> · Turma 2C · Licenciado sob MIT
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
