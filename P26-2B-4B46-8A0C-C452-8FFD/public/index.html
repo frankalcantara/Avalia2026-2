@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17151f">
+  <title>Termo Diário · Projeto 02</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="Termo Diário, início">
+        <span class="brand-tile" aria-hidden="true">T</span> Termo<span class="brand-dot">.</span>
+      </a>
+      <nav aria-label="Opções do jogo">
+        <button class="quiet" id="help-button" type="button">Como jogar</button>
+        <button class="quiet" id="stats-button" type="button" hidden>Estatísticas</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="welcome" class="welcome">
+      <div class="wordmark" aria-hidden="true">
+        <span>T</span><span>E</span><span>R</span><span>M</span><span>O</span>
+      </div>
+      <h1>Uma palavra por dia.</h1>
+      <p>Adivinhe a palavra de cinco letras em até seis tentativas.</p>
+      <p id="access-status" class="status" role="status">Verificando sua sessão…</p>
+      <a id="login-button" class="action" href="/api/auth/discord" hidden>Entrar com Discord</a>
+      <button id="retry-button" class="action" type="button" hidden>Tentar novamente</button>
+    </section>
+
+    <section id="game" class="game" aria-labelledby="game-title" hidden>
+      <div class="game-heading">
+        <div>
+          <p id="game-date" class="eyebrow"></p>
+          <h1 id="game-title">Termo Diário</h1>
+        </div>
+        <div class="profile">
+          <img id="avatar" alt="" width="34" height="34" referrerpolicy="no-referrer" hidden>
+          <div class="profile-info">
+            <span id="username"></span>
+            <button id="logout-button" class="quiet" type="button">Sair</button>
+          </div>
+        </div>
+      </div>
+      <div id="board" class="board" role="grid" aria-label="Tabuleiro com seis tentativas de cinco letras"></div>
+      <p id="game-status" class="status" role="status"></p>
+      <div id="keyboard" class="keyboard" role="group" aria-label="Teclado virtual"></div>
+      <p class="reset">Novo desafio em <span id="countdown">--:--:--</span></p>
+    </section>
+  </main>
+
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <h2 id="help-title">Como jogar</h2>
+    <p>Digite cinco letras e pressione <strong>Enter</strong>. Depois de cada palpite, as cores mostram quais letras aparecem na palavra.</p>
+    <ul class="legend">
+      <li><span class="tile correct" aria-hidden="true">A</span> Letra na posição certa</li>
+      <li><span class="tile present" aria-hidden="true">A</span> Letra na posição errada</li>
+      <li><span class="tile absent" aria-hidden="true">A</span> Letra ausente ou repetida além do necessário</li>
+    </ul>
+    <p>Você tem seis tentativas. Um novo desafio começa à meia-noite no horário de Brasília.</p>
+    <form method="dialog"><button class="action" type="submit">Fechar</button></form>
+  </dialog>
+
+  <dialog id="stats-dialog" aria-labelledby="stats-title">
+    <h2 id="stats-title">Suas estatísticas</h2>
+    <dl id="stats-summary" class="stats-summary"></dl>
+    <h3>Vitórias por tentativa</h3>
+    <ol id="distribution" class="distribution"></ol>
+    <form method="dialog"><button class="action" type="submit">Fechar</button></form>
+  </dialog>
+
+  <footer>Projeto 02 · MIT · <code>P26-2B-4B46-8A0C-C452-8FFD</code></footer>
+</body>
+</html>
