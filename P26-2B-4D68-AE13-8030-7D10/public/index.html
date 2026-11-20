@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Blog técnico da turma: publique artigos, compartilhe ideias e converse com a comunidade.">
+  <title>Entrelinhas — Blog técnico da turma</title>
+  <link rel="alternate" type="application/rss+xml" title="Entrelinhas" href="/feed.xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Entrelinhas, página inicial">
+      <span class="brand-mark" aria-hidden="true">E</span>
+      <span>entrelinhas<span class="brand-dot">.</span><small>blog técnico da turma</small></span>
+    </a>
+    <div class="top-actions">
+      <button class="button button-quiet" id="myArticlesButton" type="button" title="Mostra só os artigos que você escreveu" hidden>Meus artigos</button>
+      <a class="button button-discord" id="loginLink" href="/api/auth/discord" title="Entrar com sua conta do Discord">Entrar com Discord</a>
+      <button class="button button-quiet" id="logoutButton" type="button" title="Encerra a sua sessão neste navegador" hidden>Sair</button>
+      <div class="profile-chip" id="profileChip" hidden></div>
+    </div>
+  </header>
+
+  <main class="layout" id="conteudo">
+    <section class="content-column">
+      <div class="hero">
+        <p class="eyebrow">IDEIAS QUE MERECEM SER COMPARTILHADAS</p>
+        <h1>Aprender também é <span>escrever.</span></h1>
+        <p>Artigos, descobertas e experiências técnicas, feitos pela nossa turma.</p>
+        <button class="button button-primary" id="newArticleButton" type="button" hidden>Escrever artigo <span aria-hidden="true">↗</span></button>
+      </div>
+
+      <section class="editor-panel" id="editorPanel" hidden aria-labelledby="editorHeading">
+        <div class="section-heading">
+          <div><p class="eyebrow">SEU PRÓXIMO TEXTO</p><h2 id="editorHeading">Escrever artigo</h2></div>
+          <button class="icon-button" id="closeEditorButton" type="button" aria-label="Fechar editor">×</button>
+        </div>
+        <form id="articleForm">
+          <label class="field-label" for="articleTitle">Título</label>
+          <input class="text-input title-input" id="articleTitle" name="title" maxlength="140" minlength="3" placeholder="Um título que dá vontade de ler" required>
+          <div class="field-row">
+            <label class="field-label" for="articleRoom">Publicar em</label>
+            <select class="text-input" id="articleRoom" name="roomId">
+              <option value="">Página pública do blog</option>
+            </select>
+          </div>
+          <label class="field-label" for="articleTags">Etiquetas <span>(até 5, separadas por vírgula)</span></label>
+          <input class="text-input" id="articleTags" name="tags" maxlength="120" placeholder="ex.: css, acessibilidade, d1">
+          <div class="editor-toolbar">
+            <span>Conteúdo em Markdown, tabelas, HTML e SVG</span>
+            <span class="editor-tools">
+              <button class="button button-small" id="historyButton" type="button" hidden title="Ver versões anteriores deste artigo">Histórico</button>
+              <button class="button button-small" id="previewButton" type="button" aria-pressed="false" title="Alterna entre o texto cru e a pré-visualização do Markdown">Pré-visualizar</button>
+            </span>
+          </div>
+          <textarea class="text-input markdown-input" id="articleBody" name="body" maxlength="50000" placeholder="Compartilhe uma ideia, um tutorial ou algo que você aprendeu..." required></textarea>
+          <div class="markdown-preview markdown-body" id="markdownPreview" hidden></div>
+          <details class="editor-help">
+            <summary>Formatos aceitos no artigo</summary>
+            <ul>
+              <li><strong>Markdown</strong>: <code># título</code>, <code>**negrito**</code>, <code>*itálico*</code>, <code>`código`</code>, listas, citações e <code>[links](https://exemplo.com)</code>.</li>
+              <li><strong>Tabelas</strong>: separe as colunas com <code>|</code> e coloque uma linha de <code>---</code> abaixo do cabeçalho. A prévia já mostra a tabela montada.</li>
+              <li><strong>HTML</strong>: comece o bloco com <code>```html</code> para escrever HTML. Pode colar a página inteira: só o conteúdo do <code>&lt;body&gt;</code> é usado — <code>&lt;head&gt;</code>, <code>&lt;title&gt;</code> e <code>&lt;style&gt;</code> ficam de fora, e o artigo herda o estilo do blog.</li>
+              <li><strong>O que o sanitizador mantém</strong>: títulos, parágrafos, listas, tabelas, <code>section</code>, <code>article</code>, <code>header</code>, <code>footer</code>, links (<code>https</code>), imagens (<code>https</code>), <code>figure</code>, <code>details</code> e SVG. <code>script</code>, <code>iframe</code>, <code>form</code> e atributos <code>on*</code>/<code>style</code> são removidos.</li>
+              <li><strong>SVG</strong>: <code>```svg</code> desenha o SVG como figura; um <code>&lt;svg&gt;</code> dentro do bloco <code>```html</code> também aparece.</li>
+            </ul>
+          </details>
+          <p class="hint" id="draftNote" role="status"></p>
+          <div class="editor-footer">
+            <span>Markdown, tabelas, <code>```html</code> e <code>```svg</code> — use “Pré-visualizar”.</span>
+            <button class="button button-primary" type="submit" id="publishButton">Publicar artigo</button>
+          </div>
+          <p class="form-message" id="articleMessage" role="status"></p>
+        </form>
+        <section class="history-panel" id="historyPanel" hidden aria-labelledby="historyHeading">
+          <h3 id="historyHeading">Versões anteriores</h3>
+          <div id="historyList"></div>
+        </section>
+      </section>
+
+      <section class="feed-section" aria-labelledby="feedHeading">
+        <div class="section-heading feed-heading">
+          <div><p class="eyebrow" id="feedEyebrow">DA COMUNIDADE</p><h2 id="feedHeading">Artigos recentes</h2></div>
+          <button class="button button-quiet" id="clearFilterButton" type="button" hidden>Ver todos</button>
+        </div>
+        <form class="feed-search" id="searchForm" role="search">
+          <label class="sr-only" for="searchInput">Buscar artigos</label>
+          <input class="text-input" id="searchInput" type="search" placeholder="Buscar por título ou conteúdo" maxlength="80">
+          <button class="button button-small" type="submit">Buscar</button>
+        </form>
+        <div class="article-list" id="articleList" aria-live="polite">
+          <div class="empty-state">Carregando artigos...</div>
+        </div>
+        <div class="feed-more">
+          <button class="button button-quiet" id="loadMoreButton" type="button" hidden>Carregar mais artigos</button>
+          <p class="hint" id="feedStatus" role="status"></p>
+        </div>
+      </section>
+    </section>
+
+    <aside class="sidebar">
+      <section class="side-card about-card">
+        <p class="eyebrow">UM ESPAÇO DA TURMA</p>
+        <h2>Conhecimento cresce quando circula.</h2>
+        <p>Publique o que está aprendendo, encontre novas perspectivas e faça parte da conversa.</p>
+        <button class="text-link" id="aboutWriteButton" type="button" hidden>Comece a escrever <span aria-hidden="true">→</span></button>
+      </section>
+
+      <section class="side-card tags-card" aria-labelledby="tagsHeading">
+        <div class="side-heading"><div><p class="eyebrow">ASSUNTOS</p><h2 id="tagsHeading">Etiquetas</h2></div></div>
+        <div class="tag-cloud" id="tagList"><p class="muted">Carregando...</p></div>
+      </section>
+
+      <section class="side-card rooms-card">
+        <div class="side-heading"><div><p class="eyebrow">CONVERSAS EM GRUPO</p><h2>Salas</h2></div><button class="icon-button" id="newRoomButton" type="button" aria-label="Criar sala" hidden>+</button></div>
+        <p class="side-copy">Espaços para reunir artigos por tema. Sala privada entra com o código dela (um hash); sala pública, com o número dela.</p>
+        <form class="join-form" id="joinRoomForm">
+          <label class="sr-only" for="roomInvite">Código da sala privada</label>
+          <input class="text-input" id="roomInvite" placeholder="Código ou número da sala" autocapitalize="none" autocorrect="off" spellcheck="false">
+          <button class="button button-small" type="submit">Entrar com o código</button>
+        </form>
+        <p class="form-message" id="roomMessage" role="status"></p>
+        <div class="room-list" id="roomList"><p class="muted">Carregando salas...</p></div>
+        <form class="room-create-form" id="roomCreateForm" hidden>
+          <label class="field-label" for="roomName">Nome da sala</label>
+          <input class="text-input" id="roomName" maxlength="60" minlength="3" required placeholder="Ex.: Desenvolvimento Web">
+          <label class="field-label" for="roomDescription">Descrição <span>(opcional)</span></label>
+          <input class="text-input" id="roomDescription" maxlength="240" placeholder="Sobre o que vamos conversar?">
+          <label class="field-label" for="roomVisibility">Visibilidade</label>
+          <select class="text-input" id="roomVisibility">
+            <option value="public">Pública — qualquer pessoa pode participar</option>
+            <option value="private">Privada — só entra quem tiver o código</option>
+          </select>
+          <button class="button button-primary button-full" type="submit">Criar sala</button>
+        </form>
+        <div class="invite-result" id="inviteResult" role="status" hidden></div>
+      </section>
+
+      <section class="side-card room-admin" id="roomAdmin" hidden aria-labelledby="roomAdminHeading">
+        <div class="side-heading">
+          <div><p class="eyebrow">CONTROLE DE ENTRADA</p><h2 id="roomAdminHeading" tabindex="-1">Gerenciar sala</h2></div>
+          <button class="icon-button" id="closeRoomAdminButton" type="button" aria-label="Fechar gerenciamento">×</button>
+        </div>
+        <p class="side-copy" id="roomAdminName"></p>
+        <label class="field-label" for="roomPolicy">Quem pode entrar</label>
+        <select class="text-input" id="roomPolicy" aria-describedby="roomPolicyHint" title="Escolha se o link entra direto ou se cada pessoa precisa da sua aprovação">
+          <option value="open_link">Qualquer pessoa com o código</option>
+          <option value="approval">Somente quem eu aprovar</option>
+        </select>
+        <p class="hint" id="roomPolicyHint"></p>        <p class="eyebrow admin-eyebrow">PEDIDOS PENDENTES</p>
+        <div class="join-requests" id="joinRequests"><p class="muted">Carregando...</p></div>
+        <p class="eyebrow admin-eyebrow">MEMBROS COM ACESSO</p>
+        <div class="room-members" id="roomMembers"><p class="muted">Carregando...</p></div>
+        <p class="eyebrow admin-eyebrow">DONO DA SALA</p>
+        <label class="sr-only" for="newOwnerSelect">Transferir a sala para</label>
+        <select class="text-input" id="newOwnerSelect"></select>
+        <button class="button button-small button-full" id="transferRoomButton" type="button">Transferir sala</button>
+        <button class="button button-small button-full button-danger" id="deleteRoomButton" type="button">Excluir sala</button>
+        <p class="hint">Excluir apaga a sala e mantém os artigos na página pública do blog.</p>
+        <p class="form-message" id="roomAdminMessage" role="status"></p>
+      </section>
+
+      <p class="sidebar-note">Feito para compartilhar conhecimento, com respeito e curiosidade.</p>
+    </aside>
+  </main>
+
+  <footer>
+    <a class="brand footer-brand" href="/"><span class="brand-mark" aria-hidden="true">E</span><span>entrelinhas<span class="brand-dot">.</span></span></a>
+    <span>Turma 2B · Chave Única <code>P26-2B-4D68-AE13-8030-7D10</code> · Licença MIT</span>
+  </footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

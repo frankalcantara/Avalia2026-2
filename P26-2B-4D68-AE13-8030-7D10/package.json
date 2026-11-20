@@ -1,0 +1,13 @@
+{
+  "name": "entrelinhas-blog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Blog técnico da turma — Cloudflare Pages Functions + D1 + Discord OAuth2",
+  "scripts": {
+    "test": "node --test",
+    "dev:local": "node tests/server-local.mjs",
+    "test:e2e": "node tests/e2e.mjs",
+    "validate": "node --test && node ../validar-local.mjs P26-2B-4D68-AE13-8030-7D10"
+  }
+}
