@@ -31,7 +31,7 @@ html.arriving #flash { opacity: 1; transition: none; }
 .game .board { transform: rotateX(calc(var(--sy, 0) * -2.5deg)) rotateY(calc(var(--sx, 0) * 3deg)); }
 
 /* ===== VIAGEM: palco fixo + cenas em profundidade ===== */
-.flight { position: relative; height: calc(var(--n, 5) * 100vh); }
+.flight { position: relative; height: calc(var(--n, 5) * 130vh); }
 .stage { position: sticky; top: 0; height: 100vh; overflow: hidden; perspective: 1400px; }
 .scene { position: absolute; inset: 0; display: grid; place-items: center; padding: 0 clamp(20px, 5vw, 60px); pointer-events: none; will-change: transform, opacity, filter; --d: 0; }
 .scene .btn, .scene a { pointer-events: auto; }
