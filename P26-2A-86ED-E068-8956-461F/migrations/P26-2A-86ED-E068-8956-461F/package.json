@@ -1,0 +1,12 @@
+{
+  "name": "quadro-de-caronas-universitarias",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Projeto #31 - Quadro de Caronas Universitarias (Cloudflare Pages + D1 + Discord OAuth2)",
+  "license": "MIT",
+  "scripts": {
+    "test": "node tests/validar.mjs",
+    "dev": "wrangler pages dev public --d1 DB"
+  }
+}
