@@ -267,6 +267,8 @@
     });
     scenes = [...document.querySelectorAll(".scene")].map((el) => ({ el, px: [...el.querySelectorAll(".px")], h: undefined }));
     flight.style.setProperty("--n", scenes.length);
+    fly(); // posiciona as cenas já no primeiro quadro
+    setTimeout(() => root.classList.remove("boot"), 2500); // plano B, se a API demorar
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
