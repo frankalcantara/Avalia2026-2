@@ -23,7 +23,12 @@ function validarDataPrevista(data) {
     day: "2-digit"
   }).format(new Date());
 
-  return data > hoje;
+  const [anoHoje, mesHoje, diaHoje] = hoje.split("-").map(Number);
+  const limite = new Date(Date.UTC(anoHoje, mesHoje - 1, diaHoje + 90))
+    .toISOString()
+    .slice(0, 10);
+
+  return data > hoje && data <= limite;
 }
 
 export async function onRequestPost({ request, env, params }) {
@@ -61,7 +66,8 @@ export async function onRequestPost({ request, env, params }) {
       "aprovar",
       "recusar",
       "solicitar_devolucao",
-      "confirmar_devolucao"
+      "confirmar_devolucao",
+      "cancelar"
     ];
 
     if (!acoesPermitidas.includes(acao)) {
@@ -95,7 +101,58 @@ export async function onRequestPost({ request, env, params }) {
       return json({ ok: false, erro: "Empréstimo não encontrado." }, 404);
     }
 
-    const agora = new Date().toISOString();
+const agora = new Date().toISOString();
+
+if (acao === "cancelar") {
+  if (emprestimo.solicitante_id !== user.user_id) {
+    return json({
+      ok: false,
+      erro: "Você não é o solicitante deste empréstimo."
+    }, 403);
+  }
+
+  if (emprestimo.status !== "Pendente") {
+    return json({
+      ok: false,
+      erro: "Somente empréstimos pendentes podem ser cancelados."
+    }, 409);
+  }
+
+  const resultado = await env.DB.batch([
+    env.DB.prepare(`
+      UPDATE emprestimos
+      SET status = 'Cancelado'
+      WHERE id = ?
+        AND solicitante_id = ?
+        AND status = 'Pendente'
+    `).bind(id, user.user_id),
+
+    env.DB.prepare(`
+      UPDATE livros
+      SET status = 'Disponível'
+      WHERE id = ?
+        AND status = 'Reservado'
+        AND EXISTS (
+          SELECT 1
+          FROM emprestimos
+          WHERE emprestimos.id = ?
+            AND emprestimos.status = 'Cancelado'
+        )
+    `).bind(emprestimo.livro_id, id)
+  ]);
+
+  if (!resultado[0].meta.changes || !resultado[1].meta.changes) {
+    return json({
+      ok: false,
+      erro: "Não foi possível cancelar o empréstimo. Atualize a página."
+    }, 409);
+  }
+
+  return json({
+    ok: true,
+    mensagem: "Empréstimo cancelado. O livro está disponível novamente."
+  });
+}
 
     if (acao === "aprovar" || acao === "recusar") {
       if (emprestimo.dono_id !== user.user_id) {

@@ -205,6 +205,11 @@ export async function onRequestPost({ request, env, params }) {
         mensagem: "Troca concluída! Os livros foram transferidos para os novos donos."
       });
     }
+    
+    return json({
+      ok: false,
+      erro: "Ação não reconhecida."
+    }, 400);
 
   } catch (error) {
     console.error("Erro ao processar proposta de troca:", error);

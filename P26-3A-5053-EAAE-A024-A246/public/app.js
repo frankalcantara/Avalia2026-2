@@ -827,10 +827,26 @@ function renderizarMeusEmprestimos(emprestimos) {
     card.appendChild(criarElemento("p", "Status: " + item.status));
 
     if (item.status === "Pendente") {
-      card.appendChild(
-        criarElemento("p", "Aguardando aprovação do dono do livro.")
-      );
-    }
+  card.appendChild(
+    criarElemento("p", "Aguardando aprovação do dono do livro.")
+  );
+
+  card.appendChild(
+    criarBotao(
+      "Cancelar empréstimo",
+      async () => {
+        const confirmar = confirm(
+          "Tem certeza de que deseja cancelar esta solicitação?"
+        );
+
+        if (!confirmar) return;
+
+        await executarAcaoEmprestimo(item.id, "cancelar");
+      },
+      "btn-danger"
+    )
+  );
+}
 
     if (item.status === "Aprovado") {
       // O solicitante consegue consultar a data escolhida pelo dono.
