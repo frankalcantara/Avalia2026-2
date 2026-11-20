@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projeto #2 — P26-2C-FBCF-D7E5-0BE4-6F25</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <strong>Projeto #2: Clone do Termo (Wordle) Diário</strong>
+      </div>
+      <div class="discord-badge" id="discordProfile">
+        <a id="discordLoginLink" href="/api/auth/discord" style="color:inherit;text-decoration:none;">
+          <span id="discordUserText">Entrar com Discord OAuth2</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <span class="pill">Projeto Oficial #2</span>
+      <h1>Clone do Termo (Wordle) Diário</h1>
+      <p class="desc">Construa um jogo de adivinhação de palavras de cinco letras com limite de seis tentativas diárias. A interface deve utilizar manipulação direta do DOM para renderizar o teclado virtual e a grade de letras, aplicando animações CSS para indicar letras corretas, presentes na posição errada ou ausentes. O login obrigatório via Discord OAuth2 identificará o jogador antes de liberar o tabuleiro do dia. O sorteio da palavra diária e a validação de cada tentativa devem ser processados por uma API serverless na Cloudflare, garantindo que a resposta correta nunca fique exposta no código-fonte do navegador. O banco de dados D1 deve armazenar as tentativas realizadas no dia atual para bloquear trapaças via recarregamento de página, além de consolidar estatísticas históricas como sequência de vitórias (streak) e distribuição de tentativas.</p>
+
+      <div class="form-row">
+        <input class="input-text" id="recordInput" type="text" placeholder="Digite um registro para gravar na Cloudflare Function + D1...">
+        <button class="btn-primary" id="sendBtn" type="button">Registrar no Cloudflare D1</button>
+      </div>
+      <div id="statusMessage" style="font-size:0.88rem;font-weight:700;color:#166534;margin-bottom:0.75rem;"></div>
+    </section>
+
+    <section class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:0.85rem;">Registros Persistidos (Cloudflare Pages Functions + D1)</h2>
+      <ul class="records-list" id="recordsList">
+        <li>Carregando status da API serverless...</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer id="projectFooter">
+    Chave Única de Auditoria: <code>P26-2C-FBCF-D7E5-0BE4-6F25</code> · Turma 2C · Licenciado sob MIT
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
