@@ -1,8 +1,11 @@
 /**
  * Cloudflare Pages Function — /api/auth/discord/callback
  * Troca o authorization code pelo token de acesso do Discord, obtém o perfil (@me)
- * e persiste no Cloudflare D1 com cookie de sessão.
+ * (user_id, nome e avatar), persiste no Cloudflare D1 e grava um cookie de
+ * sessão ASSINADO (HMAC) — o cliente não consegue forjar a identidade.
  */
+import { createSessionCookie } from "../../../_lib/session.js";
+
 export async function onRequestGet(context) {
   const { request, env } = context;
   const url = new URL(request.url);
@@ -67,14 +70,13 @@ export async function onRequestGet(context) {
       } catch {}
     }
 
-    const sessionPayload = JSON.stringify({ userId, username, avatar });
-    const encodedSession = btoa(encodeURIComponent(sessionPayload));
+    const cookie = await createSessionCookie({ userId, username, avatar }, env);
 
     return new Response(null, {
       status: 302,
       headers: {
         Location: "/?login=success",
-        "Set-Cookie": `discord_session=${encodedSession}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400; Secure`,
+        "Set-Cookie": cookie,
       },
     });
   } catch (err) {
