@@ -106,7 +106,7 @@ export async function inspecionarSubpasta(rootDir, chave, { checkLiveUrl = true 
   let cloudflareHasHashInFooter = localHtmlHasHash;
   let hasFooterElement = localHtmlHasFooterElement;
   let footerHasHash = localHtmlFooterHasHash;
-  if (checkLiveUrl && cloudflareUrl && !cloudflareUrl.includes("seu-projeto.pages.dev")) {
+  if (checkLiveUrl && cloudflareUrl && !cloudflareUrl.includes("caronas-cracco.pages.dev")) {
     try {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 10000);

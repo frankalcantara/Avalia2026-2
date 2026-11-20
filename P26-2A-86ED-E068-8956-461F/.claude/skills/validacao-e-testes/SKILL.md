@@ -7,7 +7,7 @@ description: Checklist e procedimentos de teste do Quadro de Caronas: testes est
 
 ## Automático
 - `npm test`: verifica chave no README e no rodapé, LICENSE MIT, schema e funções, ausência de frameworks de UI, 3 agentes e seus skills, e testa as regras de validação de rota.
-- `npm test -- https://SEU-PROJETO.pages.dev`: acrescenta testes online (página abre com a chave, APIs protegidas respondem 401, login redireciona ao Discord com state, POST de outra origem recebe 403).
+- `npm test -- https://caronas-cracco.pages.dev`: acrescenta testes online (página abre com a chave, APIs protegidas respondem 401, login redireciona ao Discord com state, POST de outra origem recebe 403).
 
 ## Manual (precisa de conta Discord)
 1. Entrar com Discord e ver nome e avatar no topo.

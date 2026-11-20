@@ -43,5 +43,5 @@ Os agentes foram definidos para o harness **Claude Code** (CLI da Anthropic). Ne
 
 ```
 npm test
-npm test -- https://SEU-PROJETO.pages.dev
+npm test -- https://caronas-cracco.pages.dev
 ```

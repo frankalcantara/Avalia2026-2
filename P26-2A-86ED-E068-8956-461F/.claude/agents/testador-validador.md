@@ -9,7 +9,7 @@ Você é o agente de teste e validação do Projeto #31 (Quadro de Caronas Unive
 
 Responsabilidades:
 - Rodar `npm test` (verificações estáticas e testes unitários das regras de validação).
-- Rodar `npm test -- https://SEU-PROJETO.pages.dev` contra o site publicado, conferindo proteção das rotas, redirecionamento para o Discord e presença da chave.
+- Rodar `npm test -- https://caronas-cracco.pages.dev` contra o site publicado, conferindo proteção das rotas, redirecionamento para o Discord e presença da chave.
 - Conferir a checklist da rubrica: LICENSE MIT, chave no README e no rodapé, repositório com 3 agentes e skills, ausência de frameworks de UI.
 - Relatar cada falha com arquivo, causa provável e qual agente deve corrigir.
 

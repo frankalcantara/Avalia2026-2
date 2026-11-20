@@ -9,8 +9,8 @@ Sistema de caronas solidárias entre estudantes que vão para o campus. Quem tem
 
 ## Links da entrega
 
-- Projeto online: https://SEU-PROJETO.pages.dev
-- Repositório: https://github.com/SEU-USUARIO/SEU-REPOSITORIO
+- Projeto online: https://caronas-cracco.pages.dev
+- Repositório: https://github.com/guicracco/Avalia2026-2
 
 ## Stack
 
@@ -65,14 +65,14 @@ Sistema de caronas solidárias entre estudantes que vão para o campus. Quem tem
 2. No Cloudflare Pages, conecte o repositório. Pasta raiz: a pasta deste projeto. Comando de build: nenhum. Diretório de saída: `public`.
 3. Em Settings, Bindings: adicione D1 com nome de variável `DB`.
 4. Em Settings, Variables and Secrets: `DISCORD_CLIENT_ID` e `DISCORD_CLIENT_SECRET` (secret).
-5. No Discord Developer Portal, em OAuth2, cadastre o redirect `https://SEU-PROJETO.pages.dev/api/auth/callback`.
+5. No Discord Developer Portal, em OAuth2, cadastre o redirect `https://caronas-cracco.pages.dev/api/auth/callback`.
 6. Faça um novo deploy para as variáveis valerem.
 
 ## Testes
 
 ```
 npm test
-npm test -- https://SEU-PROJETO.pages.dev
+npm test -- https://caronas-cracco.pages.dev
 ```
 
 ## Agentes, harness e skills
