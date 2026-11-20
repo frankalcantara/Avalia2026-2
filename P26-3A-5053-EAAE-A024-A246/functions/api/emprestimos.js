@@ -88,13 +88,20 @@ export async function onRequestPost({ request, env }) {
     }
 
     const livro = await env.DB.prepare(`
-      SELECT id, dono_id, modalidade, status
+      SELECT id, dono_id, modalidade, status, catalogo_ativo
       FROM livros
       WHERE id = ?
     `).bind(livroId).first();
 
     if (!livro) {
       return json({ ok: false, error: "Livro não encontrado." }, 404);
+    }
+
+    if (livro.catalogo_ativo !== 1) {
+      return json({
+        ok: false,
+        error: "Este livro foi retirado do catálogo."
+      }, 409);
     }
 
     if (livro.dono_id === user.user_id) {
@@ -132,6 +139,7 @@ export async function onRequestPost({ request, env }) {
           FROM livros
           WHERE id = ?
             AND status = 'Disponível'
+            AND catalogo_ativo = 1
             AND dono_id != ?
             AND modalidade IN ('Emprestar', 'Ambos')
         )
@@ -147,6 +155,7 @@ export async function onRequestPost({ request, env }) {
         UPDATE livros
         SET status = 'Reservado'
         WHERE id = ?
+          AND catalogo_ativo = 1
           AND EXISTS (
             SELECT 1
             FROM emprestimos

@@ -245,19 +245,55 @@ async function carregarLivros() {
       );
 
       const dono = criarElemento(
-        "p",
-        "Disponibilizado por: " +
-        (livro.dono_global_name || livro.dono_username || "Usuário")
-      );
+  "p",
+  "Disponibilizado por: " +
+  (livro.dono_global_name || livro.dono_username || "Usuário")
+);
 
-      const status = criarElemento("p", "Status: " + livro.status);
+const statusTexto = livro.catalogo_ativo === 0
+  ? "Retirado do catálogo"
+  : "Status: " + livro.status;
 
-      li.append(titulo, detalhes, dono, status);
+const status = criarElemento("p", statusTexto);
+
+li.append(titulo, detalhes, dono, status);
 
       const ehMeuLivro =
         usuarioAtual && livro.dono_id === usuarioAtual.user_id;
 
       const disponivel = livro.status === "Disponível";
+
+      if (ehMeuLivro) {
+  const botaoCatalogo = criarBotao(
+    livro.catalogo_ativo === 0
+      ? "Colocar novamente no catálogo"
+      : "Retirar do catálogo",
+    async () => {
+      const acao = livro.catalogo_ativo === 0 ? "reativar" : "retirar";
+
+      try {
+        const response = await fetch(`/api/livros/${livro.id}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ acao }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || "Não foi possível atualizar o livro.");
+        }
+
+        await atualizarDados();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    "btn-secondary"
+  );
+
+  li.appendChild(botaoCatalogo);
+}
 
       const podeSolicitarEmprestimo =
         usuarioAtual &&
@@ -917,6 +953,7 @@ function abrirModalTroca(livro) {
   const meusLivros = livrosAtuais.filter((item) =>
     item.dono_id === usuarioAtual.user_id &&
     item.id !== livro.id &&
+    item.catalogo_ativo === 1 &&
     item.status === "Disponível" &&
     ["Trocar", "Ambos"].includes(item.modalidade)
   );

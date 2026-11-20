@@ -124,7 +124,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     const alvo = await env.DB.prepare(`
-      SELECT id, dono_id, titulo, modalidade, status
+      SELECT id, dono_id, titulo, modalidade, status, catalogo_ativo
       FROM livros
       WHERE id = ?
     `).bind(livroAlvoId).first();
@@ -137,7 +137,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     const ofertado = await env.DB.prepare(`
-      SELECT id, dono_id, titulo, modalidade, status
+      SELECT id, dono_id, titulo, modalidade, status, catalogo_ativo
       FROM livros
       WHERE id = ?
     `).bind(livroOfertadoId).first();
@@ -147,6 +147,13 @@ export async function onRequestPost({ request, env }) {
         ok: false,
         erro: "O livro oferecido não foi encontrado."
       }, 404);
+    }
+
+    if (alvo.catalogo_ativo !== 1 || ofertado.catalogo_ativo !== 1) {
+      return json({
+        ok: false,
+        erro: "Um dos livros foi retirado do catálogo."
+      }, 409);
     }
 
     if (alvo.dono_id === usuario.user_id) {
@@ -192,11 +199,13 @@ export async function onRequestPost({ request, env }) {
       SET status = 'Reservado'
       WHERE id IN (?, ?)
         AND status = 'Disponível'
+        AND catalogo_ativo = 1
         AND (
           SELECT COUNT(*)
           FROM livros
           WHERE id IN (?, ?)
             AND status = 'Disponível'
+            AND catalogo_ativo = 1
         ) = 2
     `).bind(
       livroAlvoId,

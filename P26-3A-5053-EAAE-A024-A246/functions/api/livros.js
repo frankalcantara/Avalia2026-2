@@ -3,13 +3,15 @@ import { getSessionUser, json } from "../_lib/session.js";
 const CATEGORIAS = ["Técnico", "Literário"];
 const MODALIDADES = ["Emprestar", "Trocar", "Ambos"];
 
-export async function onRequestGet({ env }) {
+export async function onRequestGet({ request, env }) {
   try {
     if (!env.DB) {
       return json({ ok: false, error: "Banco de dados indisponível." }, 503);
     }
 
-    const result = await env.DB.prepare(`
+    const user = await getSessionUser(request, env);
+
+    const consulta = `
       SELECT
         livros.id,
         livros.titulo,
@@ -17,13 +19,20 @@ export async function onRequestGet({ env }) {
         livros.categoria,
         livros.modalidade,
         livros.status,
+        livros.catalogo_ativo,
         livros.dono_id,
         discord_users.username AS dono_username,
         discord_users.global_name AS dono_global_name
       FROM livros
       JOIN discord_users ON discord_users.user_id = livros.dono_id
+      WHERE livros.catalogo_ativo = 1
+         OR livros.dono_id = ?
       ORDER BY livros.id DESC
-    `).all();
+    `;
+
+    const result = await env.DB.prepare(consulta)
+      .bind(user?.user_id || "")
+      .all();
 
     return json({
       ok: true,
