@@ -113,3 +113,9 @@ h1[data-split] .ch { animation: rise 1s var(--ease) forwards, wave 3s ease-in-ou
 
 /* barra de progresso (criada pelo JS; só muda transform) */
 #bar { position: fixed; left: 0; top: 0; width: 100%; height: 3px; z-index: 60; pointer-events: none; transform-origin: 0 50%; transform: scaleX(0); background: var(--aurora); }
+
+/* antes do JS organizar a viagem, só a primeira cena existe */
+.scene:not(:first-child) { visibility: hidden; opacity: 0; }
+
+/* fica invisível até o site saber se você está logada, depois aparece suavemente */
+html.boot .flight, html.boot main, html.boot .topbar, html.boot footer { opacity: 0; }
