@@ -23,6 +23,3 @@ description: Teste e validação independente (segurança, regras de negócio e 
 11. Procurar frameworks, CDN ou links externos no frontend.
 12. Chave P26-3A-5053-EAAE-A024-A246 presente no README.md e no rodapé; LICENSE MIT presente.
 13. Rodar `node validar-local.mjs P26-3A-5053-EAAE-A024-A246`.
-
-## Relatório
-Arquivo `docs/agentes/RELATORIO-QA.md` com tabela: caso | resultado (passou/falhou) | evidência | agente responsável pela correção. Registrar também o reteste após correções.

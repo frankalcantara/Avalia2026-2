@@ -1,14 +1,15 @@
 # Documentação de Engenharia de Agentes e Harness (P26-3A-5053-EAAE-A024-A246)
 
-> **Requisito da Rubrica (25 pontos):** Uso obrigatório de no mínimo **3 agentes diferentes** (sendo obrigatoriamente **1 agente dedicado a teste e validação**), documentando em qual *harness* operaram e relacionando as *skills* na pasta `skills/`.
+Projeto #24: Plataforma de Empréstimo e Troca de Livros Físicos.
+Este documento registra o que cada agente realmente fez.
 
 ## 1. Ambiente de Orquestração (Harness Utilizado)
 
-- **Harness Principal:** *(Descreva aqui qual harness foi utilizado, ex: Antigravity / Claude Code / Cursor / Cline / GitHub Copilot Workspace / OpenHands)*
-- **Modelo(s) Base:** *(Informe os modelos utilizados pelos agentes)*
-- **Estratégia de Coordenação:** Os agentes operaram de forma modular sobre a subpasta `P26-3A-5053-EAAE-A024-A246/`, compartilhando especificações de banco de dados D1, contratos JSON das Cloudflare Pages Functions e verificação automatizada via `validar-local.mjs`.
-
----
+- **Agente do VS Code**, modelo: GitHub Copilot Workspace. Executou o login Discord, a sessão assinada e o schema inicial.
+- **ChatGPT (chat web)**, modelo: GPT-6. Executou as regras de empréstimos, mensagens e trocas, as migrations seguintes e a interface.
+- **Gemini (chat web)**, modelo: auto. Executou o Agente 3.
+- **Claude (chat)**: apoio de planejamento, revisão de roteiros e redação do prompt de login usado pelo agente do VS Code. Não é contado como agente.
+- **Estratégia de Coordenação:** cada agente recebeu um skill de `skills/` e um escopo de pastas. A integração foi feita via Git (branch `main`) e Cloudflare Pages, com verificação por `validar-local.mjs`.
 
 ## 2. Agentes Criados e Responsabilidades (Mínimo de 3 Agentes)
 
