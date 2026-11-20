@@ -82,7 +82,7 @@ export async function destroySession(request, env) {
 /** Defesa extra contra CSRF em requisições que alteram dados. */
 export function isSameOrigin(request) {
   const origin = request.headers.get("Origin");
-  if (!origin) return true; // navegadores sempre enviam Origin em POST cross-site
+  if (!origin) return false; // navegadores sempre enviam Origin em POST cross-site
   return origin === new URL(request.url).origin;
 }
 
