@@ -7,7 +7,7 @@
   --accent: #3b5bdb;
   --accent-ink: #ffffff;
   --discord: #5865f2;
-  --locked: #8a6d1d;
+  --locked: #80641a;
   --locked-bg: #fbf3d9;
   --ok: #1d7a4a;
   --ok-bg: #e3f5ea;
@@ -49,7 +49,7 @@ code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .92em; 
 .tabs { display: flex; gap: .4rem; border-bottom: 1px solid var(--line); margin-bottom: 1.1rem; }
 .tab { background: none; border: 0; padding: .65rem 1rem; font: inherit; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -1px; }
 .tab.is-active { color: var(--ink); border-color: var(--accent); font-weight: 600; }
-.tab:focus-visible, .btn:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent); outline-offset: 2px; }
+.tab:focus-visible, .btn:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.1rem; }
 .form { display: grid; gap: .55rem; margin-bottom: 1.2rem; }

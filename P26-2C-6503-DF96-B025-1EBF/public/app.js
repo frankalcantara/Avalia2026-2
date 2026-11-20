@@ -38,6 +38,7 @@
     var box = $("notice");
     box.textContent = message;
     box.className = "notice" + (isError ? " is-error" : "");
+    box.setAttribute("role", isError ? "alert" : "status");
     box.hidden = false;
     clearTimeout(showNotice._t);
     showNotice._t = setTimeout(function () { box.hidden = true; }, 6000);
@@ -86,7 +87,11 @@
     return api("/api/auth/me").then(function (data) {
       state.user = data.authenticated ? data.user : null;
       renderAuth();
-    }).catch(function () { state.user = null; renderAuth(); });
+    }).catch(function (e) {
+      state.user = null;
+      renderAuth();
+      showNotice("Não foi possível verificar o login: " + e.message, true);
+    });
   }
 
   // ---------- mural ----------
@@ -103,8 +108,15 @@
   }
 
   function loadMessages() {
+    $("message-loading").hidden = false;
+    $("message-empty").hidden = true;
+    $("message-list").setAttribute("aria-busy", "true");
     return api("/api/messages").then(function (d) { renderMessages(d.messages || []); })
-      .catch(function (e) { showNotice("Não foi possível carregar o mural: " + e.message, true); });
+      .catch(function (e) { showNotice("Não foi possível carregar o mural: " + e.message, true); })
+      .then(function () {
+        $("message-loading").hidden = true;
+        $("message-list").setAttribute("aria-busy", "false");
+      });
   }
 
   // ---------- cápsulas ----------
@@ -146,11 +158,18 @@
   }
 
   function loadCapsules() {
+    $("capsule-loading").hidden = false;
+    $("capsule-empty").hidden = true;
+    $("capsule-list").setAttribute("aria-busy", "true");
     return api("/api/capsules").then(function (d) {
       // alinha o relógio visual ao do servidor (só para a contagem; o bloqueio é do servidor)
       state.clockOffsetMs = Date.parse(d.server_time) - Date.now();
       renderCapsules(d.capsules || []);
-    }).catch(function (e) { showNotice("Não foi possível carregar as cápsulas: " + e.message, true); });
+    }).catch(function (e) { showNotice("Não foi possível carregar as cápsulas: " + e.message, true); })
+      .then(function () {
+        $("capsule-loading").hidden = true;
+        $("capsule-list").setAttribute("aria-busy", "false");
+      });
   }
 
   function tick() {
@@ -215,7 +234,7 @@
     $("logout-btn").addEventListener("click", function () {
       api("/api/auth/logout", { method: "POST" }).then(function () {
         state.user = null; renderAuth(); loadCapsules();
-      });
+      }).catch(function (e) { showNotice("Não foi possível sair: " + e.message, true); });
     });
   }
 
@@ -227,8 +246,23 @@
           var active = k === key;
           $(tabs[k][0]).classList.toggle("is-active", active);
           $(tabs[k][0]).setAttribute("aria-selected", String(active));
+          $(tabs[k][0]).setAttribute("tabindex", active ? "0" : "-1");
           $(tabs[k][1]).hidden = !active;
         });
+      });
+      $(tabs[key][0]).addEventListener("keydown", function (ev) {
+        var keys = Object.keys(tabs);
+        var index = keys.indexOf(key);
+        var next = null;
+        if (ev.key === "ArrowRight") next = keys[(index + 1) % keys.length];
+        if (ev.key === "ArrowLeft") next = keys[(index + keys.length - 1) % keys.length];
+        if (ev.key === "Home") next = keys[0];
+        if (ev.key === "End") next = keys[keys.length - 1];
+        if (next) {
+          ev.preventDefault();
+          $(tabs[next][0]).focus();
+          $(tabs[next][0]).click();
+        }
       });
     });
   }

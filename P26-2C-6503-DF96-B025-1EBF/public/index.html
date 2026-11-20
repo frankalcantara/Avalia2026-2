@@ -26,8 +26,8 @@
     <div id="notice" class="notice" role="status" hidden></div>
 
     <nav class="tabs" role="tablist" aria-label="Seções">
-      <button class="tab is-active" id="tab-mural" role="tab" aria-selected="true" aria-controls="panel-mural" type="button">Mural</button>
-      <button class="tab" id="tab-capsulas" role="tab" aria-selected="false" aria-controls="panel-capsulas" type="button">Cápsulas do tempo</button>
+      <button class="tab is-active" id="tab-mural" role="tab" aria-selected="true" aria-controls="panel-mural" tabindex="0" type="button">Mural</button>
+      <button class="tab" id="tab-capsulas" role="tab" aria-selected="false" aria-controls="panel-capsulas" tabindex="-1" type="button">Cápsulas do tempo</button>
     </nav>
 
     <section id="panel-mural" class="panel" role="tabpanel" aria-labelledby="tab-mural">
@@ -40,7 +40,8 @@
         </div>
       </form>
       <p id="mural-login-hint" class="hint">Entre com o Discord para publicar no mural.</p>
-      <ul id="message-list" class="list" aria-live="polite"></ul>
+      <p id="message-loading" class="hint" role="status">Carregando depoimentos…</p>
+      <ul id="message-list" class="list" aria-live="polite" aria-busy="true"></ul>
       <p id="message-empty" class="hint" hidden>Ainda não há depoimentos. Seja o primeiro!</p>
     </section>
 
@@ -70,7 +71,8 @@
         </div>
       </form>
       <p id="capsule-login-hint" class="hint">Entre com o Discord para criar cápsulas.</p>
-      <ul id="capsule-list" class="list" aria-live="polite"></ul>
+      <p id="capsule-loading" class="hint" role="status">Carregando cápsulas…</p>
+      <ul id="capsule-list" class="list" aria-live="polite" aria-busy="true"></ul>
       <p id="capsule-empty" class="hint" hidden>Nenhuma cápsula criada ainda.</p>
     </section>
   </main>
