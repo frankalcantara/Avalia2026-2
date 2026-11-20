@@ -98,3 +98,5 @@ textarea { resize: vertical; }
   .form__grid { grid-template-columns: 1fr; }
   .user__name { max-width: 9ch; }
 }
+
+[hidden] { display: none !important; }
