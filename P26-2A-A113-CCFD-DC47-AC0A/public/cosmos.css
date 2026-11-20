@@ -82,3 +82,34 @@ main { padding-top: 0; }
   .scene { position: relative; inset: auto; min-height: 70vh; transform: none !important; opacity: 1 !important; filter: none !important; visibility: visible !important; }
   .strip, .cue { display: none; }
 }
+/* ===== desempenho: tira o que pesa e deixa só o que o navegador anima de graça ===== */
+body::before, body::after, .layer { display: none; }
+.sky::before, .sky::after { filter: none; translate: none; opacity: .75; }
+.sky .planet { will-change: transform; }
+.hc, .orbits { translate: none; }
+.game .board { transform: none; }
+
+/* vidro (backdrop-filter) sobre canvas animado é caro: fundo mais opaco no lugar */
+.topbar, .stats div, .board, .records li { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.topbar { background: rgba(3, 3, 20, .92); }
+.stats div, .records li { background: rgba(10, 8, 40, .88); }
+
+/* bordas giratórias viram estáticas (animar --a repinta o elemento a cada quadro) */
+.btn, .board, .memory-back { animation: none; }
+.board { background: linear-gradient(rgba(6, 5, 28, .92), rgba(6, 5, 28, .92)) padding-box, conic-gradient(from 25deg, var(--violet), var(--void), var(--cyan), var(--void), var(--magenta), var(--violet)) border-box; }
+.login .btn::after, .scene.final .btn::after { content: ""; position: absolute; inset: -2px; border-radius: inherit; border: 2px solid var(--violet); pointer-events: none; animation: ping 2.4s ease-out infinite; }
+.login .btn, .scene.final .btn { animation: none; }
+@keyframes ping { from { transform: scale(1); opacity: .9; } to { transform: scale(1.35, 1.8); opacity: 0; } }
+
+/* títulos: só entrada (e onda no h1); sem trocar de cor o tempo todo */
+[data-split] .ch, .brand .ch { color: var(--star); animation: rise 1s var(--ease) forwards; animation-delay: calc(var(--i) * 50ms); }
+h1[data-split] .ch { animation: rise 1s var(--ease) forwards, wave 3s ease-in-out infinite; animation-delay: calc(var(--i) * 50ms), calc(var(--i) * 120ms + 1.2s); }
+.scene h2 { letter-spacing: -.03em; }
+
+/* sem filtros caros em elementos que se mexem */
+.scene { filter: none !important; }
+.memory-card[data-kind="img"] .memory-art svg { filter: none; }
+.memory-card.matched .memory-front { animation: none; box-shadow: 0 0 26px rgba(34, 211, 238, .6); }
+
+/* barra de progresso (criada pelo JS; só muda transform) */
+#bar { position: fixed; left: 0; top: 0; width: 100%; height: 3px; z-index: 60; pointer-events: none; transform-origin: 0 50%; transform: scaleX(0); background: var(--aurora); }
