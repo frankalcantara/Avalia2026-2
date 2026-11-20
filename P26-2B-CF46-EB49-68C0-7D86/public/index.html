@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Prepare uma referência bibliográfica e confira a prévia local.">
+  <title>Referências bibliográficas</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="top"><div class="wrap"><span class="mark" aria-hidden="true">“</span> Referências bibliográficas</div></header>
+  <main class="wrap">
+    <div class="intro">
+      <h1>Gerador de referências</h1>
+      <p>Preencha os dados da fonte e confira a referência em ABNT ou IEEE.</p>
+    </div>
+    <section class="card session" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projetos</h2>
+      <p id="session-status" role="status">Verificando sessão…</p>
+      <p id="auth-status" role="status" hidden></p>
+      <noscript><p>Ative o JavaScript para acessar sua sessão e seus projetos.</p></noscript>
+      <a class="button" id="login-discord" href="/api/auth/discord" hidden>Entrar com Discord</a>
+      <div id="session-profile" class="profile" hidden>
+        <div class="profile-identity">
+          <img id="profile-avatar" width="40" height="40" alt="" referrerpolicy="no-referrer" hidden>
+          <span class="avatar-fallback" id="profile-avatar-fallback" aria-hidden="true"></span>
+          <strong id="profile-name"></strong>
+        </div>
+        <button type="button" id="logout-discord">Sair</button>
+      </div>
+      <div id="project-manager" hidden>
+        <div class="project-bar">
+          <div class="field">
+            <label for="project-select">Projeto ativo</label>
+            <select id="project-select"></select>
+          </div>
+          <div class="actions">
+            <button type="button" id="new-project">Novo projeto</button>
+            <button type="button" id="edit-project" disabled>Editar projeto</button>
+            <button type="button" id="delete-project" class="danger" disabled>Excluir projeto</button>
+          </div>
+        </div>
+        <form id="project-form" hidden>
+          <div class="row">
+            <div class="field">
+              <label for="project-name">Nome do projeto</label>
+              <input id="project-name" maxlength="120" required aria-describedby="project-name-error">
+              <small id="project-name-error"></small>
+            </div>
+            <div class="field">
+              <label for="project-style">Estilo do projeto</label>
+              <select id="project-style">
+                <option value="abnt">ABNT</option>
+                <option value="ieee">IEEE</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="submit" id="save-project" class="primary">Criar projeto</button>
+            <button type="button" id="cancel-project">Cancelar</button>
+          </div>
+        </form>
+        <p id="project-status" role="status"></p>
+        <button type="button" id="reload-projects" hidden>Recarregar projetos</button>
+      </div>
+    </section>
+    <div id="workspace" hidden>
+      <div class="layout">
+        <section class="card" aria-labelledby="source-title">
+          <h2 id="source-title">Dados da fonte</h2>
+          <form id="reference-form" novalidate>
+            <p class="hint">Os campos com * são obrigatórios.</p>
+            <div class="row">
+              <div class="field">
+                <label for="source">Tipo de fonte</label>
+                <select name="source" id="source">
+                  <option value="book">Livro</option>
+                  <option value="article">Artigo de periódico</option>
+                  <option value="website">Página da web</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="style">Estilo</label>
+                <select name="style" id="style">
+                  <option value="abnt">ABNT</option>
+                  <option value="ieee">IEEE</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="author">Autoria</label>
+              <input id="author" name="author" maxlength="200" placeholder="Ex.: Ana Silva; João Lima" aria-describedby="author-help author-error">
+              <span id="author-help" class="hint">Separe os autores com ponto e vírgula. Deixe em branco se a fonte não declarar autoria.</span>
+              <small id="author-error"></small>
+            </div>
+            <div class="row">
+              <div class="field">
+                <label for="title">Título <span class="required" aria-hidden="true">*</span></label>
+                <input id="title" name="title" required maxlength="300" aria-describedby="title-error">
+                <small id="title-error"></small>
+              </div>
+              <div class="field">
+                <label for="year">Ano <span class="required" aria-hidden="true">*</span></label>
+                <input id="year" name="year" required inputmode="numeric" pattern="(?!0000)[0-9]{4}" maxlength="4" placeholder="Ex.: 2024" aria-describedby="year-error">
+                <small id="year-error"></small>
+              </div>
+            </div>
+            <fieldset data-source="book">
+              <legend>Dados do livro</legend>
+              <div class="row">
+                <div class="field">
+                  <label for="publisher">Editora <span class="required" aria-hidden="true">*</span></label>
+                  <input id="publisher" name="publisher" required maxlength="200" aria-describedby="publisher-error">
+                  <small id="publisher-error"></small>
+                </div>
+                <div class="field">
+                  <label for="location">Local de publicação</label>
+                  <input id="location" name="location" maxlength="200" aria-describedby="location-error">
+                  <small id="location-error"></small>
+                </div>
+                <div class="field">
+                  <label for="edition">Edição</label>
+                  <input id="edition" name="edition" inputmode="numeric" placeholder="Ex.: 2" aria-describedby="edition-error">
+                  <small id="edition-error"></small>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset data-source="article" hidden disabled>
+              <legend>Dados do artigo</legend>
+              <div class="row">
+                <div class="field">
+                  <label for="journal">Periódico <span class="required" aria-hidden="true">*</span></label>
+                  <input id="journal" name="journal" required maxlength="200" aria-describedby="journal-error">
+                  <small id="journal-error"></small>
+                </div>
+                <div class="field">
+                  <label for="article-location">Local de publicação</label>
+                  <input id="article-location" name="location" maxlength="200" aria-describedby="article-location-error">
+                  <small id="article-location-error"></small>
+                </div>
+                <div class="field">
+                  <label for="volume">Volume</label>
+                  <input id="volume" name="volume" aria-describedby="volume-error">
+                  <small id="volume-error"></small>
+                </div>
+                <div class="field">
+                  <label for="issue">Número</label>
+                  <input id="issue" name="issue" aria-describedby="issue-error">
+                  <small id="issue-error"></small>
+                </div>
+                <div class="field">
+                  <label for="pages">Páginas</label>
+                  <input id="pages" name="pages" placeholder="Ex.: 21–35" aria-describedby="pages-error">
+                  <small id="pages-error"></small>
+                </div>
+                <div class="field">
+                  <label for="doi">DOI</label>
+                  <input id="doi" name="doi" aria-describedby="doi-error">
+                  <small id="doi-error"></small>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset data-source="website" hidden disabled>
+              <legend>Dados da página web</legend>
+              <div class="row">
+                <div class="field">
+                  <label for="site">Nome do site <span class="required" aria-hidden="true">*</span></label>
+                  <input id="site" name="site" required maxlength="200" aria-describedby="site-error">
+                  <small id="site-error"></small>
+                </div>
+                <div class="field">
+                  <label for="url">URL <span class="required" aria-hidden="true">*</span></label>
+                  <input id="url" name="url" required type="url" maxlength="2048" placeholder="https://" aria-describedby="url-error">
+                  <small id="url-error"></small>
+                </div>
+                <div class="field">
+                  <label for="accessDate">Data de acesso <span class="required" aria-hidden="true">*</span></label>
+                  <input id="accessDate" name="accessDate" type="date" required aria-describedby="accessDate-error">
+                  <small id="accessDate-error"></small>
+                </div>
+              </div>
+            </fieldset>
+            <div class="actions">
+              <button type="submit" id="generate-preview" class="primary" disabled>Gerar prévia</button>
+              <button type="submit" id="save-reference" value="save" hidden disabled>Salvar referência</button>
+              <button type="button" id="cancel-reference-edit" hidden>Cancelar edição</button>
+            </div>
+            <p id="form-status" role="status"></p>
+          </form>
+        </section>
+        <section class="card preview" aria-labelledby="preview-title">
+          <h2 id="preview-title">Prévia da referência</h2>
+          <p>Prévia gerada neste navegador. A cópia preserva o texto e a pontuação.</p>
+          <div class="result"><p id="result" aria-live="polite">Sua referência aparecerá aqui.</p></div>
+          <button type="button" id="copy" disabled>Copiar referência</button>
+          <p id="copy-status" role="status"></p>
+        </section>
+      </div>
+      <div class="layout collection" id="project-collection" hidden>
+        <section class="card" aria-labelledby="saved-title">
+          <h2 id="saved-title">Referências salvas</h2>
+          <p id="reference-status" role="status"></p>
+          <ul id="reference-list" class="reference-list"></ul>
+        </section>
+        <section class="card preview" aria-labelledby="bibliography-title">
+          <h2 id="bibliography-title">Bibliografia do projeto</h2>
+          <p id="bibliography-summary"></p>
+          <ul id="bibliography-list" class="bibliography-list"></ul>
+          <div class="actions">
+            <button type="button" id="compile-bibliography" disabled>Compilar bibliografia</button>
+            <button type="button" id="copy-bibliography" disabled>Copiar bibliografia</button>
+          </div>
+          <p id="bibliography-status" role="status"></p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="wrap footer"><p>Projeto #23 · P26-2B-CF46-EB49-68C0-7D86</p></footer>
+</body>
+</html>

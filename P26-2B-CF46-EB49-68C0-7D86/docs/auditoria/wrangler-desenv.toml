@@ -1,0 +1,11 @@
+name = "projeto-23-referencias"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-11-20"
+
+# Identificador sintético apenas para desenvolvimento local.
+# Defina os recursos reais e os secrets do ambiente antes de uma publicação autorizada.
+[[d1_databases]]
+binding = "DB"
+database_name = "projeto-23-local"
+database_id = "00000000-0000-4000-8000-000000000023"
+migrations_dir = "migrations"
