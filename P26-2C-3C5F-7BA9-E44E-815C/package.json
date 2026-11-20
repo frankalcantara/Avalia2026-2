@@ -1,0 +1,13 @@
+{
+  "name": "caderno-de-receitas",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "wrangler pages dev public --d1=DB",
+    "migrate:local": "wrangler d1 execute recipes-db --local --file=migrations/0001_init.sql",
+    "migrate:remote": "wrangler d1 execute recipes-db --remote --file=migrations/0001_init.sql",
+    "test": "node --test"
+  }
+}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caderno de Receitas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <h1>Caderno de Receitas</h1>
+    <nav id="nav" aria-label="Seções"></nav>
+    <div id="auth"></div>
+  </header>
+  <main>
+    <section class="side" aria-label="Receitas">
+      <form id="filters" class="filters">
+        <label>Nome do prato <input name="q" type="search" maxlength="100"></label>
+        <label>Ingrediente <input name="ingredient" type="search" maxlength="80"></label>
+        <label>Até quantos minutos <input name="max_time" type="number" min="1" max="1440"></label>
+        <button type="submit">Buscar</button>
+      </form>
+      <ul id="list" class="list"></ul>
+    </section>
+    <section id="panel" class="panel" aria-live="polite"></section>
+  </main>
+  <footer>Chave única do projeto: P26-2C-3C5F-7BA9-E44E-815C</footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
