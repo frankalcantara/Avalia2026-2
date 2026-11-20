@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jogo-sudoku",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2b-8f20-6829-e280-0237",
+      "database_id": "08bc9321-94b4-42a2-a802-b6322df90e3c"
+    }
+  ]
+}
