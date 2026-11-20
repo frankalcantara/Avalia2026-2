@@ -1,7 +1,12 @@
 /* corrige: display:flex dos componentes anulava o atributo hidden */
 [hidden] { display: none !important; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
 #cosmos { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+/* barra de progresso da viagem */
+body::after { content: ""; position: fixed; left: 0; top: 0; height: 3px; width: calc(var(--prog, 0) * 100%); z-index: 60; pointer-events: none;
+  background: var(--aurora); box-shadow: 0 0 14px rgba(34, 211, 238, .8); }
 
 /* ===== viagem de dobra: saída e chegada ===== */
 main, .topbar, footer { transition: opacity .9s ease, filter 1.2s ease, transform 1.3s var(--ease); }
@@ -14,7 +19,7 @@ html.warping #flash { opacity: 1; transition: opacity .9s ease-in .45s; }
 html.arriving #flash { opacity: 1; transition: none; }
 
 /* ===== movimento ligado ao mouse (--sx e --sy vão de -1 a 1) ===== */
-.login h1 { transform: perspective(900px) rotateY(calc(var(--sx, 0) * 7deg)) rotateX(calc(var(--sy, 0) * -5deg)); transform-origin: left center; }
+.login h1, .welcome h1 { transform: perspective(900px) rotateY(calc(var(--sx, 0) * 7deg)) rotateX(calc(var(--sy, 0) * -5deg)); transform-origin: left center; }
 .hc { translate: calc(var(--sx, 0) * var(--d, 1) * -26px) calc(var(--sy, 0) * var(--d, 1) * -26px); }
 .hc:nth-child(2n) { --d: 1.8; }
 .hc:nth-child(3n) { --d: .6; }
@@ -23,6 +28,13 @@ html.arriving #flash { opacity: 1; transition: none; }
 .sky::before { translate: calc(var(--sx, 0) * 36px) calc(var(--sy, 0) * 28px); }
 .sky::after { translate: calc(var(--sx, 0) * -30px) calc(var(--sy, 0) * -24px); }
 .game .board { transform: rotateX(calc(var(--sy, 0) * -2.5deg)) rotateY(calc(var(--sx, 0) * 3deg)); }
+
+/* ===== boas-vindas (só aparece depois do login) ===== */
+.welcome { display: none; min-height: 80vh; flex-direction: column; justify-content: center; align-items: flex-start; gap: 24px; }
+.login[hidden] + .welcome { display: flex; }
+.cue { position: relative; width: 28px; height: 46px; margin-top: 12px; border: 2px solid var(--star); border-radius: 16px; opacity: .8; }
+.cue::after { content: ""; position: absolute; left: 50%; top: 8px; width: 4px; height: 8px; margin-left: -2px; border-radius: 4px; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); animation: cue 1.8s ease-in-out infinite; }
+@keyframes cue { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(18px); } }
 
 /* ===== jornada ao rolar ===== */
 .journey { display: flex; flex-direction: column; gap: clamp(40px, 10vh, 120px); margin-top: 4vh; }
@@ -44,6 +56,13 @@ html.arriving #flash { opacity: 1; transition: none; }
 .final .obj { width: clamp(150px, 22vw, 240px); }
 .final .txt { display: flex; flex-direction: column; align-items: center; gap: 28px; }
 .final .btn { padding: 22px 52px; font-size: 1.25rem; animation: spin 5s linear infinite, beat 2.6s ease-in-out infinite; }
+.go-game { display: none; }
+.login[hidden] ~ .journey .final .enter { display: none; }
+.login[hidden] ~ .journey .final .go-game { display: inline-flex; }
+
+/* ===== chegada ao jogo ===== */
+.game { scroll-margin-top: 70px; }
+.game:not(.seen) .memory-card { animation: none; opacity: 0; }
 
 @media (max-width: 760px) {
   .stop { grid-template-columns: 1fr; min-height: auto; padding-block: 8vh; text-align: center; justify-items: center; }
