@@ -1,0 +1,10 @@
+PASSOU - GET /api/badges responde 200 com selos
+PASSOU - GET /api/me sem login devolve user null
+PASSOU - POST /api/kudos sem login devolve 401
+PASSOU - POST com cookie de sessão FORJADO devolve 401
+PASSOU - POST com Origin de outro site devolve 403
+PASSOU - GET /api/kudos?received=abc devolve 400
+PASSOU - GET /api/kudos com tentativa de SQL injection devolve 400
+PASSOU - GET /api/kudos lista os cartões (200)
+
+8/8 testes passaram em https://kudos-board-2c.pages.dev
