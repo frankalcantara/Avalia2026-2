@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f5f2">
+  <meta name="description" content="Apontamento de horas de engenharia de software por etapa do projeto.">
+  <title>Horas de projeto</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Horas de projeto"><span class="brand-icon" aria-hidden="true">h</span><span>HORAS <b>DE PROJETO</b></span></a>
+      <div class="topbar-right"><div id="profile" class="profile" hidden><img id="avatar" alt=""><span id="username"></span><button id="logout" class="text-button">Sair</button></div></div>
+    </header>
+    <main>
+      <section class="intro">
+        <div><p class="eyebrow">TIMESHEET · ENGENHARIA DE SOFTWARE</p><h1>Apontamento de horas</h1><p class="lede">Acompanhe o tempo investido em cada etapa e compare com o planejamento.</p></div>
+        <label class="date-field">Dia analisado<input type="date" id="date-picker"></label>
+      </section>
+      <section class="signin" id="signin"><div><h2>Entre para registrar suas horas</h2><p id="signin-message">Os apontamentos da equipe ficam disponíveis após o login.</p></div><a id="discord-login" class="discord-button" href="/api/auth/discord/start"><span>◉</span> Entrar com Discord <b>↗</b></a></section>
+      <section id="workspace" hidden>
+        <section class="metrics" aria-label="Resumo de horas">
+          <article class="metric-card"><span>SUAS HORAS HOJE</span><strong id="own-total">0h 00m</strong><small>Tempo apontado por você</small></article>
+          <article class="metric-card"><span>EQUIPE HOJE</span><strong id="team-total">0h 00m</strong><small>Todos os apontamentos do dia</small></article>
+          <article class="metric-card"><span>DESVIO DO PLANEJAMENTO</span><strong id="variance-total">—</strong><small>Realizado menos estimado</small></article>
+        </section>
+        <section class="work-grid">
+          <article class="panel timer-panel">
+            <div class="panel-heading"><div><p class="eyebrow">TEMPO REAL</p><h2>Cronômetro</h2></div><span id="timer-state" class="status-pill">Parado</span></div>
+            <label>Projeto<input id="timer-project" maxlength="100" value="Projeto de software" placeholder="Nome do projeto"></label>
+            <label>Etapa<select id="timer-module"><option>Requisitos</option><option>Arquitetura</option><option selected>Codificação</option><option>Testes</option></select></label>
+            <label>O que você está fazendo?<input id="timer-description" maxlength="300" placeholder="Ex.: implementar autenticação"></label>
+            <div class="timer-readout" id="timer-readout">00:00:00</div>
+            <button id="timer-button" class="primary-button" type="button">Iniciar cronômetro</button>
+            <p id="timer-message" class="form-message" role="status"></p>
+          </article>
+          <article class="panel manual-panel">
+            <div class="panel-heading"><div><p class="eyebrow">LANÇAMENTO MANUAL</p><h2>Adicionar período</h2></div></div>
+            <form id="manual-form">
+              <label>Projeto<input id="manual-project" maxlength="100" value="Projeto de software" required></label>
+              <label>Etapa<select id="manual-module"><option>Requisitos</option><option>Arquitetura</option><option selected>Codificação</option><option>Testes</option></select></label>
+              <label>Descrição<input id="manual-description" maxlength="300" placeholder="Ex.: revisão de casos de teste"></label>
+              <div class="date-range"><label>Início<input id="manual-start" type="datetime-local" required></label><label>Fim<input id="manual-end" type="datetime-local" required></label></div>
+              <button class="secondary-button" type="submit">Salvar apontamento</button>
+              <p id="manual-message" class="form-message" role="status"></p>
+            </form>
+          </article>
+        </section>
+        <section class="panel estimates-panel">
+          <div class="panel-heading"><div><p class="eyebrow">PLANEJADO × REALIZADO</p><h2>Estimativas por etapa</h2></div><span class="muted">Ajuste a estimativa em horas</span></div>
+          <div class="table-scroll"><table><thead><tr><th>Etapa</th><th>Estimado</th><th>Realizado no dia</th><th>Desvio</th><th>Progresso</th></tr></thead><tbody id="estimate-rows"></tbody></table></div>
+          <p id="estimate-message" class="form-message" role="status"></p>
+        </section>
+        <section class="panel entries-panel">
+          <div class="panel-heading"><div><p class="eyebrow">REGISTROS DA EQUIPE</p><h2>Apontamentos recentes</h2></div><span id="entry-count" class="muted">0 registros</span></div>
+          <div id="entries" class="entries-list"><p class="empty-state">Nenhum apontamento neste dia.</p></div>
+        </section>
+      </section>
+    </main>
+    <footer class="page-footer"><span>Timesheet · Requisitos · Arquitetura · Codificação · Testes</span><small>Chave do trabalho <code>P26-2A-72B9-56ED-0328-0872</code></small></footer>
+  </div>
+</body>
+</html>

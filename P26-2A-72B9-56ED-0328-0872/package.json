@@ -1,0 +1,16 @@
+{
+  "name": "painel-tarefas-cloudflare",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node tests/integration.mjs",
+    "db:migrate:local": "wrangler d1 migrations apply painel-tarefas-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply painel-tarefas-db --remote"
+  },
+  "devDependencies": {
+    "wrangler": "^4.163.0"
+  }
+}
