@@ -303,6 +303,12 @@
             </p>
 
             <div class="discord-badge" id="discordProfile">
+              <img
+                id="discordAvatar"
+                class="discord-avatar"
+                alt="Foto do perfil do Discord"
+                hidden
+              >
               <a id="discordLoginLink" href="/api/auth/discord">
                 <span id="discordUserText">
                   Entrar com Discord OAuth2
@@ -349,8 +355,15 @@
         Mensagem para o proprietário (opcional):
       </label>
 
-      <textarea id="trocaMensagem" class="input-text"
-        maxlength="500" placeholder="Escreva uma mensagem..."></textarea>
+      
+       <textarea
+        id="trocaMensagem"
+        name="trocaMensagem"
+        class="input-text"
+        maxlength="500"
+        placeholder="Escreva uma mensagem..."
+      ></textarea>
+
 
       <button type="submit" class="btn-primary">
         Enviar proposta

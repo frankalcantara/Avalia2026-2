@@ -83,6 +83,7 @@ function configurarBotaoLogout() {
 async function carregarUsuario() {
   const profileText = document.getElementById("discordUserText");
   const loginLink = document.getElementById("discordLoginLink");
+  const avatarImg = document.getElementById("discordAvatar");
 
   try {
     const response = await fetch("/api/me");
@@ -91,6 +92,15 @@ async function carregarUsuario() {
     if (response.ok && data.ok && data.data) {
       usuarioAtual = data.data;
 
+      if (avatarImg) {
+        if (usuarioAtual.avatar) {
+          avatarImg.src = usuarioAtual.avatar;
+          avatarImg.hidden = false;
+        } else {
+          avatarImg.hidden = true;
+         avatarImg.removeAttribute("src");
+       }
+}
       if (profileText) {
         profileText.textContent =
           "Discord: " + (usuarioAtual.global_name || usuarioAtual.username);
@@ -263,6 +273,8 @@ async function carregarLivros() {
 
       if (podeSolicitarEmprestimo) {
         const mensagem = document.createElement("textarea");
+        mensagem.id = `mensagemEmprestimo-${livro.id}`;
+        mensagem.name = `mensagemEmprestimo-${livro.id}`;
         mensagem.className = "input-text";
         mensagem.placeholder = "Mensagem opcional para o dono do livro";
         mensagem.maxLength = 500;
@@ -431,6 +443,8 @@ function criarChat(card, item) {
   formulario.className = "chat-form";
 
   const campo = document.createElement("textarea");
+  campo.id = `mensagemChat-${item.id}`;
+  campo.name = `mensagemChat-${item.id}`;
   campo.placeholder = "Escreva sua mensagem...";
   campo.maxLength = 1000;
   campo.rows = 2;

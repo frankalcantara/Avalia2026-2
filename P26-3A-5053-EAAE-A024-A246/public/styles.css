@@ -1079,3 +1079,12 @@ textarea:focus-visible {
 #trocaModal textarea::placeholder {
   color: #887b82 !important;
 }
+
+.discord-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--plum);
+  flex-shrink: 0;
+}
