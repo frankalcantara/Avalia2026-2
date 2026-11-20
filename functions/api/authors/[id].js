@@ -1,0 +1,2 @@
+import {json,bad} from '../../_lib/auth.js';
+export async function onRequestGet({params,env}){const author=await env.DB.prepare('SELECT id,username,avatar_url FROM users WHERE id=?').bind(params.id).first();if(!author)return bad('Autor não encontrado.',404);const {results}=await env.DB.prepare('SELECT p.id,p.title,p.summary,p.body,p.created_at,(SELECT COUNT(*) FROM likes l WHERE l.post_id=p.id) AS likes_count FROM posts p WHERE p.author_id=? ORDER BY p.created_at DESC').bind(params.id).all();return json({author,posts:results})}

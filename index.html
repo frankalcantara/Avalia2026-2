@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Blog técnico da turma."><title>TechBlog Turma</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/">Tech<span>Blog</span></a><nav><a href="#artigos">Artigos</a><a href="#sobre">Sobre</a></nav><div id="account"><button id="loginBtn" class="button primary">Entrar com Discord</button></div></header>
+  <main>
+    <section class="hero"><p class="eyebrow">CONHECIMENTO COMPARTILHADO</p><h1>Ideias técnicas.<br><span>Conhecimento em movimento.</span></h1><p>Artigos, experiências e aprendizados produzidos pela nossa turma.</p><a class="button primary" href="#artigos">Explorar artigos</a></section>
+    <section id="editorSection" class="panel hidden"><div class="section-heading"><div><p class="eyebrow">ESPAÇO DO AUTOR</p><h2 id="editorTitle">Novo artigo</h2></div></div><form id="postForm"><input type="hidden" id="postId"><label for="postTitle">Título</label><input id="postTitle" maxlength="160" required placeholder="Ex.: Entendendo redes TCP/IP"><label for="postSummary">Resumo</label><textarea id="postSummary" rows="2" maxlength="300" placeholder="Uma breve apresentação do artigo"></textarea><label for="postBody">Conteúdo</label><textarea id="postBody" rows="12" required placeholder="Escreva seu artigo técnico aqui..."></textarea><div class="form-actions"><button class="button primary" type="submit">Publicar artigo</button><button class="button ghost" type="button" id="cancelEdit">Cancelar</button></div><p id="formMessage" class="message" role="status"></p></form></section>
+    <section id="artigos"><div class="section-heading"><div><p class="eyebrow">DA COMUNIDADE</p><h2>Artigos recentes</h2></div><span id="postCount" class="muted"></span></div><div id="posts" class="post-grid"><p class="muted">Carregando artigos...</p></div></section>
+    <section id="sobre" class="about"><p class="eyebrow">NOSSO OBJETIVO</p><h2>Aprender também é compartilhar.</h2><p>Um espaço para registrar descobertas, explicar conceitos e trocar conhecimento técnico com a turma.</p></section>
+  </main>
+  <footer><span>TechBlog Turma · Projeto acadêmico</span><span>Chave: P26-2A-2B64-C206-BDAC-5A67</span></footer>
+  <script src="/app.js" defer></script>
+</body></html>

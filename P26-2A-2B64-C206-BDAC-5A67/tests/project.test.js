@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {existsSync} from 'node:fs';
+const root=new URL('../',import.meta.url);
+const read=path=>readFile(new URL(path,root),'utf8');
+test('cliente usa HTML, CSS e JavaScript sem framework de UI',async()=>{const html=await read('index.html'),js=await read('app.js');assert.match(html,/<html lang="pt-BR">/);assert.match(html,/styles\.css/);assert.match(html,/app\.js/);assert.doesNotMatch(js,/react|vue|angular/i);});
+test('a chave de auditoria aparece no README e na interface',async()=>{const readme=await read('README.md'),html=await read('index.html');const key='P26-2A-2B64-C206-BDAC-5A67';assert.ok(readme.includes(key));assert.ok(html.includes(key));});
+test('rotas de autenticação, publicação, comentários, curtidas e autores existem',()=>{for(const path of ['functions/api/auth/login.js','functions/api/auth/callback/index.js','functions/api/posts/index.js','functions/api/posts/[id].js','functions/api/posts/[id]/comments.js','functions/api/posts/[id]/like.js','functions/api/authors/[id].js'])assert.ok(existsSync(new URL(path,root)),path);});
+test('edição e exclusão filtram pelo autor no SQL',async()=>{const source=await read('functions/api/posts/[id].js');assert.match(source,/WHERE id=\? AND author_id=\?/);assert.match(source,/DELETE FROM posts WHERE id=\? AND author_id=\?/);});
+test('schema possui tabelas relacionais e índices',async()=>{const sql=await read('schema.sql');for(const table of ['users','posts','comments','likes'])assert.match(sql,new RegExp(`CREATE TABLE IF NOT EXISTS ${table}`));});
