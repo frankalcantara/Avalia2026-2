@@ -374,6 +374,7 @@ async function init() {
   pointerFx();
   $("newGameBtn").addEventListener("click", startGame);
   await loadMe();
+  document.documentElement.classList.remove("boot");
   if (state.user) {
     loadLeaderboard();
     startGame();
