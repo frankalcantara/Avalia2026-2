@@ -4,7 +4,7 @@
 - **Estudante:** VITOR GABRIEL DO NASCIMENTO
 - **Turma:** 2C
 - **Chave Única:** `P26-2C-50B3-F413-07FD-8793`
-- **URL_CLOUDFLARE:** `https://p26-2c-50b3-f413-07fd-8793.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://e3e16abb.avalia2026-2jogodamemoria.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
 
 ---
 
