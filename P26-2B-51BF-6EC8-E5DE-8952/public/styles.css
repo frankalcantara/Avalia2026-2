@@ -1,0 +1,16 @@
+*{box-sizing:border-box}
+body{font-family:system-ui,Arial,sans-serif;margin:0;background:#0f172a;color:#f1f5f9}
+header,main,footer{max-width:900px;margin:0 auto;padding:16px}
+header{display:flex;justify-content:space-between;align-items:center}
+button{background:#5865f2;color:#fff;border:0;padding:10px 16px;border-radius:8px;cursor:pointer}
+input,textarea{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#fff}
+section{background:#1e293b;border-radius:12px;padding:16px;margin:16px 0}
+.hidden{display:none}
+#track{position:relative;height:70px;background:#334155;border-radius:999px;overflow:hidden}
+#avatars{position:relative;height:100%}
+.track-avatar{position:absolute;top:10px;width:50px;height:50px;border-radius:50%;border:3px solid #fff;transform:translateX(-50%);transition:left .5s}
+#forum-list{list-style:none;padding:0}
+#forum-list li{background:#0f172a;padding:12px;border-radius:8px;margin:8px 0}
+#forum-list img{width:32px;height:32px;border-radius:50%;vertical-align:middle;margin-right:8px}
+#user-avatar{width:40px;height:40px;border-radius:50%;vertical-align:middle}
+@media(max-width:600px){header{flex-direction:column;gap:12px}}
