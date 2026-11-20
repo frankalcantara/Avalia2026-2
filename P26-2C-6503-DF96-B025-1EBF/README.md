@@ -4,7 +4,7 @@
 - **Estudante:** José Barichello neto
 - **Turma:** 2C
 - **Chave Única:** `P26-2C-6503-DF96-B025-1EBF`
-- **URL_CLOUDFLARE:** `https://p26-2c-6503-df96-b025-1ebf.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://avalia2026-2pp.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
 
 ---
 
