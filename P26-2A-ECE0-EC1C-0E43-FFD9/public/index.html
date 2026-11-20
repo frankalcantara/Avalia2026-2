@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projeto #18 — P26-2A-ECE0-EC1C-0E43-FFD9</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <strong>Projeto #18: Mural de Avisos Departamental por Disciplina</strong>
+      </div>
+      <div class="discord-badge" id="discordProfile">
+        <span id="discordUserText">Discord OAuth2 · Conectado</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <span class="pill">Projeto Oficial #18</span>
+      <h1>Mural de Avisos Departamental por Disciplina</h1>
+      <p class="desc">Crie um quadro de comunicados digitais segmentado por canais ou códigos de disciplinas. Qualquer estudante autenticado via Discord pode se inscrever nas disciplinas de seu interesse para compor um feed personalizado em HTML/CSS, além de publicar avisos, lembretes de entregas de trabalhos ou links úteis. As postagens são salvas no Cloudflare D1 contendo o identificador e o nome público do autor extraídos do token OAuth2, garantindo rastreabilidade e coibindo postagens anônimas indevidas. O sistema deve permitir que o próprio autor edite ou remova seus avisos e que outros usuários marquem comunicados importantes como "lidos" ou "fixados" em sua visão individual.</p>
+
+      <div class="form-row">
+        <input class="input-text" id="recordInput" type="text" placeholder="Digite um registro para gravar na Cloudflare Function + D1...">
+        <button class="btn-primary" id="sendBtn" type="button">Registrar no Cloudflare D1</button>
+      </div>
+      <div id="statusMessage" style="font-size:0.88rem;font-weight:700;color:#166534;margin-bottom:0.75rem;"></div>
+    </section>
+
+    <section class="card">
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:0.85rem;">Registros Persistidos (Cloudflare Pages Functions + D1)</h2>
+      <ul class="records-list" id="recordsList">
+        <li>Carregando status da API serverless...</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer id="projectFooter">
+    Chave Única de Auditoria: <code>P26-2A-ECE0-EC1C-0E43-FFD9</code> · Turma 2A · Licenciado sob MIT
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
