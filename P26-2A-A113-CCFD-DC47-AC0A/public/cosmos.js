@@ -32,25 +32,10 @@
   flash.setAttribute("aria-hidden", "true");
   document.body.append(flash);
 
-  // viaja sozinho pelas cenas até o jogo; qualquer gesto do jogador cancela
-  function autoScroll() {
-    const game = $("gameSection");
-    if (game.hidden) { target = BASE; return; }
-    const from = scrollY;
-    const to = Math.max(0, game.getBoundingClientRect().top + scrollY - 70);
-    const dur = Math.min(Math.max(((to - from) / innerHeight) * 1000, 3000), 8000);
-    const t0 = performance.now();
-    let stop = false;
-    const cancel = () => { stop = true; };
-    ["wheel", "touchstart", "keydown", "pointerdown"].forEach((ev) => addEventListener(ev, cancel, { once: true, passive: true }));
-    (function step(now) {
-      if (stop) { target = BASE; return; }
-      const p = Math.min((now - t0) / dur, 1);
-      const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
-      scrollTo({ top: from + (to - from) * e, behavior: "instant" });
-      if (p < 1) requestAnimationFrame(step);
-      else target = BASE;
-    })(t0);
+   function land() {
+    if (!root.classList.contains("arriving")) return;
+    root.classList.remove("arriving");
+    target = BASE; // as estrelas desaceleram e o jogador assume a rolagem
   }
 
   function land() {
