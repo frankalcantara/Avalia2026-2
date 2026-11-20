@@ -8,7 +8,14 @@
   let speed = BASE, target = BASE, boost = 0, lastY = scrollY;
   const mouse = { x: 0, y: 0, sx: 0, sy: 0 };
   let scrollS = scrollY;
-  let stops = [];
+  let scenes = [];
+  const flight = $("flight");
+
+  /* ---------- logado ou não: a página inteira reage (boas-vindas, botão final) ---------- */
+  const loginEl = $("loginPrompt");
+  const syncAuth = () => root.classList.toggle("authed", loginEl.hidden);
+  new MutationObserver(syncAuth).observe(loginEl, { attributes: true, attributeFilter: ["hidden"] });
+  syncAuth();
 
   /* ---------- chegada: voltou do Discord, começa em velocidade de dobra ---------- */
   let arriving = root.classList.contains("arriving");
@@ -25,13 +32,13 @@
   flash.setAttribute("aria-hidden", "true");
   document.body.append(flash);
 
-  // rola sozinho pelas estações até o jogo; qualquer gesto do jogador cancela
+  // viaja sozinho pelas cenas até o jogo; qualquer gesto do jogador cancela
   function autoScroll() {
     const game = $("gameSection");
     if (game.hidden) { target = BASE; return; }
     const from = scrollY;
     const to = Math.max(0, game.getBoundingClientRect().top + scrollY - 70);
-    const dur = Math.min(Math.max(((to - from) / innerHeight) * 1000, 2500), 6500);
+    const dur = Math.min(Math.max(((to - from) / innerHeight) * 1000, 3000), 8000);
     const t0 = performance.now();
     let stop = false;
     const cancel = () => { stop = true; };
@@ -61,7 +68,7 @@
     setTimeout(() => { obs.disconnect(); land(); }, 4500);
   }
 
-  /* ---------- cartas só são distribuídas quando o jogo entra na tela ---------- */
+  /* ---------- as cartas só são distribuídas quando o jogo entra na tela ---------- */
   const gameEl = $("gameSection");
   if (calm || !("IntersectionObserver" in window)) gameEl.classList.add("seen");
   else {
@@ -115,6 +122,32 @@
       trail.push({ x: e.clientX * D, y: e.clientY * D, vx: (Math.random() - 0.5) * 0.8 * D, vy: (Math.random() - 0.5) * 0.8 * D + 0.2, l: 1, c: PAL[(Math.random() * PAL.length) | 0] });
     }
   });
+
+  /* ---------- cenas: a câmera atravessa uma após a outra ---------- */
+  function fly() {
+    const r = flight.getBoundingClientRect();
+    const span = r.height - innerHeight;
+    const p = span > 0 ? Math.min(Math.max(-r.top / span, 0), 1) : 0;
+    root.style.setProperty("--fp", p.toFixed(4));
+    const u = p * (scenes.length - 1);
+    scenes.forEach((s, i) => {
+      const d = u - i;                       // <0: vem de longe · 0: no centro · >0: passou por você
+      const sc = d < 0 ? 1 + d * 0.5 : 1 + d * 2.4;
+      const op = Math.max(0, Math.min(1, d < 0 ? 1 + d * 1.5 : 1 - d * 2.6));
+      const el = s.el;
+      el.style.setProperty("--d", d.toFixed(3));
+      el.style.visibility = op < 0.01 ? "hidden" : "visible";
+      el.style.opacity = op.toFixed(3);
+      el.style.transform = `rotateY(${(mouse.sx * 5).toFixed(2)}deg) rotateX(${(-mouse.sy * 4).toFixed(2)}deg) scale(${sc.toFixed(3)})`;
+      el.style.filter = Math.abs(d) > 0.04 ? `blur(${(Math.abs(d) * 5).toFixed(1)}px)` : "none";
+      if (op < 0.01) return;
+      for (const q of s.px) {
+        const sp = +q.dataset.s || 0, m = +q.dataset.m || 18;
+        q.style.translate = `${(mouse.sx * m).toFixed(1)}px ${(mouse.sy * m + d * sp * 600).toFixed(1)}px`;
+        if (q.classList.contains("obj")) q.style.rotate = (d * -14).toFixed(2) + "deg";
+      }
+    });
+  }
 
   let last = performance.now();
   function frame(t) {
@@ -173,24 +206,11 @@
     g.globalCompositeOperation = "source-over";
     g.globalAlpha = 1;
 
-    // objetos da jornada: rolagem + mouse em profundidades diferentes
-    const reads = stops.map((s) => s.el.getBoundingClientRect());
-    stops.forEach((s, i) => {
-      const r = reads[i];
-      if (r.bottom < -250 || r.top > innerHeight + 250) return;
-      const off = r.top + r.height / 2 - innerHeight / 2;
-      for (const p of s.px) {
-        const sp = +p.dataset.s || 0, m = +p.dataset.m || 18;
-        p.style.translate = `${(mouse.sx * m).toFixed(1)}px ${(off * sp + mouse.sy * m).toFixed(1)}px`;
-        if (p.classList.contains("obj")) p.style.rotate = (off * -0.012).toFixed(2) + "deg";
-      }
-    });
-
-    if (!calm) requestAnimationFrame(frame);
+    if (!calm) { fly(); requestAnimationFrame(frame); }
   }
 
   function init() {
-    // desenha as ilustrações (definidas no app.js) dentro dos objetos da jornada
+    // desenha as ilustrações (definidas no app.js) dentro dos objetos das cenas
     document.querySelectorAll("[data-art]").forEach((el) => {
       const id = el.dataset.art;
       if (typeof buildArt === "function" && typeof ART !== "undefined" && ART[id]) {
@@ -199,11 +219,8 @@
         el.append(buildArt(id));
       }
     });
-    stops = [...document.querySelectorAll(".stop")].map((el) => ({ el, px: [...el.querySelectorAll(".px")] }));
-    const io = new IntersectionObserver((es) => es.forEach((e) => {
-      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-    }), { threshold: 0.3 });
-    stops.forEach((s) => (calm ? s.el.classList.add("in") : io.observe(s.el)));
+    scenes = [...document.querySelectorAll(".scene")].map((el) => ({ el, px: [...el.querySelectorAll(".px")] }));
+    flight.style.setProperty("--n", scenes.length);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
