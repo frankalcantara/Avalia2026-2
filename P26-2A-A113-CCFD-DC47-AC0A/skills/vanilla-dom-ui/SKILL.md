@@ -13,3 +13,4 @@ description: Padrões de construção de interfaces responsivas em HTML5, CSS3 e
 5. **Segurança no DOM:** montar elementos com `createElement` e `textContent`; nunca `innerHTML` com dados do servidor ou do Discord.
 6. **Servidor é a fonte da verdade:** a face de uma carta só é desenhada depois da resposta do servidor; bloquear cliques enquanto uma requisição está em andamento.
 7. **Responsividade e acessibilidade:** CSS Grid, cartas como `<button>` com `aria-label`, `role="status"` nas mensagens.
+
