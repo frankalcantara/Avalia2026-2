@@ -1,0 +1,1090 @@
+
+/* =========================================
+   BIBLIOTECA UNIVERSITÁRIA
+   Identidade visual acadêmica
+   Ameixa, vinho, creme e dourado
+========================================= */
+
+:root {
+  --plum: #32182f;
+  --plum-light: #4a2945;
+  --wine: #71394f;
+  --wine-light: #945c70;
+  --gold: #c6a16a;
+  --gold-light: #e0c89d;
+  --cream: #f7f1e9;
+  --paper: #fffdf9;
+  --rose: #eadbd9;
+  --rose-light: #f3e9e5;
+  --ink: #382b34;
+  --muted: #786b72;
+  --border: #e6dcd5;
+  --danger: #a43e4b;
+  --shadow: 0 12px 32px rgba(50, 24, 47, 0.07);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Segoe UI", Georgia, serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ESTRUTURA PRINCIPAL */
+
+.app-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 255px minmax(0, 1fr);
+}
+
+.sidebar {
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 19px 22px;
+  background: var(--plum);
+  color: var(--cream);
+  border-right: 1px solid rgba(224, 200, 157, 0.2);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 5px 9px 32px;
+  border-bottom: 1px solid rgba(224, 200, 157, 0.2);
+}
+
+.brand-symbol {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold-light);
+  font-size: 25px;
+}
+
+.sidebar-brand strong {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.sidebar-brand div > span {
+  display: block;
+  margin-top: 2px;
+  color: var(--gold-light);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 9px;
+  letter-spacing: 2.2px;
+}
+
+.sidebar-caption {
+  margin: 31px 10px 13px;
+  color: var(--gold-light);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.nav-link {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #e9dfe6;
+  text-align: left;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-link.active {
+  background: rgba(198, 161, 106, 0.14);
+  border-color: rgba(198, 161, 106, 0.5);
+  color: #fff8ec;
+}
+
+.nav-number {
+  color: var(--gold-light);
+  font-family: Georgia, serif;
+  font-size: 12px;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 20px 9px 0;
+  border-top: 1px solid rgba(224, 200, 157, 0.2);
+}
+
+.sidebar-footer span,
+.sidebar-footer small {
+  display: block;
+}
+
+.sidebar-footer span {
+  color: var(--gold-light);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 9px;
+  letter-spacing: 1.4px;
+}
+
+.sidebar-footer small {
+  margin-top: 6px;
+  color: #c9b9c3;
+  font-size: 11px;
+}
+
+/* ÁREA DE CONTEÚDO */
+
+.workspace {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  min-height: 65px;
+  display: flex;
+  align-items: center;
+  padding: 0 5%;
+  background: var(--paper);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.topbar-label,
+.topbar-edition {
+  font-family: "Segoe UI", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+}
+
+.topbar-label {
+  color: var(--wine);
+}
+
+.topbar-edition {
+  color: var(--muted);
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 36px 5%;
+}
+
+.page-panel {
+  width: 100%;
+  animation: pageAppear 0.25s ease;
+}
+
+.page-panel[hidden] {
+  display: none !important;
+}
+
+@keyframes pageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* APRESENTAÇÃO */
+
+.welcome-hero {
+  min-height: 365px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 55px 30px;
+  border: 1px solid rgba(224, 200, 157, 0.5);
+  border-radius: 5px;
+  background:
+    radial-gradient(ellipse at center, rgba(111, 64, 93, 0.35), transparent 65%),
+    var(--plum);
+  color: var(--cream);
+  text-align: center;
+}
+
+.welcome-hero::before,
+.welcome-hero::after {
+  content: "";
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  border: 1px solid rgba(224, 200, 157, 0.17);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.welcome-hero::before {
+  top: -125px;
+  left: -105px;
+}
+
+.welcome-hero::after {
+  right: -105px;
+  bottom: -125px;
+}
+
+.hero-eyebrow,
+.hero-note,
+.section-kicker {
+  font-family: "Segoe UI", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+}
+
+.hero-eyebrow {
+  color: var(--gold-light);
+}
+
+.welcome-hero h1 {
+  max-width: 800px;
+  margin: 19px 0 13px;
+  color: #fff8ee;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.welcome-hero > p {
+  max-width: 620px;
+  color: #e7d9df;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.hero-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 180px;
+  margin: 24px 0 14px;
+  color: var(--gold-light);
+}
+
+.hero-divider span:not(.hero-divider-symbol) {
+  height: 1px;
+  flex: 1;
+  background: var(--gold);
+  opacity: 0.7;
+}
+
+.hero-divider-symbol {
+  font-size: 18px;
+}
+
+.hero-note {
+  color: var(--gold-light);
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.hero-ornament {
+  position: absolute;
+  width: 85px;
+  height: 85px;
+  color: rgba(224, 200, 157, 0.5);
+  pointer-events: none;
+}
+
+.hero-ornament svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-ornament-top {
+  top: 18px;
+  right: 22px;
+}
+
+.hero-ornament-bottom {
+  bottom: 18px;
+  left: 22px;
+  transform: rotate(45deg);
+}
+
+/* SEÇÕES E CARTÕES */
+
+.section-heading {
+  margin: 42px 0 21px;
+}
+
+.section-kicker {
+  color: var(--wine-light);
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.section-heading h2,
+.page-heading h1 {
+  margin-top: 7px;
+  color: var(--plum);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+}
+
+.section-heading h2 {
+  font-size: 29px;
+}
+
+.section-heading p,
+.page-heading p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+}
+
+.page-heading {
+  margin: 5px 0 26px;
+}
+
+.page-heading h1 {
+  font-size: 35px;
+}
+
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.home-card {
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--ink);
+  text-align: left;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.home-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.home-card-number {
+  color: var(--wine-light);
+  font-family: Georgia, serif;
+  font-size: 13px;
+}
+
+.home-card strong {
+  margin-top: 15px;
+  color: var(--plum);
+  font-family: Georgia, serif;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.home-card > span:nth-of-type(2) {
+  margin-top: 7px;
+  color: var(--muted);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.home-card-link {
+  margin-top: auto;
+  padding-top: 16px;
+  color: var(--wine);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* CARTÕES DE CONTEÚDO */
+
+.card {
+  margin-bottom: 20px;
+  padding: 27px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.card h2 {
+  margin-bottom: 13px;
+  color: var(--plum);
+  font-family: Georgia, serif;
+  font-size: 23px;
+  font-weight: 500;
+}
+
+.card > p {
+  color: var(--muted);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+}
+
+/* FORMULÁRIOS */
+
+.book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.book-form label,
+.card label {
+  margin-top: 9px;
+  color: var(--plum);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.input-text {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid #d9c9c5;
+  border-radius: 4px;
+  background: #fffefa;
+  color: var(--ink);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.input-text:focus {
+  border-color: var(--wine);
+  outline: 2px solid rgba(113, 57, 79, 0.12);
+}
+
+.book-form .btn-primary {
+  align-self: flex-start;
+  margin-top: 15px;
+}
+
+#statusMessage,
+#trocaStatusMessage {
+  margin-top: 12px;
+  color: var(--wine);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* BOTÕES */
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 39px;
+  margin-top: 8px;
+  padding: 10px 17px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-primary {
+  background: var(--plum);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--wine);
+}
+
+.btn-secondary {
+  border-color: #d8c9c8;
+  background: var(--rose-light);
+  color: var(--plum);
+}
+
+.btn-secondary:hover {
+  background: var(--rose);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #832d3a;
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* CATÁLOGO */
+
+.records-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+
+.records-list > li {
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  background: #fffefa;
+  list-style: none;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+}
+
+.records-list li strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--plum);
+  font-family: Georgia, serif;
+  font-size: 17px;
+}
+
+.records-list li p {
+  margin: 5px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* EMPRÉSTIMOS E TROCAS */
+
+.loans-section {
+  margin-top: 20px;
+}
+
+.loans-section h2 {
+  margin-bottom: 12px;
+}
+
+.loan-card {
+  margin: 13px 0;
+  padding: 19px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  background: #fffefa;
+}
+
+.loan-card h3 {
+  margin-bottom: 10px;
+  color: var(--plum);
+  font-family: Georgia, serif;
+  font-weight: 500;
+}
+
+.loan-card p {
+  margin: 7px 0;
+  color: var(--muted);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+}
+
+.loan-card button {
+  margin: 8px 8px 0 0;
+}
+
+.loan-card textarea {
+  display: block;
+  width: 100%;
+  margin: 12px 0 8px;
+}
+
+.swap-divider {
+  height: 1px;
+  margin: 27px 0;
+  background: var(--border);
+}
+
+/* CONVERSAS */
+
+.chat-container {
+  margin-top: 14px;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: #faf5f0;
+}
+
+.chat-container[hidden] {
+  display: none !important;
+}
+
+.chat-container h4 {
+  margin-bottom: 12px;
+  color: var(--plum);
+  font-family: Georgia, serif;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.chat-message {
+  max-width: 85%;
+  padding: 11px 13px;
+  border-radius: 7px;
+  overflow-wrap: anywhere;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+}
+
+.chat-message.mine {
+  align-self: flex-end;
+  background: var(--plum);
+  color: white;
+}
+
+.chat-message.other {
+  align-self: flex-start;
+  background: var(--rose);
+  color: var(--ink);
+}
+
+.chat-message strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.chat-message p {
+  margin: 0;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.chat-message time {
+  display: block;
+  margin-top: 6px;
+  font-size: 10px;
+  opacity: 0.75;
+}
+
+.chat-empty {
+  padding: 16px 4px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.chat-error {
+  margin-top: 8px;
+  color: var(--danger);
+  font-size: 12px;
+}
+
+.chat-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.chat-form textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  resize: vertical;
+  padding: 10px;
+  border: 1px solid #d9c9c5;
+  border-radius: 4px;
+  font: inherit;
+}
+
+.chat-form button {
+  align-self: flex-end;
+}
+
+/* CONTA */
+
+.account-card .discord-badge {
+  margin-top: 20px;
+}
+
+.discord-badge {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 15px;
+  border: 1px solid #d8c2c9;
+  border-radius: 4px;
+  background: var(--rose-light);
+  color: var(--plum);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.discord-badge a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* RODAPÉ */
+
+#projectFooter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 22px;
+  padding: 20px 5%;
+  border-top: 1px solid var(--border);
+  background: var(--paper);
+  color: var(--muted);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 10px;
+  text-align: center;
+}
+
+#projectFooter code {
+  color: var(--wine);
+}
+
+/* MODAL DE TROCA */
+
+#trocaModal:not([hidden]) {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1000;
+  display: block !important;
+  width: min(560px, calc(100% - 32px));
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  margin: 0;
+  padding: 28px;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  background: var(--paper);
+  box-shadow: 0 20px 80px rgba(25, 10, 24, 0.35);
+}
+
+#trocaModal:not([hidden])::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: rgba(25, 10, 24, 0.65);
+}
+
+#trocaModal h2 {
+  margin-bottom: 17px;
+  color: var(--plum);
+  font-family: Georgia, serif;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+#trocaModal form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+#trocaModal textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* VISIBILIDADE DAS TROCAS */
+
+#trocasSection:not([hidden]) {
+  display: block !important;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 900px) {
+  .app-layout {
+    grid-template-columns: 215px minmax(0, 1fr);
+  }
+
+  .sidebar {
+    padding-right: 13px;
+    padding-left: 13px;
+  }
+
+  .home-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .home-card {
+    min-height: 155px;
+  }
+}
+
+@media (max-width: 650px) {
+  .app-layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: relative;
+    top: auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 15px;
+  }
+
+  .sidebar-brand {
+    padding: 0 5px 13px;
+  }
+
+  .sidebar-caption,
+  .sidebar-footer {
+    display: none;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    gap: 6px;
+    overflow-x: auto;
+    padding-top: 12px;
+    padding-bottom: 3px;
+  }
+
+  .nav-link {
+    width: auto;
+    min-width: max-content;
+    min-height: 40px;
+    gap: 7px;
+    padding: 8px 11px;
+    font-size: 11px;
+  }
+
+  .nav-number {
+    font-size: 10px;
+  }
+
+  .topbar {
+    min-height: 48px;
+    padding: 0 17px;
+  }
+
+  .topbar-label,
+  .topbar-edition {
+    font-size: 8px;
+    letter-spacing: 0.7px;
+  }
+
+  .main-content {
+    padding: 20px 15px;
+  }
+
+  .welcome-hero {
+    min-height: 340px;
+    padding: 45px 20px;
+  }
+
+  .welcome-hero h1 {
+    font-size: 32px;
+  }
+
+  .welcome-hero > p {
+    font-size: 12px;
+  }
+
+  .hero-ornament {
+    width: 52px;
+    height: 52px;
+  }
+
+  .section-heading {
+    margin-top: 30px;
+  }
+
+  .page-heading h1 {
+    font-size: 29px;
+  }
+
+  .card {
+    padding: 19px;
+  }
+
+  .book-form .btn-primary {
+    width: 100%;
+  }
+
+  .loan-card {
+    padding: 13px;
+  }
+
+  .loan-card button {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .chat-form {
+    flex-direction: column;
+  }
+
+  .chat-form button {
+    width: 100%;
+  }
+
+  .chat-message {
+    max-width: 95%;
+  }
+
+  #projectFooter {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Correção de contraste da janela de proposta de troca */
+#trocaModal:not([hidden]) {
+  background-color: #fffdf9 !important;
+  color: #382b34 !important;
+  border: 1px solid #c6a16a !important;
+  box-shadow: 0 18px 50px rgba(50, 24, 47, 0.22);
+  isolation: isolate;
+}
+
+/* Remove a camada escura que estava prejudicando a leitura */
+#trocaModal:not([hidden])::before {
+  display: none !important;
+}
+
+#trocaModal h2 {
+  color: #32182f !important;
+}
+
+#trocaModal p,
+#trocaModal label {
+  color: #594451 !important;
+}
+
+#trocaModal input,
+#trocaModal select,
+#trocaModal textarea {
+  background-color: #ffffff !important;
+  color: #382b34 !important;
+  border: 1px solid #d8c9c4 !important;
+}
+
+#trocaModal input::placeholder,
+#trocaModal textarea::placeholder {
+  color: #887b82 !important;
+}
+
+.discord-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--plum);
+  flex-shrink: 0;
+}
