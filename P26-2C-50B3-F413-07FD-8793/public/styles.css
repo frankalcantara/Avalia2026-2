@@ -1,0 +1,105 @@
+:root {
+  --bg: #0f1420;
+  --panel: #171e2e;
+  --panel-2: #1f2840;
+  --line: #2b3652;
+  --text: #e8ecf6;
+  --muted: #98a3bd;
+  --accent: #6ea8fe;
+  --accent-2: #b794f6;
+  --ok: #4ade80;
+  --bad: #f87171;
+  --discord: #5865f2;
+  --radius: 14px;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(1200px 600px at 80% -10%, #1b2a52 0%, transparent 60%), var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+.topbar { border-bottom: 1px solid var(--line); background: rgba(15, 20, 32, 0.85); position: sticky; top: 0; z-index: 5; backdrop-filter: blur(6px); }
+.topbar-inner { max-width: 980px; margin: 0 auto; padding: 0.7rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.brand { font-size: 1.05rem; letter-spacing: 0.2px; }
+.discord-badge { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+.user-chip { display: flex; align-items: center; gap: 0.55rem; min-width: 0; }
+.user-chip img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--discord); flex: none; }
+.user-chip span { max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+
+main { flex: 1; width: 100%; max-width: 980px; margin: 0 auto; padding: 1.25rem 1rem 2rem; }
+h1 { font-size: clamp(1.4rem, 4vw, 2rem); margin: 0.4rem 0 0.4rem; }
+h2 { font-size: 1.1rem; margin: 0 0 0.75rem; }
+.desc { color: var(--muted); margin: 0 0 1rem; max-width: 62ch; }
+.muted { color: var(--muted); }
+.pill { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 99px; background: var(--panel-2); color: var(--accent); border: 1px solid var(--line); }
+
+.card-panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.25rem; }
+.panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.notice { background: #3b1d24; border: 1px solid #7f2d3a; color: #fecaca; padding: 0.6rem 0.8rem; border-radius: 10px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 10px; padding: 0.55rem 1rem; font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; color: #fff; transition: transform 0.1s, filter 0.15s; }
+.btn:hover { filter: brightness(1.1); }
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible, .card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.btn-discord { background: var(--discord); }
+.btn-primary { background: linear-gradient(135deg, #4f8ff7, #7c5cf0); }
+.btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--text); padding: 0.35rem 0.7rem; }
+.btn-big { padding: 0.8rem 1.4rem; font-size: 1.05rem; }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 0.5rem 0 0.5rem; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 0.6rem 0.8rem; display: flex; flex-direction: column; }
+.stat-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.stat-value { font-size: 1.35rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.message { min-height: 1.5rem; margin: 0.4rem 0 0.6rem; font-weight: 600; color: var(--muted); }
+.message.ok { color: var(--ok); }
+.message.bad { color: var(--bad); }
+
+/* ---- Tabuleiro e efeito de virar com CSS 3D ---- */
+.board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(0.4rem, 1.8vw, 0.9rem); margin-bottom: 1.25rem; }
+
+.card { position: relative; aspect-ratio: 3 / 4; padding: 0; border: 0; background: none; cursor: pointer; perspective: 800px; font: inherit; color: inherit; -webkit-tap-highlight-color: transparent; }
+.card-inner { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1); }
+.card.flipped .card-inner, .card.matched .card-inner { transform: rotateY(180deg); }
+
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.4rem; text-align: center; overflow: hidden; border: 2px solid var(--line); }
+.cover { background: repeating-linear-gradient(45deg, #1f2a4a 0 10px, #1a2340 10px 20px); color: var(--accent); font-size: clamp(1.4rem, 6vw, 2.2rem); font-weight: 800; }
+.card:hover:not(.flipped):not(.matched) .cover { border-color: var(--accent); }
+.content { transform: rotateY(180deg); background: var(--panel-2); font-family: var(--mono); font-size: clamp(0.62rem, 2.4vw, 0.95rem); word-break: break-word; }
+.content .tag { font-family: system-ui, sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; color: var(--muted); }
+.card.is-code .content { border-color: var(--accent); }
+.card.is-output .content { border-color: var(--accent-2); }
+.card.matched .content { border-color: var(--ok); box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.25); }
+.card.matched { cursor: default; }
+.card.mismatch .content { border-color: var(--bad); }
+
+.win { background: linear-gradient(135deg, #14301f, #1a2a4a); border: 1px solid #2f7a4d; border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+.win p { margin: 0 0 0.8rem; }
+
+.ranking ol { margin: 0; padding-left: 1.4rem; }
+.ranking li { padding: 0.3rem 0; border-bottom: 1px solid var(--line); }
+.ranking li:last-child { border-bottom: 0; }
+.rank-row { display: flex; align-items: center; gap: 0.6rem; }
+.rank-row img { width: 24px; height: 24px; border-radius: 50%; }
+.rank-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank-score { font-weight: 800; font-variant-numeric: tabular-nums; }
+
+footer { border-top: 1px solid var(--line); padding: 1rem; text-align: center; color: var(--muted); font-size: 0.85rem; }
+footer code { background: var(--panel-2); padding: 0.1rem 0.4rem; border-radius: 6px; color: var(--text); word-break: break-all; }
+
+@media (max-width: 520px) {
+  .user-chip span { max-width: 90px; }
+  .stat-value { font-size: 1.1rem; }
+  .brand { font-size: 0.95rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-inner { transition-duration: 0.01s; }
+}
