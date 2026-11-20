@@ -9,9 +9,9 @@ export async function onRequestGet(context) {
     const clientId = context.env.DISCORD_CLIENT_ID;
     const clientSecret = context.env.DISCORD_CLIENT_SECRET;
     
-    // Atualizado com o caminho /api/
-    const redirectUri = 'https://catalogo-filmes-6lx.pages.dev/api/auth/callback';
-
+   
+    const redirectUri = new URL('/api/auth/callback', context.request.url).href;
+    
     const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
