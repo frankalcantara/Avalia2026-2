@@ -1,0 +1,12 @@
+name = "p26-2a-1287-4690-b0ae-03f3"
+compatibility_date = "2024-11-01"
+pages_build_output_dir = "public"
+
+[vars]
+DISCORD_CLIENT_ID = "1573445900133736568"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kudos-board-db"
+database_id = "ff3b9b69-1fa1-419a-a0ce-568211d278d4"
+migrations_dir = "migrations"
