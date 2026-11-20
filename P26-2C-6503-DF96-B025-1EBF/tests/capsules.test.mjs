@@ -207,4 +207,29 @@ await test("Mural: exige login, valida tamanho e lista publicamente", async () =
   assert.equal(list.json.messages[0].content, "<b>Parabéns, turma!</b>"); // armazenado cru; o front usa textContent
 });
 
+await test("POST do mural com JSON malformado retorna 400", async () => {
+  const tb = globalThis.__tb;
+  const request = new Request(ORIGIN + "/api/messages", {
+    method: "POST",
+    headers: {
+      Origin: ORIGIN,
+      Cookie: `session=${tb}`,
+      "Content-Type": "application/json",
+    },
+    body: "{",
+  });
+  const r = await call(messagesPost, request);
+  assert.equal(r.status, 400);
+});
+
+await test("POST do mural com origem cruzada retorna 403", async () => {
+  const tb = globalThis.__tb;
+  const r = await call(messagesPost, req("POST", "/api/messages", {
+    token: tb,
+    origin: "https://evil.example",
+    body: { content: "tentativa externa" },
+  }));
+  assert.equal(r.status, 403);
+});
+
 console.log(`\n${passed} teste(s) passaram.${process.exitCode ? " HÁ FALHAS." : ""}\n`);
