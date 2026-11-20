@@ -170,12 +170,30 @@
           </div>
 
           <section class="card">
-            <h2>Catálogo de livros</h2>
-            <ul class="records-list" id="recordsList">
-              <li>Carregando livros...</li>
-            </ul>
-          </section>
-        </section>
+  <h2>Catálogo de livros</h2>
+
+  <form id="searchForm" class="search-form">
+    <input
+      class="input-text"
+      id="searchInput"
+      type="search"
+      placeholder="Pesquisar por título, autor ou categoria..."
+      aria-label="Pesquisar livros"
+    >
+
+    <button class="btn-primary" type="submit">
+      Pesquisar
+    </button>
+
+    <button class="btn-secondary" id="clearSearchBtn" type="button">
+      Limpar busca
+    </button>
+  </form>
+
+  <ul class="records-list" id="recordsList">
+    <li>Carregando livros...</li>
+  </ul>
+</section>
 
         <!-- CADASTRO -->
         <section class="page-panel" data-page-panel="cadastro" hidden>

@@ -211,6 +211,24 @@ function mostrarMensagem(container, mensagem) {
   );
 }
 
+let buscaCatalogo = "";
+
+const searchForm = document.getElementById("searchForm");
+const searchInput = document.getElementById("searchInput");
+const clearSearchBtn = document.getElementById("clearSearchBtn");
+
+searchForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  buscaCatalogo = searchInput.value.trim().toLowerCase();
+  carregarLivros();
+});
+
+clearSearchBtn.addEventListener("click", () => {
+  searchInput.value = "";
+  buscaCatalogo = "";
+  carregarLivros();
+});
+
 async function carregarLivros() {
   recordsList.replaceChildren();
 
@@ -225,14 +243,31 @@ async function carregarLivros() {
     const livros = data.livros || [];
     livrosAtuais = livros;
 
-    if (!livros.length) {
+    const livrosFiltrados = buscaCatalogo
+  ? livros.filter((livro) => {
+      const textoPesquisa = [
+        livro.titulo,
+        livro.autor,
+        livro.categoria
+      ].join(" ").toLowerCase();
+
+      return textoPesquisa.includes(buscaCatalogo);
+    })
+  : livros;
+
+    if (!livrosFiltrados.length) {
       recordsList.appendChild(
-        criarElemento("li", "Nenhum livro cadastrado ainda.")
+        criarElemento(
+          "li",
+          buscaCatalogo
+            ? "Nenhum livro encontrado para essa pesquisa."
+            : "Nenhum livro cadastrado ainda."
+        )
       );
       return;
     }
 
-    livros.forEach((livro) => {
+    livrosFiltrados.forEach((livro) => {
       const li = document.createElement("li");
 
       const titulo = criarElemento("strong", livro.titulo);
