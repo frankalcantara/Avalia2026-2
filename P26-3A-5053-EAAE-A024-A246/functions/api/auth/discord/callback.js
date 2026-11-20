@@ -81,9 +81,11 @@ export async function onRequestGet({ request, env }) {
   const username = discordUser.username;
   const globalName =
     typeof discordUser.global_name === "string" ? discordUser.global_name : null;
+  const defaultAvatarIndex = Number((BigInt(userId) >> 22n) % 6n);
+
   const avatar = discordUser.avatar
     ? `https://cdn.discordapp.com/avatars/${userId}/${discordUser.avatar}.${discordUser.avatar.startsWith("a_") ? "gif" : "png"}`
-    : null;
+    : `https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`;
 
   await env.DB.prepare(
     "INSERT INTO discord_users (user_id, username, global_name, avatar) VALUES (?, ?, ?, ?) ON CONFLICT(user_id) DO UPDATE SET username = excluded.username, global_name = excluded.global_name, avatar = excluded.avatar",
