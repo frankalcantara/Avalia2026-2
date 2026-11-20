@@ -1,50 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projeto #33 — P26-2C-6503-DF96-B025-1EBF</title>
-  <link rel="stylesheet" href="/styles.css">
+  <title>Cápsula do Tempo e Livro de Visitas Digital</title>
+  <meta name="description" content="Mural de depoimentos e cápsulas do tempo para turmas de graduação.">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="topbar">
-    <div class="topbar-inner">
-      <div>
-        <strong>Projeto #33: Cápsula do Tempo e Livro de Visitas Digital</strong>
-      </div>
-      <div class="discord-badge" id="discordProfile">
-        <a id="discordLoginLink" href="/api/auth/discord" style="color:inherit;text-decoration:none;">
-          <span id="discordUserText">Entrar com Discord OAuth2</span>
-        </a>
+    <div class="topbar__inner">
+      <h1 class="brand">Livro de Visitas <span>&amp; Cápsulas do Tempo</span></h1>
+      <div id="auth" class="auth" aria-live="polite">
+        <a id="login-btn" class="btn btn--discord" href="/api/auth/discord">Entrar com Discord</a>
+        <div id="user-box" class="user" hidden>
+          <img id="user-avatar" class="avatar" alt="" width="36" height="36">
+          <span id="user-name" class="user__name"></span>
+          <button id="logout-btn" class="btn btn--ghost" type="button">Sair</button>
+        </div>
       </div>
     </div>
   </header>
 
-  <main>
-    <section class="card">
-      <span class="pill">Projeto Oficial #33</span>
-      <h1>Cápsula do Tempo e Livro de Visitas Digital</h1>
-      <p class="desc">Desenvolva um sistema de mensagens históricas e livro de assinaturas para turmas de graduação. O usuário faz login via Discord OAuth2 para deixar depoimentos no mural público imediato ou para criar "cápsulas do tempo" — mensagens endereçadas à turma ou a si mesmo com uma data futura de desbloqueio (ex: data da formatura). A segurança temporal deve ser garantida pelas Cloudflare Pages Functions: ao consultar a lista de cápsulas no Cloudflare D1, o servidor compara a data atual com a coluna unlock_date. Se a data futura ainda não chegou, o backend retorna apenas os metadados (autor, título e contagem regressiva), omitindo completamente o texto da mensagem no JSON enviado ao navegador.</p>
+  <main class="container">
+    <div id="notice" class="notice" role="status" hidden></div>
 
-      <div class="form-row">
-        <input class="input-text" id="recordInput" type="text" placeholder="Digite um registro para gravar na Cloudflare Function + D1...">
-        <button class="btn-primary" id="sendBtn" type="button">Registrar no Cloudflare D1</button>
-      </div>
-      <div id="statusMessage" style="font-size:0.88rem;font-weight:700;color:#166534;margin-bottom:0.75rem;"></div>
+    <nav class="tabs" role="tablist" aria-label="Seções">
+      <button class="tab is-active" id="tab-mural" role="tab" aria-selected="true" aria-controls="panel-mural" type="button">Mural</button>
+      <button class="tab" id="tab-capsulas" role="tab" aria-selected="false" aria-controls="panel-capsulas" type="button">Cápsulas do tempo</button>
+    </nav>
+
+    <section id="panel-mural" class="panel" role="tabpanel" aria-labelledby="tab-mural">
+      <form id="message-form" class="card form" hidden>
+        <label for="message-content">Deixe seu depoimento para a turma</label>
+        <textarea id="message-content" maxlength="500" rows="3" required placeholder="Escreva algo que você quer que fique registrado…"></textarea>
+        <div class="form__row">
+          <span class="counter" id="message-counter">0/500</span>
+          <button class="btn" type="submit">Publicar no mural</button>
+        </div>
+      </form>
+      <p id="mural-login-hint" class="hint">Entre com o Discord para publicar no mural.</p>
+      <ul id="message-list" class="list" aria-live="polite"></ul>
+      <p id="message-empty" class="hint" hidden>Ainda não há depoimentos. Seja o primeiro!</p>
     </section>
 
-    <section class="card">
-      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:0.85rem;">Registros Persistidos (Cloudflare Pages Functions + D1)</h2>
-      <ul class="records-list" id="recordsList">
-        <li>Carregando status da API serverless...</li>
-      </ul>
+    <section id="panel-capsulas" class="panel" role="tabpanel" aria-labelledby="tab-capsulas" hidden>
+      <form id="capsule-form" class="card form" hidden>
+        <h2>Criar cápsula do tempo</h2>
+        <label for="capsule-title">Título</label>
+        <input id="capsule-title" type="text" maxlength="100" required placeholder="Ex.: Para mim na formatura">
+        <label for="capsule-content">Mensagem (ficará oculta até a data)</label>
+        <textarea id="capsule-content" maxlength="2000" rows="5" required></textarea>
+        <div class="form__grid">
+          <div>
+            <label for="capsule-audience">Destinatário</label>
+            <select id="capsule-audience">
+              <option value="turma">À turma (todos poderão ler na data)</option>
+              <option value="self">A mim mesmo (só eu verei)</option>
+            </select>
+          </div>
+          <div>
+            <label for="capsule-unlock">Desbloqueio</label>
+            <input id="capsule-unlock" type="datetime-local" required>
+          </div>
+        </div>
+        <div class="form__row">
+          <span class="hint">Depois de enviada, nem você consegue ler antes da data.</span>
+          <button class="btn" type="submit">Trancar cápsula</button>
+        </div>
+      </form>
+      <p id="capsule-login-hint" class="hint">Entre com o Discord para criar cápsulas.</p>
+      <ul id="capsule-list" class="list" aria-live="polite"></ul>
+      <p id="capsule-empty" class="hint" hidden>Nenhuma cápsula criada ainda.</p>
     </section>
   </main>
 
-  <footer id="projectFooter">
-    Chave Única de Auditoria: <code>P26-2C-6503-DF96-B025-1EBF</code> · Turma 2C · Licenciado sob MIT
+  <footer class="footer">
+    <p>Chave Única de Auditoria: <code>P26-2C-6503-DF96-B025-1EBF</code> · Turma 2C · Licenciado sob MIT</p>
   </footer>
 
-  <script src="/app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
