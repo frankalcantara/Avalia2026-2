@@ -1,50 +1,74 @@
 # Projeto #21: Sistema de Agendamento de Monitoria
 
-- **Modalidade:** Projeto Oficial Sorteado (Valendo 100 pontos)
-- **Estudante:** Ana Júlia Arrelias de Oliveira
-- **Turma:** 2C
+- **Modalidade:** Projeto Oficial Sorteado
+- **Estudante:** Ana Júlia Arrelias de Oliveira (RA 2026108221) · Turma 2C
 - **Chave Única:** `P26-2C-B0E6-32E6-33BF-F8F5`
-- **URL_CLOUDFLARE:** `https://p26-2c-b0e6-32e6-33bf-f8f5.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** https://p26-2c-b0e6-32e6-33bf-f8f5.pages.dev
+- **Repositório:** https://github.com/juliarrelias/Avalia2026-2 (pasta `P26-2C-B0E6-32E6-33BF-F8F5/`)
+- **Licença:** MIT
 
----
+## O que é
 
-## Especificação do Projeto
+Aplicação de reserva de horários para atendimento de alunos por monitores acadêmicos. Quem entra com o Discord pode atuar como **monitor** (abre janelas de horários livres na semana) ou como **aluno** (reserva um horário informando o tema da dúvida). A grade semanal é atualizada automaticamente e permite o cancelamento prévio.
 
-Implemente uma aplicação de reserva de horários para atendimento de alunos por monitores acadêmicos. Usuários autenticados via Discord podem atuar como monitores (disponibilizando janelas de horários livres na semana) ou como alunos (reservando um slot disponível informando o tema da dúvida).
+## Arquitetura
 
-O backend na Cloudflare deve garantir a integridade transacional no banco D1: se dois alunos tentarem reservar o mesmo horário simultaneamente, apenas a primeira requisição deve ser efetivada, retornando erro de conflito (HTTP 409) para a segunda. A interface em JavaScript vanilla deve renderizar a grade semanal atualizada e permitir o cancelamento prévio de agendamentos.
+| Camada | Tecnologia |
+|---|---|
+| Frontend | HTML5, CSS3 e JavaScript vanilla (`public/`), sem frameworks |
+| Backend | Cloudflare Pages Functions (`functions/api/`) |
+| Banco | Cloudflare D1 (`migrations/`) |
+| Autenticação | Discord OAuth2 (escopo `identify`), cookie de sessão `HttpOnly` assinado com HMAC-SHA256 e `state` anti-CSRF |
 
----
+### Integridade transacional (HTTP 409)
 
-## Como Publicar esta Subpasta no Cloudflare Pages + D1 + Discord OAuth2
+`POST /api/bookings` executa **uma única instrução** `INSERT ... SELECT ... WHERE NOT EXISTS`, e a tabela tem `UNIQUE(slot_id)`. Se dois alunos tentarem o mesmo horário ao mesmo tempo, só um insert tem efeito e o outro recebe **409 Conflict**.
 
-1. No painel da Cloudflare (**Workers & Pages** → **Create** → **Pages** → **Connect to Git**), selecione o seu fork do repositório `Avalia2026-2`.
-2. Configure os parâmetros de build apontando para esta subpasta:
-   - **Root directory (Diretório raiz):** `P26-2C-B0E6-32E6-33BF-F8F5`
-   - **Build command:** *(deixe em branco — HTML/CSS/JS puro)*
-   - **Build output directory:** `public`
-3. Crie o banco de dados D1 e aplique a migração inicial (no terminal do laboratório usando Scoop):
+### Regras validadas no servidor
+
+- Autoria vem da sessão, nunca do corpo da requisição; só o monitor remove o próprio horário; só o aluno ou o monitor do horário cancela a reserva.
+- Só é possível reservar ou cancelar antes do início do horário.
+- O monitor não reserva o próprio horário; o aluno não reserva dois horários sobrepostos e tem no máximo 10 reservas futuras.
+- Horário com aluno agendado não pode ser removido (409).
+- Horários em múltiplos de 30 minutos, janela de até 8 h, até 60 dias de antecedência e no máximo 200 horários futuros por monitor.
+- O tema da dúvida só é visível ao aluno e ao monitor daquele horário.
+- Requisições que alteram dados exigem o header `Origin` da própria aplicação.
+
+### Rotas
+
+`GET /api/auth/discord` · `GET /api/auth/discord/callback` · `POST /api/auth/logout` · `GET /api/me` ·
+`GET /api/slots?from&to` · `POST /api/slots` · `DELETE /api/slots/:id` ·
+`GET /api/bookings` · `POST /api/bookings` · `DELETE /api/bookings/:id`
+
+## Como rodar localmente
+
+1. Crie o arquivo `.dev.vars` (ignorado pelo Git) com as variáveis `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` e `SESSION_SECRET` (qualquer texto longo).
+2. No Discord Developer Portal, em OAuth2, cadastre o redirect `http://localhost:8788/api/auth/discord/callback`.
+3. Crie o banco local e suba o servidor:
    ```powershell
-   cd P26-2C-B0E6-32E6-33BF-F8F5
-   npx.cmd wrangler d1 create db-p26-2c-b0e6-32e6-33bf-f8f5
-   # Copie o database_id gerado para o arquivo wrangler.jsonc e execute:
-   npx.cmd wrangler d1 migrations apply DB --remote
+   npx.cmd wrangler d1 migrations apply db-p26-2c-b0e6-32e6-33bf-f8f5 --local
+   npx.cmd wrangler pages dev
    ```
-4. **Vincule o Banco D1 ao seu Cloudflare Pages (Obrigatório para ativar env.DB):**
-   - No painel da Cloudflare: acesse seu projeto Pages → **Settings** → **Functions** → **D1 database bindings**.
-   - Clique em **Add binding**:
-     - **Variable name:** `DB`
-     - **D1 database:** selecione o banco que você criou (`db-p26-2c-b0e6-32e6-33bf-f8f5`).
-5. **Configuração do Discord OAuth2 (Obrigatório para autenticação real):**
-   - Acesse o **Discord Developer Portal** (https://discord.com/developers/applications) e crie uma nova Application.
-   - Na aba **OAuth2**:
-     - Copie o **Client ID** e gere o **Client Secret**.
-     - Em **Redirects**, adicione a URL exata do deploy:
-       `https://p26-2c-b0e6-32e6-33bf-f8f5.pages.dev/api/auth/discord/callback`
-   - No painel do seu projeto no Cloudflare Pages:
-     - Acesse **Settings** → **Environment variables**.
-     - Adicione as variáveis de ambiente:
-       - `DISCORD_CLIENT_ID`
-       - `DISCORD_CLIENT_SECRET`
-6. Atualize o campo **URL_CLOUDFLARE** no topo deste `README.md` com o endereço público gerado pela Cloudflare.
-7. Na raiz do repositório, execute `node validar-local.mjs P26-2C-B0E6-32E6-33BF-F8F5` para validar todos os critérios antes de fazer o commit e abrir o Pull Request.
+4. Abra `http://localhost:8788`.
+
+## Como publicar
+
+1. Cloudflare Pages conectado ao fork, com **Root directory** `P26-2C-B0E6-32E6-33BF-F8F5` e **Build output directory** `public`.
+2. Banco D1 criado com `npx.cmd wrangler d1 create db-p26-2c-b0e6-32e6-33bf-f8f5`, `database_id` no `wrangler.jsonc` e migrações aplicadas com `--remote`.
+3. Binding `DB` ligado ao banco em Settings, Functions, D1 database bindings.
+4. Segredos `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` e `SESSION_SECRET` cadastrados com `wrangler pages secret put`.
+5. Redirect de produção no Discord: `https://p26-2c-b0e6-32e6-33bf-f8f5.pages.dev/api/auth/discord/callback`.
+
+## Testes
+
+Com o servidor local rodando (`npx.cmd wrangler pages dev`) e o banco local migrado:
+
+```powershell
+node tests\validar-api.mjs
+```
+
+O script cria usuários de teste no banco local e executa 70 verificações (autenticação, validações, corrida de reservas, limites). Resultado em `tests/resultado-validacao.md` e relatório do agente de validação em `tests/RELATORIO-AGENTE3.md`.
+
+## Engenharia de agentes
+
+Três agentes (backend, frontend e teste e validação), o harness usado e os skills estão em [`AGENTS.md`](AGENTS.md) e em [`skills/`](skills/).
