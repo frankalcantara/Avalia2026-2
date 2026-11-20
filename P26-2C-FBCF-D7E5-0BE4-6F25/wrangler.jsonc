@@ -4,10 +4,10 @@
   "compatibility_date": "2026-03-01",
   "pages_build_output_dir": "./public",
   "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "db-p26-2c-fbcf-d7e5-0be4-6f25",
-      "database_id": "00000000-0000-0000-0000-000000000000"
-    }
-  ]
+  {
+    "binding": "DB",
+    "database_name": "db-p26-2c-fbcf-d7e5-0be4-6f25",
+    "database_id": "ad142a25-ba0b-4217-ac8a-2b7c14874720"
+  }
+]
 }
