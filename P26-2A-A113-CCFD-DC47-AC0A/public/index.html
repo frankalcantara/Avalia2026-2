@@ -26,61 +26,78 @@
     <div id="discordProfile"></div>
   </header>
 
+  <!-- VIAGEM: a tela fica fixa e a rolagem leva a câmera por dentro das cenas -->
+  <section class="flight" id="flight" aria-label="Viagem pelo cosmos">
+    <div class="stage">
+
+      <div class="scene" data-i="0">
+        <div class="wrap solo">
+          <div class="login" id="loginPrompt">
+            <div class="orbits" aria-hidden="true"><i class="o1"><u></u></i><i class="o2"><u></u></i><i class="o3"><u></u></i></div>
+            <h1 data-split>Memória Celeste</h1>
+            <p class="lead">Atravesse a escuridão, vire as cartas, ligue cada imagem ao seu nome e entre para o ranking com o menor número de movimentos.</p>
+            <p id="loginMessage" class="status" role="status" aria-live="polite"></p>
+            <a class="btn magnetic" href="/api/auth/discord"><span>Entrar com Discord</span></a>
+          </div>
+          <div class="welcome only-in" id="welcome">
+            <h1 data-split>Decolagem autorizada</h1>
+            <p class="lead">Role a página para atravessar o cosmos até o jogo.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene" data-i="1">
+        <div class="wrap">
+          <i class="px orb o-a" data-s="-.3" data-m="30"></i>
+          <div class="px obj" data-art="astronauta" data-s=".25" data-m="22"></div>
+          <div class="txt">
+            <h2>Vire as cartas</h2>
+            <p class="lead">Cada carta esconde uma imagem ou um nome. Clique para virar e descobrir o que o universo guardou ali.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene right" data-i="2">
+        <div class="wrap">
+          <i class="px orb o-b" data-s="-.35" data-m="26"></i>
+          <div class="px obj" data-art="ovni" data-s=".3" data-m="22"></div>
+          <div class="txt">
+            <h2>Ache os pares</h2>
+            <p class="lead">Combine cada imagem com o nome dela. Quem confere cada jogada é o servidor, então não dá para trapacear.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene" data-i="3">
+        <div class="wrap">
+          <i class="px orb o-a" data-s="-.3" data-m="30"></i>
+          <div class="px obj" data-art="galaxia" data-s=".25" data-m="22"></div>
+          <div class="txt">
+            <h2>Suba no ranking</h2>
+            <p class="lead">Quanto menos movimentos você fizer, maior a eficiência. Os melhores aparecem no ranking com medalha.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene final" data-i="4">
+        <div class="wrap">
+          <i class="px orb o-b" data-s="-.3" data-m="30"></i>
+          <div class="px obj" data-art="foguete" data-s=".2" data-m="26"></div>
+          <div class="txt">
+            <h2 class="only-out">Pronto para decolar?</h2>
+            <h2 class="only-in">Chegamos!</h2>
+            <a class="btn magnetic only-out" href="/api/auth/discord"><span>Entrar com Discord</span></a>
+            <a class="btn magnetic only-in" href="#gameSection"><span>Descer para o jogo</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="strip" aria-hidden="true"><div><span>Foguete ✦ Astronauta ✦ OVNI ✦ Buraco negro ✦ Alienígena ✦ Lua ✦ Saturno ✦ Cometa ✦ Satélite ✦ Sol ✦ Galáxia ✦ Telescópio ✦ </span><span>Foguete ✦ Astronauta ✦ OVNI ✦ Buraco negro ✦ Alienígena ✦ Lua ✦ Saturno ✦ Cometa ✦ Satélite ✦ Sol ✦ Galáxia ✦ Telescópio ✦ </span></div></div>
+      <div class="cue" aria-hidden="true"><i></i><span>role para viajar</span></div>
+    </div>
+  </section>
+
   <main>
-    <section class="login" id="loginPrompt">
-      <div class="orbits" aria-hidden="true"><i class="o1"><u></u></i><i class="o2"><u></u></i><i class="o3"><u></u></i></div>
-      <h1 data-split>Memória Celeste</h1>
-      <p class="lead">Atravesse a escuridão, vire as cartas, ligue cada imagem ao seu nome e entre para o ranking com o menor número de movimentos.</p>
-      <p id="loginMessage" class="status" role="status" aria-live="polite"></p>
-      <a class="btn magnetic" href="/api/auth/discord"><span>Entrar com Discord</span></a>
-      <div class="marquee" aria-hidden="true"><div><span>Foguete ✦ Astronauta ✦ OVNI ✦ Buraco negro ✦ Alienígena ✦ Lua ✦ Saturno ✦ Cometa ✦ Satélite ✦ Sol ✦ Galáxia ✦ Telescópio ✦ </span><span>Foguete ✦ Astronauta ✦ OVNI ✦ Buraco negro ✦ Alienígena ✦ Lua ✦ Saturno ✦ Cometa ✦ Satélite ✦ Sol ✦ Galáxia ✦ Telescópio ✦ </span></div></div>
-    </section>
-
-    <section class="welcome" id="welcome">
-      <h1 data-split>Decolagem autorizada</h1>
-      <p class="lead">Role a página para atravessar o cosmos até o jogo.</p>
-      <div class="cue" aria-hidden="true"></div>
-    </section>
-
-    <section class="journey" id="journey" aria-label="Como jogar">
-      <article class="stop">
-        <i class="px orb o-a" data-s="-.3" data-m="30"></i>
-        <div class="px obj" data-art="astronauta" data-s=".2" data-m="22"></div>
-        <div class="txt">
-          <h2>Vire as cartas</h2>
-          <p class="lead">Cada carta esconde uma imagem ou um nome. Clique para virar e descobrir o que o universo guardou ali.</p>
-        </div>
-      </article>
-
-      <article class="stop right">
-        <i class="px orb o-b" data-s="-.35" data-m="26"></i>
-        <div class="px obj" data-art="ovni" data-s=".25" data-m="22"></div>
-        <div class="txt">
-          <h2>Ache os pares</h2>
-          <p class="lead">Combine cada imagem com o nome dela. Quem confere cada jogada é o servidor, então não dá para trapacear.</p>
-        </div>
-      </article>
-
-      <article class="stop">
-        <i class="px orb o-a" data-s="-.3" data-m="30"></i>
-        <div class="px obj" data-art="galaxia" data-s=".2" data-m="22"></div>
-        <div class="txt">
-          <h2>Suba no ranking</h2>
-          <p class="lead">Quanto menos movimentos você fizer, maior a eficiência. Os melhores aparecem no ranking com medalha.</p>
-        </div>
-      </article>
-
-      <article class="stop final">
-        <i class="px orb o-b" data-s="-.3" data-m="30"></i>
-        <div class="px obj" data-art="foguete" data-s=".15" data-m="26"></div>
-        <div class="txt">
-          <h2>Pronto para decolar?</h2>
-          <a class="btn magnetic enter" href="/api/auth/discord"><span>Entrar com Discord</span></a>
-          <a class="btn magnetic go-game" href="#gameSection"><span>Descer para o jogo</span></a>
-        </div>
-      </article>
-    </section>
-
     <section class="game" id="gameSection" hidden>
       <div class="game-head">
         <div>
