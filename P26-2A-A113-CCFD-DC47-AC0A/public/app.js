@@ -349,16 +349,8 @@ async function loadLeaderboard() {
   }
 }
 
-/* ---------- Mouse: holofote, paralaxe e botões magnéticos ---------- */
 function pointerFx() {
   if (calm) return;
-  const root = document.documentElement;
-  addEventListener("pointermove", (e) => {
-    root.style.setProperty("--mx", e.clientX + "px");
-    root.style.setProperty("--my", e.clientY + "px");
-    root.style.setProperty("--px", (e.clientX / innerWidth - 0.5).toFixed(3));
-    root.style.setProperty("--py", (e.clientY / innerHeight - 0.5).toFixed(3));
-  });
   document.querySelectorAll(".magnetic").forEach((b) => {
     b.addEventListener("pointermove", (e) => {
       const r = b.getBoundingClientRect();
