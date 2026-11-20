@@ -5,28 +5,51 @@
   const $ = (id) => document.getElementById(id);
   const BASE = 0.00004, WARP = 0.0016;
   const PAL = ["#ffffff", "#9bdcff", "#c4a8ff", "#ffe9a8", "#ff9be0"];
-  let speed = BASE, target = BASE;
+  let speed = BASE, target = BASE, boost = 0, lastY = scrollY;
   const mouse = { x: 0, y: 0, sx: 0, sy: 0 };
   let scrollS = scrollY;
   let stops = [];
 
-  /* ---------- chegada: se voltou do Discord, começa em velocidade de dobra ---------- */
+  /* ---------- chegada: voltou do Discord, começa em velocidade de dobra ---------- */
   let arriving = root.classList.contains("arriving");
   try { sessionStorage.removeItem("warp"); } catch {}
   if (arriving && (calm || /auth_error/.test(location.search))) { root.classList.remove("arriving"); arriving = false; }
-  if (arriving) speed = target = WARP;
+  if (arriving) {
+    speed = target = WARP;
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    scrollTo({ top: 0, behavior: "instant" });
+  }
 
   const flash = document.createElement("div");
   flash.id = "flash";
   flash.setAttribute("aria-hidden", "true");
   document.body.append(flash);
 
+  // rola sozinho pelas estações até o jogo; qualquer gesto do jogador cancela
+  function autoScroll() {
+    const game = $("gameSection");
+    if (game.hidden) { target = BASE; return; }
+    const from = scrollY;
+    const to = Math.max(0, game.getBoundingClientRect().top + scrollY - 70);
+    const dur = Math.min(Math.max(((to - from) / innerHeight) * 1000, 2500), 6500);
+    const t0 = performance.now();
+    let stop = false;
+    const cancel = () => { stop = true; };
+    ["wheel", "touchstart", "keydown", "pointerdown"].forEach((ev) => addEventListener(ev, cancel, { once: true, passive: true }));
+    (function step(now) {
+      if (stop) { target = BASE; return; }
+      const p = Math.min((now - t0) / dur, 1);
+      const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      scrollTo({ top: from + (to - from) * e, behavior: "instant" });
+      if (p < 1) requestAnimationFrame(step);
+      else target = BASE;
+    })(t0);
+  }
+
   function land() {
     if (!root.classList.contains("arriving")) return;
     root.classList.remove("arriving");
-    target = BASE;
-    // reinicia a distribuição das cartas para que o jogador veja a animação
-    document.querySelectorAll(".memory-card").forEach((c) => { c.style.animation = "none"; void c.offsetWidth; c.style.animation = ""; });
+    setTimeout(autoScroll, 900);
   }
   if (arriving) {
     const game = $("gameSection"), board = $("board");
@@ -36,6 +59,19 @@
     obs.observe(game, { attributes: true, attributeFilter: ["hidden"] });
     obs.observe(board, { childList: true });
     setTimeout(() => { obs.disconnect(); land(); }, 4500);
+  }
+
+  /* ---------- cartas só são distribuídas quando o jogo entra na tela ---------- */
+  const gameEl = $("gameSection");
+  if (calm || !("IntersectionObserver" in window)) gameEl.classList.add("seen");
+  else {
+    new IntersectionObserver((es, o) => {
+      if (es.some((e) => e.isIntersecting)) {
+        gameEl.classList.add("seen");
+        boost = 0.0016;
+        o.disconnect();
+      }
+    }, { threshold: 0.25 }).observe(gameEl);
   }
 
   /* ---------- clique em "Entrar": viaja até o Discord ---------- */
@@ -84,12 +120,20 @@
   function frame(t) {
     const dt = Math.min(t - last, 50) || 16;
     last = t;
-    speed += (target - speed) * (1 - Math.exp(-dt / 320));
+
+    // quanto mais rápido a rolagem, mais rápido as estrelas passam
+    const y = scrollY;
+    boost = Math.min(boost + Math.abs(y - lastY) * 0.00001, 0.0016) * 0.94;
+    lastY = y;
+    const max = root.scrollHeight - innerHeight;
+    root.style.setProperty("--prog", max > 0 ? (y / max).toFixed(4) : 0);
+
+    speed += (target + boost - speed) * (1 - Math.exp(-dt / 320));
     mouse.sx += (mouse.x - mouse.sx) * 0.07;
     mouse.sy += (mouse.y - mouse.sy) * 0.07;
     root.style.setProperty("--sx", mouse.sx.toFixed(3));
     root.style.setProperty("--sy", mouse.sy.toFixed(3));
-    scrollS += (scrollY - scrollS) * 0.08;
+    scrollS += (y - scrollS) * 0.08;
 
     g.clearRect(0, 0, W, H);
     g.lineCap = "round";
