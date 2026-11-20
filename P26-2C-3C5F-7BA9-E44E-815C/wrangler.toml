@@ -1,0 +1,8 @@
+name = "caderno-de-receitas"
+compatibility_date = "2026-01-01"
+pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "recipes-db"
+database_id = "84e2332a-d83a-4d4d-8de7-abc7399a2cc4"
