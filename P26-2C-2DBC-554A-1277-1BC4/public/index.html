@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projeto #1 — Jogo da Velha Assíncrono | P26-2C-2DBC-554A-1277-1BC4</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-block">
+        <strong>Projeto #1: Jogo da Velha Assíncrono com Ranking</strong>
+        <span class="sub-tag">Davi Alves de Siqueira · Turma 2C</span>
+      </div>
+      <div class="discord-badge" id="discordProfile">
+        <img id="discordAvatar" class="avatar-img" width="22" height="22" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar do jogador">
+        <a id="discordLoginLink" href="/api/auth/discord">
+          <span id="discordUserText">Entrar com Discord OAuth2</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="card-top">
+        <span class="pill">Etapa 3 · Assíncrono, Retomada &amp; Ranking</span>
+        <span class="pill pill-neutral" id="modeBadge">Modo: vs Minimax</span>
+        <span class="pill pill-neutral" id="matchIdBadge">Partida: local</span>
+      </div>
+      <h1>Jogo da Velha Assíncrono com Ranking</h1>
+      <p class="desc">
+        Jogue contra o algoritmo <strong>Minimax</strong> ou desafie colegas em partidas <strong>assíncronas</strong>.
+        As jogadas e regras são validadas nas Cloudflare Pages Functions e persistidas no Cloudflare D1.
+      </p>
+
+      <div class="controls-bar">
+        <label class="field">
+          <span>Modo de jogo</span>
+          <select id="gameModeSelect" class="select-input">
+            <option value="minimax" selected>Contra Minimax (IA)</option>
+            <option value="async">Assíncrona (Colega Discord)</option>
+            <option value="local2p">2 Jogadores (Local)</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Seu símbolo (Minimax)</span>
+          <select id="playerSymbolSelect" class="select-input">
+            <option value="X" selected>X (Começa jogando)</option>
+            <option value="O">O (IA começa jogando)</option>
+          </select>
+        </label>
+
+        <label class="field" id="opponentField" style="display:none;">
+          <span>user_id do colega (Discord)</span>
+          <input id="opponentIdInput" class="input-text input-compact" type="text" placeholder="Ex.: 987654321098765432">
+        </label>
+
+        <button class="btn-primary" id="newGameBtn" type="button">Nova Partida</button>
+      </div>
+
+      <div class="game-layout">
+        <div>
+          <div class="turn-banner" id="turnBanner">Turno atual: X</div>
+          <div class="board" id="board" role="grid" aria-label="Tabuleiro do Jogo da Velha">
+            <button type="button" class="cell" data-index="0" aria-label="Casa 1"></button>
+            <button type="button" class="cell" data-index="1" aria-label="Casa 2"></button>
+            <button type="button" class="cell" data-index="2" aria-label="Casa 3"></button>
+            <button type="button" class="cell" data-index="3" aria-label="Casa 4"></button>
+            <button type="button" class="cell" data-index="4" aria-label="Casa 5"></button>
+            <button type="button" class="cell" data-index="5" aria-label="Casa 6"></button>
+            <button type="button" class="cell" data-index="6" aria-label="Casa 7"></button>
+            <button type="button" class="cell" data-index="7" aria-label="Casa 8"></button>
+            <button type="button" class="cell" data-index="8" aria-label="Casa 9"></button>
+          </div>
+        </div>
+
+        <aside class="side-panel">
+          <div class="score-grid">
+            <div class="score-box">
+              <span class="score-label">Vitórias X</span>
+              <strong class="score-value" id="scoreX">0</strong>
+            </div>
+            <div class="score-box">
+              <span class="score-label">Empates</span>
+              <strong class="score-value" id="scoreDraw">0</strong>
+            </div>
+            <div class="score-box">
+              <span class="score-label">Vitórias O</span>
+              <strong class="score-value" id="scoreO">0</strong>
+            </div>
+          </div>
+
+          <h2 class="panel-title">Partidas em Andamento (Retomar)</h2>
+          <ul class="records-list" id="activeMatchesList">
+            <li>Nenhuma partida em andamento no servidor.</li>
+          </ul>
+
+          <h2 class="panel-title">Histórico de Partidas</h2>
+          <ul class="records-list" id="matchHistoryList">
+            <li>Nenhuma partida finalizada ainda. Faça sua primeira jogada!</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="panel-title">Ranking de Jogadores (Cloudflare D1)</h2>
+      <ul class="records-list" id="rankingList">
+        <li>Ranking será exibido após partidas concluídas no servidor D1.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2 class="panel-title">Diagnóstico Serverless &amp; D1 (/api/status)</h2>
+      <div class="form-row">
+        <input class="input-text" id="recordInput" type="text" placeholder="Digite um registro de teste para gravar na Cloudflare Function + D1...">
+        <button class="btn-secondary" id="sendBtn" type="button">Testar /api/status</button>
+      </div>
+      <div id="statusMessage" class="status-msg"></div>
+      <ul class="records-list" id="recordsList">
+        <li>Carregando status da API serverless...</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer id="projectFooter">
+    Chave Única de Auditoria: <code>P26-2C-2DBC-554A-1277-1BC4</code> · Turma 2C · Licenciado sob MIT
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
