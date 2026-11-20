@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Editor de portfólio e currículo acadêmico.">
+  <title>Trajetória | Currículo Acadêmico</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Trajetória, início"><span class="brand-mark" aria-hidden="true">T</span><span>Trajetória</span></a>
+    <div class="account">
+      <img id="account-avatar" width="28" height="28" alt="" referrerpolicy="no-referrer" hidden>
+      <span id="account-name" hidden></span>
+      <a class="button button-primary" id="login" href="/api/auth/discord" hidden>Entrar com Discord</a>
+      <button class="button button-neutral" id="logout" type="button" hidden>Sair</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="page-heading">
+      <div>
+        <h1 id="page-title">Meu currículo</h1>
+        <p id="page-description">Organize sua formação, seus projetos e suas habilidades.</p>
+      </div>
+      <div class="page-actions">
+        <a class="button button-neutral" href="#resume" id="jump-preview" hidden>Ver visualização</a>
+        <button class="button button-neutral" type="button" id="print" disabled>Exportar PDF</button>
+        <button class="button button-primary" type="submit" id="save" form="editor" hidden>Salvar currículo</button>
+      </div>
+    </div>
+
+    <p class="notice" id="status" role="status" hidden></p>
+
+    <div class="workspace" id="workspace">
+      <nav class="section-nav" id="section-nav" aria-label="Seções do currículo" hidden>
+        <button type="button" data-section="profile" aria-current="true">Dados profissionais</button>
+        <button type="button" data-section="education">Formação</button>
+        <button type="button" data-section="projects">Projetos</button>
+        <button type="button" data-section="skills">Habilidades</button>
+        <button type="button" data-section="links">Repositórios</button>
+        <button type="button" data-section="appearance">Aparência</button>
+        <button type="button" data-section="sharing">Compartilhar</button>
+      </nav>
+
+      <section class="panel welcome" id="welcome" hidden>
+        <h2>Crie seu portfólio acadêmico</h2>
+        <p>Reúna o que você aprendeu e criou em um currículo que você pode imprimir ou compartilhar.</p>
+        <a class="button button-primary" href="/api/auth/discord">Começar com Discord</a>
+      </section>
+
+      <form class="panel editor" id="editor" novalidate hidden>
+        <section data-panel="profile" aria-labelledby="profile-title">
+          <h2 id="profile-title">Dados profissionais</h2>
+          <p class="panel-help">Apresente sua área de atuação e como entrar em contato.</p>
+          <div class="field-grid">
+            <label>Nome completo <input name="name" autocomplete="name" maxlength="120"></label>
+            <label>Título profissional <input name="headline" maxlength="140" placeholder="Ex. Estudante de Engenharia de Software"></label>
+            <label>E-mail <input name="email" type="email" autocomplete="email" maxlength="254"></label>
+            <label>Localização <input name="location" maxlength="120"></label>
+            <label class="full-width">Resumo <textarea name="summary" maxlength="2000" rows="5"></textarea></label>
+          </div>
+        </section>
+
+        <section data-panel="education" aria-labelledby="education-title" hidden>
+          <h2 id="education-title">Formação</h2>
+          <p class="panel-help">Registre cursos e experiências de formação acadêmica.</p>
+          <div class="entries" id="education-list"></div>
+          <button class="button button-neutral add-entry" type="button" data-add="education">Adicionar formação</button>
+        </section>
+
+        <section data-panel="projects" aria-labelledby="projects-title" hidden>
+          <h2 id="projects-title">Projetos</h2>
+          <p class="panel-help">Mostre o que você desenvolveu e qual foi sua contribuição.</p>
+          <div class="entries" id="projects-list"></div>
+          <button class="button button-neutral add-entry" type="button" data-add="projects">Adicionar projeto</button>
+        </section>
+
+        <section data-panel="skills" aria-labelledby="skills-title" hidden>
+          <h2 id="skills-title">Habilidades técnicas</h2>
+          <p class="panel-help">Inclua tecnologias, ferramentas ou métodos que você usa.</p>
+          <div class="entries" id="skills-list"></div>
+          <button class="button button-neutral add-entry" type="button" data-add="skills">Adicionar habilidade</button>
+        </section>
+
+        <section data-panel="links" aria-labelledby="links-title" hidden>
+          <h2 id="links-title">Links de repositórios</h2>
+          <p class="panel-help">Adicione links onde seu trabalho pode ser consultado.</p>
+          <div class="entries" id="links-list"></div>
+          <button class="button button-neutral add-entry" type="button" data-add="links">Adicionar repositório</button>
+        </section>
+
+        <section data-panel="appearance" aria-labelledby="appearance-title" hidden>
+          <h2 id="appearance-title">Aparência</h2>
+          <fieldset class="theme-picker">
+            <legend>Tema do currículo</legend>
+            <label class="theme-option"><input type="radio" name="theme" value="classic" checked><span class="theme-sample sample-classic" aria-hidden="true"></span>Clássico</label>
+            <label class="theme-option"><input type="radio" name="theme" value="modern"><span class="theme-sample sample-modern" aria-hidden="true"></span>Moderno</label>
+            <label class="theme-option"><input type="radio" name="theme" value="minimal"><span class="theme-sample sample-minimal" aria-hidden="true"></span>Minimalista</label>
+          </fieldset>
+          <label class="checkbox"><input type="checkbox" id="custom-colors" name="customColors"> Personalizar cores</label>
+          <div class="color-fields" id="color-fields" hidden>
+            <label>Destaque <input type="color" name="accent" value="#155a52"></label>
+            <label>Fundo <input type="color" name="background" value="#ffffff"></label>
+            <label>Texto <input type="color" name="text" value="#19312e"></label>
+          </div>
+        </section>
+
+        <section data-panel="sharing" aria-labelledby="sharing-title" hidden>
+          <h2 id="sharing-title">Compartilhar currículo</h2>
+          <label class="checkbox"><input type="checkbox" name="published"> Tornar currículo público</label>
+          <p class="panel-help">Depois que você salvar, qualquer pessoa com o link poderá ver todos os dados informados, inclusive o e-mail. Desmarque e salve para retirar o currículo do ar.</p>
+          <div class="share-box" id="share-box" hidden>
+            <label>Link público <input type="url" id="share-url" readonly></label>
+            <div class="share-actions">
+              <a id="open-public" class="button button-neutral" target="_blank" rel="noopener">Abrir currículo</a>
+              <button class="button button-neutral" type="button" id="copy-public">Copiar link</button>
+            </div>
+          </div>
+        </section>
+      </form>
+
+      <section class="preview-area" id="preview-area" hidden>
+        <header class="preview-header">
+          <h2 id="preview-label">Visualização</h2>
+          <span id="preview-status">Em tempo real</span>
+        </header>
+        <article class="resume theme-classic" id="resume" aria-label="Currículo"></article>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">Projeto #39 · <code>P26-2B-924C-3BB5-F4E1-8DAC</code> · MIT</footer>
+</body>
+</html>
