@@ -1,17 +1,29 @@
-# Harness e agentes
+# Harness e agentes — Projeto #36
 
 ## Harness
 
-Os três agentes especializados foram executados em tarefas independentes pelo harness multiagente do Codex. O agente principal coordenou o trabalho e integrou o código. Os agentes de revisão receberam escopo explícito, acesso ao mesmo repositório e instruções para não editar arquivos nem publicar. A validação final foi dividida entre a verificação de produção feita pelo agente principal e a revisão independente do agente de testes.
+O projeto foi desenvolvido no harness multiagente do Codex. O agente principal organizou os requisitos e integrou o produto. Três agentes especializados revisaram produto, backend e interface; um agente dedicado executou validação e QA. Os papéis, objetivos e skills estão detalhados abaixo.
 
-## Agentes especializados
+## Agente 1 — Produto e requisitos
 
-| Agente | Objetivo | Skill usada | Resultado |
-| --- | --- | --- | --- |
-| Backend e D1 | Revisar API, persistência e validação server-side | `skills/backend/SKILL.md` | Identificou erros de JSON, validação de `done` e exposição de detalhes internos; correções integradas pelo agente principal. |
-| Interface e acessibilidade | Revisar fluxos, responsividade e acessibilidade | `skills/frontend/SKILL.md` | Recomendou estados vazios distintos, `aria-pressed` e indicador de conexão real; melhorias integradas. |
-| Teste e validação | Conferir implantação, endpoints, D1 e lacunas da rubrica | `skills/testing/SKILL.md` | Confirmou página/API online e listou requisitos ainda pendentes. Revisão independente sem alteração de produção. |
+Mapeou a descrição oficial para critérios de aceite: grade diária, estados livres/ocupados, login Discord e regras de reserva.
 
-## Agente principal
+Skill: `skills/product/SKILL.md`.
 
-O agente principal transformou a rubrica visível em plano, implementou a versão inicial, aplicou as recomendações e registrou as verificações locais/remotas. O produto atual ainda é provisório até receber o título e as instruções completas do projeto sorteado, que estavam ocultos na tela até a confirmação do e-mail.
+## Agente 2 — Backend e persistência
+
+Revisou Worker, D1, autenticação Discord, validação server-side, sobreposição e limite de 120 minutos por dia.
+
+Skill: `skills/backend/SKILL.md`.
+
+## Agente 3 — Interface e acessibilidade
+
+Revisou interface responsiva em HTML/CSS/JavaScript vanilla, navegação da agenda, formulários e estados visuais.
+
+Skill: `skills/frontend/SKILL.md`.
+
+## Agente 4 — Teste e validação
+
+Executou testes de integração para autenticação, horários inválidos, conflito de reserva, limite diário, privacidade e cancelamento.
+
+Skill: `skills/testing/SKILL.md`.
