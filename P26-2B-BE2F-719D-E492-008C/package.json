@@ -1,14 +1,14 @@
 {
   "name": "p26-2b-be2f-719d-e492-008c",
   "version": "1.0.0",
-  "description": "- **Modalidade:** Projeto Oficial Sorteado (Valendo 100 pontos) - **Estudante:** Myron Luigi Maciel - **Turma:** 2B - **Chave Única:** `P26-2B-BE2F-719D-E492-008C` - **URL_CLOUDFLARE:** `https://p26-2b-be2f-719d-e492-008c.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*",
+  "description": "Gerenciador de Fichas e Rolagem de Dados para RPG (Cloudflare Pages + D1 + Discord OAuth2)",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Myron Luigi Maciel",
+  "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
     "wrangler": "^4.166.0"
