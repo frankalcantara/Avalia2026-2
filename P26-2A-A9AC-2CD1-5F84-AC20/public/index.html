@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Livro-caixa · Controle Financeiro Pessoal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section id="login" class="login" hidden>
+    <div class="login-box">
+      <h1>Livro-caixa</h1>
+      <p>Registre suas receitas e despesas e veja para onde o dinheiro vai.</p>
+      <p id="login-error" class="msg error" role="alert" hidden></p>
+      <a class="btn primary" href="/api/auth/discord">Entrar com Discord</a>
+    </div>
+  </section>
+
+  <div id="app" hidden>
+    <header class="topbar">
+      <div class="user"><img id="avatar" alt="" width="32" height="32"><span id="username"></span><small id="uid"></small></div>
+      <button id="logout" class="btn ghost" type="button">Sair</button>
+    </header>
+
+    <section class="summary" aria-label="Resumo financeiro">
+      <div class="net"><span class="label">Saldo líquido</span><strong id="net">R$ 0,00</strong></div>
+      <div class="split">
+        <div><span class="label">Receitas</span><strong id="income" class="pos">R$ 0,00</strong></div>
+        <div><span class="label">Despesas</span><strong id="expense" class="neg">R$ 0,00</strong></div>
+      </div>
+    </section>
+
+    <main>
+      <div class="grid">
+        <section class="panel">
+          <h2 id="form-title">Nova transação</h2>
+          <form id="tx-form" novalidate>
+            <div class="seg" role="radiogroup" aria-label="Tipo">
+              <label><input type="radio" name="type" value="despesa" checked><span>Despesa</span></label>
+              <label><input type="radio" name="type" value="receita"><span>Receita</span></label>
+            </div>
+            <div class="row">
+              <label>Valor (R$)<input id="amount" type="text" inputmode="decimal" placeholder="0,00 (ex.: 1.250,90)" autocomplete="off"></label>
+              <label>Data<input id="date" type="date"></label>
+            </div>
+            <label>Categoria<select id="category"></select></label>
+            <label>Descrição (opcional)<input id="description" type="text" maxlength="80" autocomplete="off"></label>
+            <p id="form-error" class="msg error" role="alert" hidden></p>
+            <div class="actions">
+              <button id="save" class="btn primary" type="submit">Adicionar</button>
+              <button id="cancel" class="btn ghost" type="button" hidden>Cancelar edição</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel">
+          <h2>Para onde vai o dinheiro</h2>
+          <p id="chart-total" class="hint"></p>
+          <div id="chart" class="chart"></div>
+        </section>
+      </div>
+
+      <section class="panel">
+        <div class="list-head">
+          <h2>Transações</h2>
+          <div class="filters">
+            <label>Mês<input id="f-month" type="month" placeholder="AAAA-MM" pattern="\d{4}-\d{2}"></label>
+            <label>Categoria<select id="f-category"></select></label>
+            <button id="f-clear" class="btn ghost" type="button">Limpar filtros</button>
+          </div>
+        </div>
+        <p id="empty" class="hint" hidden>Nenhuma transação encontrada. Adicione a primeira ao lado ou ajuste os filtros.</p>
+        <p id="list-note" class="hint" hidden>Mostrando as 500 transações mais recentes. Use os filtros para ver as outras.</p>
+        <div id="table-wrap" class="table-wrap">
+          <table>
+            <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th class="num">Valor</th><th><span class="sr">Ações</span></th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+  <footer class="foot">Chave única: P26-2A-A9AC-2CD1-5F84-AC20</footer>
+  <script src="app.js"></script>
+</body>
+</html>
