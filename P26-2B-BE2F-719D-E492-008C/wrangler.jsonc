@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "projeto-p26-2b-be2f-719d-e492-008c",
+  "name": "rpg-mesa",
   "compatibility_date": "2026-03-01",
   "pages_build_output_dir": "./public",
   "d1_databases": [

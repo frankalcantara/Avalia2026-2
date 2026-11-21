@@ -4,7 +4,7 @@
 - **Estudante:** Myron Luigi Maciel
 - **Turma:** 2B
 - **Chave Única:** `P26-2B-BE2F-719D-E492-008C`
-- **URL_CLOUDFLARE:** `https://p26-2b-be2f-719d-e492-008c.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
+- **URL_CLOUDFLARE:** `https://rpg-mesa.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*
 
 ---
 
