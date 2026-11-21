@@ -1,0 +1,12 @@
+{
+  "name": "mural-avisos",
+  "version": "1.0.0",
+  "description": "Mural de Avisos Departamental por Disciplina — Cloudflare Pages + D1 + login Discord",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/validacao.test.mjs tests/api.test.mjs",
+    "smoke": "node tests/smoke.mjs"
+  }
+}

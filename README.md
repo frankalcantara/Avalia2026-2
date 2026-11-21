@@ -132,3 +132,11 @@ Após confirmar o recebimento do e-mail de sorteio em [`https://frankalcantara.c
 | **4. Engenharia de Agentes (Mín. 3 Agentes + 1 de Teste/Validação + Harness + Skills):** Documento `AGENTS.md` explicando os agentes criados e o harness, mais os arquivos em `skills/`. | **25 pts** |
 | **5. Repositório Público, Licença MIT e Auditoria:** Repositório público com código completo, licença MIT, Chave Única no `README.md` e no rodapé da interface, e entrega das URLs no AVA. | **10 pts** |
 | **Total** | **100 pts** |
+
+
+
+Link importantes: 
+
+Site: https://p26-2c-4106-412d-4629-3463.pages.dev
+Repositório: https://github.com/MatheusPetryk/Avalia2026-2
+

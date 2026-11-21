@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mural de Avisos por Disciplina</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topo">
+    <h1>Mural de Avisos</h1>
+    <div id="conta" class="conta" hidden>
+      <img id="conta-avatar" alt="" width="32" height="32">
+      <span id="conta-nome"></span>
+      <button id="btn-sair" type="button" class="secundario">Sair</button>
+    </div>
+  </header>
+
+  <p id="status" class="status" role="status" aria-live="polite"></p>
+
+  <main>
+    <section id="tela-login" class="login" hidden>
+      <h2>Avisos de cada disciplina, num só lugar</h2>
+      <p>Entre com o Discord, siga as disciplinas que você cursa e acompanhe avisos, prazos de entrega e links úteis.</p>
+      <a class="botao" href="/api/auth/discord">Entrar com o Discord</a>
+    </section>
+
+    <div id="tela-mural" class="mural" hidden>
+      <aside class="lateral" aria-label="Disciplinas">
+        <h2>Disciplinas</h2>
+        <ul id="lista-disciplinas" class="disciplinas"></ul>
+        <form id="form-disciplina" class="form-compacto">
+          <h3>Nova disciplina</h3>
+          <label>Código <input name="codigo" required maxlength="20" placeholder="ENG-SOFT" autocomplete="off"></label>
+          <label>Nome <input name="nome" required minlength="3" maxlength="80" placeholder="Engenharia de Software" autocomplete="off"></label>
+          <button type="submit">Criar disciplina</button>
+        </form>
+      </aside>
+
+      <section class="principal">
+        <form id="form-aviso" class="form-aviso">
+          <h2 id="titulo-form">Publicar aviso</h2>
+          <div class="linha">
+            <label>Disciplina
+              <select name="disciplina" id="campo-disciplina" required></select>
+            </label>
+            <label>Tipo
+              <select name="tipo" id="campo-tipo">
+                <option value="aviso">Aviso</option>
+                <option value="lembrete">Lembrete de entrega</option>
+                <option value="link">Link útil</option>
+              </select>
+            </label>
+          </div>
+          <label>Título <input name="titulo" required minlength="3" maxlength="120" autocomplete="off"></label>
+          <label id="rotulo-corpo">Texto <textarea name="corpo" rows="3" maxlength="2000"></textarea></label>
+          <label id="rotulo-url" hidden>Link <input name="url" type="url" maxlength="500" placeholder="https://"></label>
+          <label id="rotulo-prazo" hidden>Data de entrega <input name="prazo" type="date"></label>
+          <div class="acoes">
+            <button type="submit" id="btn-publicar">Publicar</button>
+            <button type="button" id="btn-cancelar" class="secundario" hidden>Cancelar edição</button>
+          </div>
+        </form>
+
+        <div class="barra-feed">
+          <h2>Seu mural</h2>
+          <label>Mostrar
+            <select id="filtro-feed">
+              <option value="">Disciplinas que sigo</option>
+            </select>
+          </label>
+        </div>
+        <div id="feed" class="feed"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="rodape">
+    <small>Chave do projeto: <code>P26-2C-4106-412D-4629-3463</code></small>
+  </footer>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
