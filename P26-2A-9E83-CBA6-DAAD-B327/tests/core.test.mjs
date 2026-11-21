@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {validateActivity,totals,LIMITS} from '../lib/core.js';
+const good={title:'Curso de HTML',category:'ensino',hours:12,certificate_url:'https://example.org/certificado.pdf',activity_date:'2026-10-10',description:''};
+test('atividade válida',()=>assert.equal(validateActivity(good),null));
+test('categoria irregular é rejeitada',()=>assert.match(validateActivity({...good,category:'financeiro'}),/Categoria/));
+test('carga negativa rejeitada',()=>assert.match(validateActivity({...good,hours:-1}),/Horas/));
+test('link HTTP rejeitado',()=>assert.match(validateActivity({...good,certificate_url:'http://example.com'}),/HTTPS/));
+test('data futura rejeitada',()=>assert.match(validateActivity({...good,activity_date:'2099-12-25'}),/futuro/));
+test('soma por eixo e progresso',()=>{const t=totals([{category:'ensino',hours:12},{category:'ensino',hours:8},{category:'pesquisa',hours:15}]);assert.equal(t.ensino.validated,20);assert.equal(t.ensino.remaining,LIMITS.ensino-20);assert.equal(t.extensao.percent,0);});
