@@ -4,7 +4,8 @@ Aplicação para consultar e reservar salas de reunião, cabines de estudo e ban
 
 ## Aplicação publicada
 
-**URL do projeto:** [https://painel-tarefas-cloudflare.painel-tarefas-cloudflare.workers.dev](https://painel-tarefas-cloudflare.painel-tarefas-cloudflare.workers.dev)
+URL do projeto:
+https://painel-tarefas-cloudflare.painel-tarefas-cloudflare.workers.dev
 
 ## Funcionalidades
 
