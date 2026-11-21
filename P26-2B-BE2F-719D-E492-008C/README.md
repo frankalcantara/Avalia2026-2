@@ -48,3 +48,26 @@ As fichas são salvas como registros estruturados no Cloudflare D1. Além da per
        - `DISCORD_CLIENT_SECRET`
 6. Atualize o campo **URL_CLOUDFLARE** no topo deste `README.md` com o endereço público gerado pela Cloudflare.
 7. Na raiz do repositório, execute `node validar-local.mjs P26-2B-BE2F-719D-E492-008C` para validar todos os critérios antes de fazer o commit e abrir o Pull Request.
+
+## Como funciona
+
+- **Interface:** HTML5, CSS3 e JavaScript puro (sem frameworks), em `public/`.
+- **Backend:** Cloudflare Pages Functions em `functions/api/`.
+- **Banco:** Cloudflare D1 (`jogadores`, `fichas`, `rolagens`), migrations em `migrations/`.
+- **Login:** OAuth2 do Discord; sessão em cookie HttpOnly assinado com HMAC.
+- **Rolagens:** sorteadas no servidor (`crypto.getRandomValues`) e gravadas com data, hora e autor.
+
+## Como rodar localmente
+
+1. `npm install`
+2. Crie `.dev.vars` com `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` e `SESSION_SECRET`.
+3. `npx wrangler d1 migrations apply DB --local`
+4. `npx wrangler pages dev`
+
+## Agentes e skills
+
+Ver [AGENTS.md](./AGENTS.md) e a pasta [skills/](./skills).
+
+## Licença
+
+MIT. Veja [LICENSE](./LICENSE).
