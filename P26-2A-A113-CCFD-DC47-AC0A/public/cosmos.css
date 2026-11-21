@@ -1,0 +1,121 @@
+/* corrige: display:flex dos componentes anulava o atributo hidden */
+[hidden] { display: none !important; }
+html:not(.authed) .only-in, html.authed .only-out { display: none !important; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body { overflow-x: clip; }
+
+#cosmos { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+/* barra de progresso da página */
+body::after { content: ""; position: fixed; left: 0; top: 0; height: 3px; width: calc(var(--prog, 0) * 100%); z-index: 60; pointer-events: none;
+  background: var(--aurora); box-shadow: 0 0 14px rgba(34, 211, 238, .8); }
+
+/* ===== viagem de dobra: saída e chegada ===== */
+main, .flight, .topbar, footer { transition: opacity .9s ease, filter 1.2s ease, transform 1.3s var(--ease); }
+html.warping main, html.warping .flight { opacity: 0; transform: scale(1.7); transition: opacity .9s ease-in, transform 1.3s cubic-bezier(.5, 0, 1, .6); }
+html.warping .topbar, html.warping footer { opacity: 0; }
+html.arriving main, html.arriving .flight, html.arriving .topbar, html.arriving footer { opacity: 0; filter: blur(16px); transition: none; }
+#flash { position: fixed; inset: 0; z-index: 200; pointer-events: none; opacity: 0; transition: opacity 1.3s ease;
+  background: radial-gradient(circle at 50% 50%, rgba(236, 233, 255, .95) 0, rgba(124, 58, 237, .75) 30%, rgba(3, 3, 20, .96) 72%); }
+html.warping #flash { opacity: 1; transition: opacity .9s ease-in .45s; }
+html.arriving #flash { opacity: 1; transition: none; }
+
+/* ===== mouse no fundo (--sx e --sy vão de -1 a 1) ===== */
+.hc { translate: calc(var(--sx, 0) * var(--d, 1) * -26px) calc(var(--sy, 0) * var(--d, 1) * -26px); }
+.hc:nth-child(2n) { --d: 1.8; }
+.hc:nth-child(3n) { --d: .6; }
+.orbits { translate: calc(var(--sx, 0) * 22px) calc(var(--sy, 0) * 22px); }
+.sky .planet { translate: calc(var(--sx, 0) * -44px) calc(var(--sy, 0) * -34px); }
+.sky::before { translate: calc(var(--sx, 0) * 36px) calc(var(--sy, 0) * 28px); }
+.sky::after { translate: calc(var(--sx, 0) * -30px) calc(var(--sy, 0) * -24px); }
+.game .board { transform: rotateX(calc(var(--sy, 0) * -2.5deg)) rotateY(calc(var(--sx, 0) * 3deg)); }
+
+/* ===== VIAGEM: palco fixo + cenas em profundidade ===== */
+.flight { position: relative; height: calc(var(--n, 5) * 130vh); }
+.stage { position: sticky; top: 0; height: 100vh; overflow: hidden; perspective: 1400px; }
+.scene { position: absolute; inset: 0; display: grid; place-items: center; padding: 0 clamp(20px, 5vw, 60px); pointer-events: none; will-change: transform, opacity, filter; --d: 0; }
+.scene .btn, .scene a { pointer-events: auto; }
+.scene .wrap { position: relative; width: min(1100px, 100%); display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(24px, 6vw, 80px); }
+.scene .wrap.solo { grid-template-columns: 1fr; }
+.scene.right .obj { order: 2; }
+.scene h2 { letter-spacing: calc(-.03em + max(0, calc(-1 * var(--d))) * .3em); }
+.scene .login, .scene .welcome { min-height: 0; height: min(70vh, 640px); }
+.welcome { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 24px; }
+.scene.final { text-align: center; }
+.scene.final .wrap { grid-template-columns: 1fr; justify-items: center; }
+.scene.final .obj { width: clamp(150px, 22vw, 240px); }
+.scene.final .txt { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+.scene.final .btn { padding: 22px 52px; font-size: 1.25rem; animation: spin 5s linear infinite, beat 2.6s ease-in-out infinite; }
+
+.obj { justify-self: center; width: clamp(170px, 30vw, 320px); aspect-ratio: 3 / 4; padding: 11%; border-radius: 26px; border: 2px solid rgba(167, 139, 250, .7);
+  background: radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--c2, #6d28d9) 45%, #060720), color-mix(in srgb, var(--c1, #1e1b4b) 30%, #030314));
+  box-shadow: 0 0 50px rgba(124, 58, 237, .45), 0 30px 60px rgba(0, 0, 0, .6); }
+.obj svg { width: 100%; height: 100%; display: block; animation: float 4s ease-in-out infinite alternate; }
+.orb { position: absolute; border-radius: 50%; pointer-events: none; }
+.o-a { width: 110px; height: 110px; left: -2%; top: 4%; background: radial-gradient(circle at 30% 30%, #fff, var(--cyan) 28%, transparent 70%); opacity: .85; }
+.o-b { width: 150px; height: 150px; right: -2%; bottom: 6%; background: radial-gradient(circle at 30% 30%, #fff, var(--magenta) 28%, transparent 70%); opacity: .75; }
+
+.strip { position: absolute; left: 0; right: 0; bottom: 9vh; overflow: hidden; padding: 12px 0; border-block: 1px solid rgba(167, 139, 250, .3); background: rgba(10, 8, 40, .5); pointer-events: none; opacity: max(0, calc(1 - var(--fp, 0) * 9)); }
+.strip div { display: flex; width: max-content; animation: slide 36s linear infinite; font: 800 1.5rem var(--display); white-space: pre; color: transparent; -webkit-text-stroke: 1px #b9a4ff; }
+.cue { position: absolute; left: 50%; bottom: 2.5vh; translate: -50% 0; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--mute); font-size: .8rem; pointer-events: none; opacity: max(0, calc(1 - var(--fp, 0) * 14)); }
+.cue i { position: relative; width: 24px; height: 38px; border: 2px solid var(--star); border-radius: 14px; }
+.cue i::after { content: ""; position: absolute; left: 50%; top: 7px; width: 4px; height: 7px; margin-left: -2px; border-radius: 4px; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); animation: cue 1.8s ease-in-out infinite; }
+@keyframes cue { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
+
+/* ===== chegada ao jogo ===== */
+.game { scroll-margin-top: 70px; }
+.game:not(.seen) .memory-card { animation: none; opacity: 0; }
+main { padding-top: 0; }
+
+@media (max-width: 760px) {
+  .scene .wrap { grid-template-columns: 1fr; text-align: center; justify-items: center; gap: 22px; }
+  .scene.right .obj { order: 0; }
+  .obj { width: clamp(130px, 38vw, 210px); }
+  .o-a, .o-b { opacity: .4; }
+  .scene .login, .scene .welcome { align-items: center; text-align: center; }
+}
+
+/* movimento reduzido: sem viagem, cenas empilhadas */
+@media (prefers-reduced-motion: reduce) {
+  .flight { height: auto; }
+  .stage { position: static; height: auto; overflow: visible; display: flex; flex-direction: column; gap: 10vh; padding-block: 8vh; }
+  .scene { position: relative; inset: auto; min-height: 70vh; transform: none !important; opacity: 1 !important; filter: none !important; visibility: visible !important; }
+  .strip, .cue { display: none; }
+}
+/* ===== desempenho: tira o que pesa e deixa só o que o navegador anima de graça ===== */
+body::before, body::after, .layer { display: none; }
+.sky::before, .sky::after { filter: none; translate: none; opacity: .75; }
+.sky .planet { will-change: transform; }
+.hc, .orbits { translate: none; }
+.game .board { transform: none; }
+
+/* vidro (backdrop-filter) sobre canvas animado é caro: fundo mais opaco no lugar */
+.topbar, .stats div, .board, .records li { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.topbar { background: rgba(3, 3, 20, .92); }
+.stats div, .records li { background: rgba(10, 8, 40, .88); }
+
+/* bordas giratórias viram estáticas (animar --a repinta o elemento a cada quadro) */
+.btn, .board, .memory-back { animation: none; }
+.board { background: linear-gradient(rgba(6, 5, 28, .92), rgba(6, 5, 28, .92)) padding-box, conic-gradient(from 25deg, var(--violet), var(--void), var(--cyan), var(--void), var(--magenta), var(--violet)) border-box; }
+.login .btn::after, .scene.final .btn::after { content: ""; position: absolute; inset: -2px; border-radius: inherit; border: 2px solid var(--violet); pointer-events: none; animation: ping 2.4s ease-out infinite; }
+.login .btn, .scene.final .btn { animation: none; }
+@keyframes ping { from { transform: scale(1); opacity: .9; } to { transform: scale(1.35, 1.8); opacity: 0; } }
+
+/* títulos: só entrada (e onda no h1); sem trocar de cor o tempo todo */
+[data-split] .ch, .brand .ch { color: var(--star); animation: rise 1s var(--ease) forwards; animation-delay: calc(var(--i) * 50ms); }
+h1[data-split] .ch { animation: rise 1s var(--ease) forwards, wave 3s ease-in-out infinite; animation-delay: calc(var(--i) * 50ms), calc(var(--i) * 120ms + 1.2s); }
+.scene h2 { letter-spacing: -.03em; }
+
+/* sem filtros caros em elementos que se mexem */
+.scene { filter: none !important; }
+.memory-card[data-kind="img"] .memory-art svg { filter: none; }
+.memory-card.matched .memory-front { animation: none; box-shadow: 0 0 26px rgba(34, 211, 238, .6); }
+
+/* barra de progresso (criada pelo JS; só muda transform) */
+#bar { position: fixed; left: 0; top: 0; width: 100%; height: 3px; z-index: 60; pointer-events: none; transform-origin: 0 50%; transform: scaleX(0); background: var(--aurora); }
+
+/* antes do JS organizar a viagem, só a primeira cena existe */
+.scene:not(:first-child) { visibility: hidden; opacity: 0; }
+
+/* fica invisível até o site saber se você está logada, depois aparece suavemente */
+html.boot .flight, html.boot main, html.boot .topbar, html.boot footer { opacity: 0; }
