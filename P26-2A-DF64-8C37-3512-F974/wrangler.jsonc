@@ -1,0 +1,17 @@
+// Configuração do Cloudflare Pages + D1 · Chave P26-2A-DF64-8C37-3512-F974
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "p26-2a-df64-8c37-3512-f974",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "memorize-db",
+      "database_id": "319105d8-017d-4a1e-8137-77336b021b3d",
+      "migrations_dir": "migrations"
+    }
+  ]
+  // DISCORD_CLIENT_ID e DISCORD_CLIENT_SECRET: cadastre como *Secrets* no painel do
+  // Pages (Settings > Variables and Secrets) ou em .dev.vars para desenvolvimento local.
+}

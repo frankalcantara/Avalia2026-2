@@ -1,0 +1,5 @@
+# Copie para .dev.vars (não versionado) para rodar com `npx.cmd wrangler pages dev`.
+DISCORD_CLIENT_ID=coloque_o_client_id
+DISCORD_CLIENT_SECRET=coloque_o_client_secret
+# Opcional: força a URL de retorno (por padrão usa <origem>/api/auth/discord/callback)
+# DISCORD_REDIRECT_URI=http://localhost:8788/api/auth/discord/callback

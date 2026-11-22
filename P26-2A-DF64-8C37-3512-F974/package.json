@@ -1,0 +1,18 @@
+{
+  "name": "memorize-flashcards",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cartões de frente e verso com repetição espaçada (SM-2) — Cloudflare Pages Functions + D1 + Discord OAuth2. Chave P26-2A-DF64-8C37-3512-F974",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/",
+    "smoke": "node tests/smoke.mjs",
+    "dev": "wrangler pages dev",
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply DB --remote"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
