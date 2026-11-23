@@ -32,6 +32,7 @@ jobs:
         run: |
           cp -r pr-code/T26-* ./ 2>/dev/null || true
           cp -r pr-code/P26-* ./ 2>/dev/null || true
+          cp -r pr-code/E26-* ./ 2>/dev/null || true
           rm -rf pr-code
 
       - name: Configurar Node.js 22

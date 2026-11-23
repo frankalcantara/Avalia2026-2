@@ -3,13 +3,13 @@
  * validar-local.mjs — Validador Local Pré-Pull Request (Zero-Dependências / Compatível com Scoop)
  * Verifica na máquina do laboratório se a pasta <CHAVE>/ cumpre todos os requisitos da rubrica de 100 pontos.
  * Uso:
- *   node validar-local.mjs <SUA-CHAVE-T26-OU-P26>
+ *   node validar-local.mjs <SUA-CHAVE-P26-E26-OU-T26>
  */
 
 import fs from "node:fs";
 import path from "node:path";
 
-const KEY_REGEX = /^(P26|T26)-(2A|2B|2C|2D|3A|3B)-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/i;
+const KEY_REGEX = /^(P26|E26|T26)-(2A|2B|2C|2D|3A|3B)-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/i;
 const PROHIBITED_FRAMEWORKS = ["react", "react-dom", "vue", "next", "nuxt", "@angular/core", "svelte", "solid-js"];
 
 function listarArquivosRecursivo(dir, baseDir = dir) {
@@ -171,7 +171,7 @@ export async function inspecionarSubpasta(rootDir, chave, { checkLiveUrl = true 
 async function main() {
   const rawKey = (process.argv[2] || "").trim().toUpperCase();
   if (!rawKey || !KEY_REGEX.test(rawKey)) {
-    console.error("Uso: node validar-local.mjs <SUA-CHAVE-T26-OU-P26>");
+    console.error("Uso: node validar-local.mjs <SUA-CHAVE-P26-E26-OU-T26>");
     process.exit(1);
   }
 
@@ -213,6 +213,6 @@ async function main() {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1].replace(/\\/g, "/")}` || process.argv[1]?.endsWith("validar-local.mjs")) {
+if (process.argv[1] && (import.meta.url === `file://${process.argv[1].replace(/\\/g, "/")}` || process.argv[1].endsWith("validar-local.mjs"))) {
   main();
 }

@@ -94,9 +94,19 @@ Antes de entregar o seu projeto oficial, **todos os estudantes fazem um mesmo Pr
 ## 🔒 Política de Merges
 
 - **Nenhum Pull Request é mesclado automaticamente.**
-- Os merges oficiais serão feitos **manualmente pelo professor somente a partir de 20/11/2026**.
-- Pull Requests oficiais (`P26-...`) permanecem **abertos** e podem receber novos commits até o encerramento das entregas.
+- Os merges oficiais (`P26-...`) e de exame/recuperação (`E26-...`) são executados pelo professor após o encerramento de cada prazo.
+- **Prazo da Avaliação Comum (`P26-...`):** 20/11/2026 às 23:59 (horário de Brasília).
+- **Prazo do Exame / Recuperação (`E26-...`):** 10/12/2026 às 23:59 (horário de Brasília) · **Nota de 0 a 10**.
+- Pull Requests válidos (`P26-...` ou `E26-...`) permanecem **abertos** e podem receber novos commits até o encerramento do respectivo prazo.
 - Pull Requests de teste (`T26-...`) são **rejeitados e fechados automaticamente**, sem merge, em qualquer data.
+
+## 🔄 Etapa 2B: Exame / Recuperação (Nota de 0 a 10 — Chave `E26-...`)
+
+Para estudantes em recuperação, o sorteio deve ser realizado em [`https://frankalcantara.com/projetos2026/exame`](https://frankalcantara.com/projetos2026/exame) escolhendo sua turma (**2A, 2B, 2C ou 3A**). O sistema gera uma nova chave única no formato `E26-<TURMA>-XXXX-XXXX-XXXX-XXXX` e garante que o tema sorteado não repita o projeto da avaliação comum.
+
+- **Prazo limite de entrega:** **10/12/2026 às 23:59 (horário de Brasília)**.
+- **Escala da nota:** **0,0 a 10,0** (calculada a partir da mesma rubrica de 100 pontos abaixo).
+- **Fluxo idêntico ao oficial:** execute `node iniciar.mjs E26-...`, desenvolva exclusivamente na pasta `E26-.../`, valide com `node validar-local.mjs E26-...` e abra o Pull Request para este repositório.
 
 ## 🏆 Etapa 2: Entrega do Projeto Oficial Sorteado (Valendo 100 Pontos — Chave `P26-...`)
 

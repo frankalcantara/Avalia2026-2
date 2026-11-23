@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       turma:
-        description: 'Turma para avaliar e fazer merge (2A, 2B, 2C peso 7,5 | 3A peso 7,75)'
+        description: 'Turma para avaliar e fazer merge (Oficial: 2A/2B/2C peso 7,5 e 3A peso 7,75 | Exame: 0 a 10)'
         required: true
         default: 'todas'
         type: choice
@@ -14,6 +14,15 @@ on:
           - '2B'
           - '2C'
           - '3A'
+      modo:
+        description: 'Modalidade dos PRs a avaliar (todos, oficial P26 ou exame E26)'
+        required: false
+        default: 'todos'
+        type: choice
+        options:
+          - 'todos'
+          - 'oficial'
+          - 'exame'
       reavaliar:
         description: 'Forçar reavaliação de alunos já avaliados (padrão: pular já avaliados)'
         required: false
@@ -51,6 +60,8 @@ jobs:
           DEEPSEEK_MODEL: ${{ vars.DEEPSEEK_MODEL || 'deepseek-flash' }}
           PROJETOS_API_BASE: ${{ vars.PROJETOS_API_BASE || 'https://frank-active-reader.frank-alcantara.workers.dev' }}
           TURMA_FILTRO: ${{ github.event.inputs.turma || 'todas' }}
+          MODO_FILTRO: ${{ github.event.inputs.modo || 'todos' }}
           FORCE_REEVALUATE: ${{ github.event.inputs.reavaliar || 'false' }}
           PRAZO_LIMITE_ISO: ${{ vars.PRAZO_LIMITE_ISO || '2026-11-20T23:59:59-03:00' }}
+          PRAZO_EXAME_ISO: ${{ vars.PRAZO_EXAME_ISO || '2026-12-10T23:59:59-03:00' }}
         run: node .github/scripts/encerrar-avaliacoes.mjs

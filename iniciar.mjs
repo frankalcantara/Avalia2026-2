@@ -3,7 +3,7 @@
  * iniciar.mjs — Inicializador Zero-Dependências para Avalia2026-2
  * Compatível com Node.js instalado em modo usuário via Scoop nos laboratórios da instituição.
  * Uso:
- *   node iniciar.mjs <SUA-CHAVE-T26-OU-P26>
+ *   node iniciar.mjs <SUA-CHAVE-P26-E26-OU-T26>
  */
 
 import fs from "node:fs";
@@ -12,7 +12,7 @@ import os from "node:os";
 import { execSync } from "node:child_process";
 
 const API_BASE = process.env.PROJETOS_API_BASE || "https://frankalcantara.com";
-const KEY_REGEX = /^(P26|T26)-(2A|2B|2C|2D|3A|3B)-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/i;
+const KEY_REGEX = /^(P26|E26|T26)-(2A|2B|2C|2D|3A|3B)-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/i;
 
 function banner(title) {
   console.log("\n==================================================================");
@@ -65,6 +65,7 @@ async function consultarChaveNoServidor(chave, offlineMode) {
   banner("2. VALIDAÇÃO DA CHAVE E IDENTIFICAÇÃO DO PROJETO");
 
   const isTest = chave.startsWith("T26-");
+  const isExame = chave.startsWith("E26-");
   const turma = chave.split("-")[1];
 
   if (offlineMode) {
@@ -72,6 +73,7 @@ async function consultarChaveNoServidor(chave, offlineMode) {
     return {
       valid: true,
       isTest,
+      isExame,
       graded: !isTest,
       student: {
         turma,
@@ -86,11 +88,17 @@ async function consultarChaveNoServidor(chave, offlineMode) {
             description:
               "Projeto universal de treinamento (sem sorteio e sem nota) que todos os estudantes realizam igualmente para validar o ambiente Node.js via Scoop, o deploy de subpasta no Cloudflare Pages com D1 e o fluxo de entrega via Pull Request.",
           }
-        : {
-            id: 1,
-            title: "Projeto Oficial Sorteado (Consulte https://frankalcantara.com/projetos2026)",
-            description: "Substitua pela descrição oficial recebida no seu e-mail de confirmação.",
-          },
+        : isExame
+          ? {
+              id: 1,
+              title: "Projeto de Exame / Recuperação Sorteado (Consulte https://frankalcantara.com/projetos2026/exame)",
+              description: "Substitua pela descrição oficial recebida no seu e-mail de confirmação de recuperação.",
+            }
+          : {
+              id: 1,
+              title: "Projeto Oficial Sorteado (Consulte https://frankalcantara.com/projetos2026)",
+              description: "Substitua pela descrição oficial recebida no seu e-mail de confirmação.",
+            },
     };
   }
 
@@ -107,7 +115,7 @@ async function consultarChaveNoServidor(chave, offlineMode) {
     if (!res.ok || !data.valid) {
       if (data.error === "draw_not_confirmed_yet") {
         console.error(
-          `\n[ATENÇÃO] Sua chave oficial (${chave}) foi sorteada, mas você ainda não clicou no link de confirmação enviado para o seu e-mail!\n` +
+          `\n[ATENÇÃO] Sua chave (${chave}) foi sorteada, mas você ainda não clicou no link de confirmação enviado para o seu e-mail!\n` +
           `1. Abra seu e-mail e confirme o recebimento para liberar o tema sorteado.\n` +
           `2. Enquanto isso, você JÁ PODE treinar todo o processo usando sua Chave de Teste: ${data.student?.testHash || "T26-..."}\n`
         );
@@ -116,10 +124,15 @@ async function consultarChaveNoServidor(chave, offlineMode) {
       throw new Error(data.message || `Chave não validada pelo servidor (HTTP ${res.status}).`);
     }
 
+    const modalidade = data.isTest
+      ? "PROJETO 0 DE TESTE (Sem Sorteio · Sem Nota)"
+      : (data.isExame || isExame)
+        ? "PROJETO DE EXAME / RECUPERAÇÃO (Valendo 0 a 100 pontos · Prazo: 10/12/2026 23:59)"
+        : "PROJETO OFICIAL (Valendo 0 a 100 pontos)";
     console.log(`✓ Estudante identificado : ${data.student.nomeCompleto} (RA: ${data.student.ra} · Turma: ${data.student.turma})`);
-    console.log(`✓ Modalidade da Chave    : ${data.isTest ? "PROJETO 0 DE TESTE (Sem Sorteio · Sem Nota)" : "PROJETO OFICIAL (Valendo 0 a 100 pontos)"}`);
+    console.log(`✓ Modalidade da Chave    : ${modalidade}`);
     console.log(`✓ Projeto Vinculado      : #${data.project.id} — ${data.project.title}`);
-    return data;
+    return { ...data, isExame: Boolean(data.isExame || isExame) };
   } catch (err) {
     console.error(`\n[ERRO DE VALIDAÇÃO] ${err.message}`);
     console.error(
@@ -141,8 +154,9 @@ function escreverArquivoSeguro(filePath, content) {
 }
 
 function gerarEstruturaSubpasta(info) {
-  const { student, project, isTest } = info;
+  const { student, project, isTest, isExame } = info;
   const chave = student.studentHash;
+  const isExameKey = Boolean(isExame || String(chave).startsWith("E26-"));
   const rootDir = path.resolve(process.cwd(), chave);
 
   banner(`3. CRIANDO ESTRUTURA DA SUBPASTA: ${chave}/`);
@@ -178,7 +192,7 @@ SOFTWARE.
   // 2. README.md da Subpasta
   const readmeText = `# Projeto #${project.id}: ${project.title}
 
-- **Modalidade:** ${isTest ? "Projeto 0 — Teste de Ambiente e Entrega (Sem Sorteio e Sem Nota)" : "Projeto Oficial Sorteado (Valendo 100 pontos)"}
+- **Modalidade:** ${isTest ? "Projeto 0 — Teste de Ambiente e Entrega (Sem Sorteio e Sem Nota)" : isExameKey ? "Projeto de Exame / Recuperação (Valendo 100 pontos · Prazo: 10/12/2026 23:59)" : "Projeto Oficial Sorteado (Valendo 100 pontos)"}
 - **Estudante:** ${student.nomeCompleto}
 - **Turma:** ${student.turma}
 - **Chave Única:** \`${chave}\`
@@ -716,7 +730,7 @@ footer {
 
   <main>
     <section class="card">
-      <span class="pill">${isTest ? "Projeto 0 · Teste de Entrega (Sem Nota)" : `Projeto Oficial #${project.id}`}</span>
+      <span class="pill">${isTest ? "Projeto 0 · Teste de Entrega (Sem Nota)" : isExameKey ? `Exame / Recuperação · Projeto #${project.id}` : `Projeto Oficial #${project.id}`}</span>
       <h1>${project.title}</h1>
       <p class="desc">${project.description.replace(/\n+/g, " ")}</p>
 
@@ -860,11 +874,13 @@ async function main() {
   if (!rawKey || !KEY_REGEX.test(rawKey)) {
     console.error(
       "\n[USO INCORRETO]\n" +
-      "Informe sua Chave de Teste (T26-...) ou sua Chave Única Oficial (P26-...):\n\n" +
-      "  Exemplo (Projeto 0 de Teste — Sem Nota):\n" +
-      "    node iniciar.mjs T26-2A-1A2B-3C4D-5E6F-7890\n\n" +
+      "Informe sua Chave Única Oficial (P26-...), sua Chave de Exame/Recuperação (E26-...) ou sua Chave de Teste (T26-...):\n\n" +
       "  Exemplo (Projeto Oficial — Valendo 100 pontos):\n" +
-      "    node iniciar.mjs P26-2A-9F8E-7D6C-5B4A-3210\n"
+      "    node iniciar.mjs P26-2A-9F8E-7D6C-5B4A-3210\n\n" +
+      "  Exemplo (Exame / Recuperação — Valendo 100 pontos · Prazo: 10/12/2026 23:59):\n" +
+      "    node iniciar.mjs E26-2A-4B3C-2D1E-9F8A-7654\n\n" +
+      "  Exemplo (Projeto 0 de Teste — Sem Nota):\n" +
+      "    node iniciar.mjs T26-2A-1A2B-3C4D-5E6F-7890\n"
     );
     process.exit(1);
   }

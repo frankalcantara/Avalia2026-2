@@ -26,7 +26,7 @@ const PR_NUMBER = Number(process.env.PR_NUMBER || 0);
 const PR_HTML_URL = process.env.PR_HTML_URL || `https://github.com/${REPO}/pull/${PR_NUMBER}`;
 const PR_HEAD_REPO_URL = process.env.PR_HEAD_REPO_URL || "";
 
-const KEY_REGEX = /^(P26|T26)-(2A|2B|2C|2D|3A|3B)-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/;
+const KEY_REGEX = /^(P26|E26|T26)-(2A|2B|2C|2D|3A|3B)-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/;
 
 async function githubApi(endpoint, options = {}) {
   const url = endpoint.startsWith("http") ? endpoint : `https://api.github.com${endpoint}`;
@@ -228,7 +228,7 @@ async function main() {
       [
         `## ❌ Pull Request Inválido — Violação de Isolamento de Subpasta`,
         ``,
-        `Seu Pull Request deve adicionar ou modificar arquivos **exclusivamente dentro da pasta nomeada com a sua Chave Única** (\`P26-.../\` ou \`T26-.../\`).`,
+        `Seu Pull Request deve adicionar ou modificar arquivos **exclusivamente dentro da pasta nomeada com a sua Chave Única** (\`P26-.../\` ou \`E26-.../\`).`,
         ``,
         `- **Pastas de topo detectadas:** ${Array.from(topFolders).map((f) => `\`${f}/\``).join(", ") || "nenhuma"}`,
         ...(rootFilesTouched.length > 0
@@ -244,7 +244,7 @@ async function main() {
   const chave = Array.from(topFolders)[0];
   if (!KEY_REGEX.test(chave)) {
     await comentarNoPr(
-      `## ❌ Formato de Pasta Inválido (\`${chave}/\`)\n\nA pasta deve ter exatamente o nome da sua Chave Oficial (\`P26-TURMA-XXXX-XXXX-XXXX-XXXX\`) ou da sua Chave de Teste (\`T26-TURMA-XXXX-XXXX-XXXX-XXXX\`).`
+      `## ❌ Formato de Pasta Inválido (\`${chave}/\`)\n\nA pasta deve ter exatamente o nome da sua Chave Oficial (\`P26-TURMA-XXXX-XXXX-XXXX-XXXX\`) ou da sua Chave de Exame/Recuperação (\`E26-TURMA-XXXX-XXXX-XXXX-XXXX\`).`
     );
     process.exit(1);
   }
@@ -285,19 +285,23 @@ async function main() {
   console.log(`[Validar] HTTP ${valRes.status} -> valid: ${valData.valid}, student: ${valData.student?.nomeCompleto || "N/A"}`);
 
   if (!valRes.ok || !valData.valid) {
+    const portalUrl = chave.startsWith("E26-")
+      ? "https://frankalcantara.com/projetos2026/exame"
+      : "https://frankalcantara.com/projetos2026";
     await comentarNoPr(
       [
         `## ❌ Não Foi Possível Identificar o Aluno ou Validar a Chave (\`${chave}\`)`,
         ``,
         `- **Motivo:** ${valData.message || valData.error || "Chave não localizada no sistema de sorteio."}`,
         ``,
-        `Verifique se você copiou a chave corretamente em \`https://frankalcantara.com/projetos2026\` e se já confirmou o e-mail de recebimento.`,
+        `Verifique se você copiou a chave corretamente em \`${portalUrl}\` e se já confirmou o e-mail de recebimento.`,
       ].join("\n")
     );
     process.exit(1);
   }
 
   const { student, project, isTest } = valData;
+  const isExame = Boolean(valData.isExame || chave.startsWith("E26-"));
 
   // 2.1. Bloqueio defensivo: a API também pode classificar a entrega como teste
   if (isTest) {
@@ -312,7 +316,7 @@ async function main() {
 
   // 3. Aluno e Projeto identificados com sucesso — merge NUNCA é automático
   console.log(`✓ Aluno identificado: ${student.nomeCompleto} (RA: ${student.ra}, Turma: ${student.turma})`);
-  console.log(`✓ Projeto Oficial P26: Pull Request #${PR_NUMBER} mantido ABERTO (merge manual, a partir de 20/11/2026).`);
+  console.log(`✓ ${isExame ? "Exame/Recuperação E26" : "Projeto Oficial P26"}: Pull Request #${PR_NUMBER} mantido ABERTO.`);
 
   await comentarNoPr(
     [
@@ -321,9 +325,9 @@ async function main() {
       `- **Estudante:** ${student.nomeCompleto}`,
       `- **RA (Matrícula):** \`${student.ra}\``,
       `- **Turma:** \`${student.turma}\``,
-      `- **Chave Validada:** \`${chave}\` (🏆 **Projeto Oficial Sorteado — Valendo 0 a 100 pontos**)`,
+      `- **Chave Validada:** \`${chave}\` (${isExame ? "🔄 **Exame / Recuperação — Valendo 0 a 100 pontos · Prazo: 10/12/2026 às 23:59**" : "🏆 **Projeto Oficial Sorteado — Valendo 0 a 100 pontos**"})`,
       `- **Projeto Correspondente:** **#${project.id} — ${project.title}**`,
-      `- **Status do Pull Request:** Aberto e Registrado ✅ (nenhum merge é feito automaticamente; o merge oficial será manual, a partir de 20/11/2026)`,
+      `- **Status do Pull Request:** Aberto e Registrado ✅ (${isExame ? "nenhum merge é feito automaticamente; a avaliação e o merge da recuperação serão executados após o encerramento em 10/12/2026 às 23:59" : "nenhum merge é feito automaticamente; o merge oficial será manual, a partir de 20/11/2026"})`,
       ``,
       `⏳ *Iniciando pré-inspeção técnica da subpasta \`${chave}/\` e verificação do deploy no Cloudflare...*`,
     ].join("\n")
@@ -366,7 +370,11 @@ async function main() {
     ].join("\n");
 
   await comentarNoPr(checklistMarkdown);
-  await adicionarLabelsNoPr([`turma:${student.turma}`, "status:aguardando-avaliacao"]);
+  await adicionarLabelsNoPr([
+    `turma:${student.turma}`,
+    ...(isExame ? ["modalidade:exame"] : []),
+    "status:aguardando-avaliacao",
+  ]);
 }
 
 main();

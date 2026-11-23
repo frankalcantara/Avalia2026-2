@@ -33,13 +33,16 @@ const DEEPSEEK_API_KEY = (process.env.DEEPSEEK_API_KEY || "").trim();
 const DEEPSEEK_MODEL = (process.env.DEEPSEEK_MODEL || "deepseek-flash").trim();
 const REPO = process.env.GITHUB_REPOSITORY || "frankalcantara/Avalia2026-2";
 const TURMA_FILTRO = (process.env.TURMA_FILTRO || "todas").trim().toUpperCase();
+const MODO_FILTRO = (process.env.MODO_FILTRO || "todos").trim().toLowerCase();
 const FORCE_REEVALUATE = String(process.env.FORCE_REEVALUATE || "false").trim().toLowerCase() === "true";
 export const PRAZO_LIMITE_ISO = (process.env.PRAZO_LIMITE_ISO || "2026-11-20T23:59:59-03:00").trim();
 export const PRAZO_LIMITE_MS = Date.parse(PRAZO_LIMITE_ISO);
+export const PRAZO_EXAME_ISO = (process.env.PRAZO_EXAME_ISO || "2026-12-10T23:59:59-03:00").trim();
+export const PRAZO_EXAME_MS = Date.parse(PRAZO_EXAME_ISO);
 
 export const ACTIVE_TURMAS = new Set(["2A", "2B", "2C", "3A"]);
 export const NON_EXISTENT_TURMAS = new Set(["2D", "3B"]);
-export const KEY_REGEX = /^(P26|T26)-(2A|2B|2C|2D|3A|3B)-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/;
+export const KEY_REGEX = /^(P26|E26|T26)-(2A|2B|2C|2D|3A|3B)-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}$/;
 
 export const MSG_DUPLICADO = "Foi considerado apenas o último PR";
 export const MSG_ATRASADO = "Não foi considerado por ter sido enviado depois do prazo limite.";
@@ -370,7 +373,9 @@ async function main() {
   console.log(`==================================================================`);
   console.log(`  RODADA AUTOMÁTICA DE AVALIAÇÃO, E-MAIL PRIVADO E MERGE POR TURMA`);
   console.log(`  Filtro de Turma: ${TURMA_FILTRO}`);
-  console.log(`  Prazo Limite: ${PRAZO_LIMITE_ISO}`);
+  console.log(`  Modalidade: ${MODO_FILTRO.toUpperCase()}`);
+  console.log(`  Prazo Limite Oficial (P26): ${PRAZO_LIMITE_ISO}`);
+  console.log(`  Prazo Limite Exame (E26)  : ${PRAZO_EXAME_ISO}`);
   console.log(`  Reavaliar já avaliados: ${FORCE_REEVALUATE ? "SIM" : "NÃO (pular)"}`);
   console.log(`  Repositório: ${REPO}`);
   console.log(`==================================================================\n`);
@@ -397,10 +402,12 @@ async function main() {
   if (VALIDATION_TOKEN) workerHeaders.Authorization = `Bearer ${VALIDATION_TOKEN}`;
 
   const inspectedOfficial = [];
+  const inspectedExame = [];
   const invalidPrsByLogin = new Map();
-  const validLoginsInTargetTurma = new Set();
+  const validOfficialLoginsInTargetTurma = new Set();
+  const validExameLoginsInTargetTurma = new Set();
 
-  // 2. Pré-classificação de cada PR aberto (isolamento, turmas 2D/3B, testes T26, filtro de turma)
+  // 2. Pré-classificação de cada PR aberto (isolamento, turmas 2D/3B, testes T26, filtro de turma e modalidade)
   for (const pr of openPrs) {
     const prNumber = pr.number;
     const githubLogin = String(pr.user?.login || "").trim();
@@ -421,7 +428,6 @@ async function main() {
     const keyMatch = singleFolder ? singleFolder.match(KEY_REGEX) : null;
 
     if (!keyMatch) {
-      // Guarda PR inválido por login para eventual fechamento como duplicata se o mesmo aluno tiver PR válido na turma alvo
       const loginLower = githubLogin.toLowerCase();
       if (loginLower) {
         const list = invalidPrsByLogin.get(loginLower) || [];
@@ -441,7 +447,7 @@ async function main() {
     }
 
     const chave = singleFolder;
-    const prefix = keyMatch[1]; // P26 ou T26
+    const prefix = keyMatch[1]; // P26, E26 ou T26
     const turmaFromKey = keyMatch[2]; // 2A, 2B, 2C, 2D, 3A, 3B
 
     // Regra 4: Turmas 2D e 3B não existem — fecha imediatamente com mensagem exata
@@ -462,7 +468,11 @@ async function main() {
       continue;
     }
 
-    // Filtro por turma para PRs oficiais (P26-...)
+    const isExameKey = prefix === "E26";
+    if (MODO_FILTRO === "oficial" && isExameKey) continue;
+    if (MODO_FILTRO === "exame" && !isExameKey) continue;
+
+    // Filtro por turma para PRs oficiais (P26) e de exame (E26)
     if (TURMA_FILTRO !== "TODAS" && turmaFromKey !== TURMA_FILTRO) {
       continue;
     }
@@ -470,31 +480,50 @@ async function main() {
     const commits = await listarCommitsDoPr(prNumber);
     const effectiveMs = computeEffectiveSubmissionMs(pr, commits);
 
-    if (githubLogin) validLoginsInTargetTurma.add(githubLogin.toLowerCase());
-    inspectedOfficial.push({
+    const entry = {
       pr,
       prNumber,
       githubLogin,
       chave,
+      isExame: isExameKey,
       turmaFromKey,
       invalidIsolation: false,
       effectiveMs,
       effectiveIso: effectiveMs ? new Date(effectiveMs).toISOString() : pr.created_at,
-    });
+    };
+
+    if (isExameKey) {
+      if (githubLogin) validExameLoginsInTargetTurma.add(githubLogin.toLowerCase());
+      inspectedExame.push(entry);
+    } else {
+      if (githubLogin) validOfficialLoginsInTargetTurma.add(githubLogin.toLowerCase());
+      inspectedOfficial.push(entry);
+    }
   }
 
-  // Anexa eventuais PRs antigos/inválidos do mesmo login de um aluno da turma alvo para fechamento como duplicata
-  for (const loginLower of validLoginsInTargetTurma) {
+  // Anexa eventuais PRs antigos/inválidos do mesmo login para fechamento como duplicata (sem misturar P26 e E26)
+  for (const loginLower of validOfficialLoginsInTargetTurma) {
+    if (validExameLoginsInTargetTurma.has(loginLower)) continue;
     const extraInvalid = invalidPrsByLogin.get(loginLower) || [];
     for (const inv of extraInvalid) {
       inspectedOfficial.push(inv);
     }
   }
+  for (const loginLower of validExameLoginsInTargetTurma) {
+    const extraInvalid = invalidPrsByLogin.get(loginLower) || [];
+    for (const inv of extraInvalid) {
+      inspectedExame.push(inv);
+    }
+  }
 
-  console.log(`PRs oficiais candidatos para ${TURMA_FILTRO}: ${inspectedOfficial.length}\n`);
+  console.log(`PRs oficiais (P26) candidatos para ${TURMA_FILTRO}: ${inspectedOfficial.length}`);
+  console.log(`PRs de exame (E26) candidatos para ${TURMA_FILTRO}: ${inspectedExame.length}\n`);
 
-  // 3. Agrupar por login + chave e decidir vencedor, duplicatas e atrasados
-  const decisions = decideGroupActions(inspectedOfficial, PRAZO_LIMITE_MS);
+  // 3. Agrupar separadamente P26 (prazo 20/11) e E26 (prazo 10/12) por login + chave
+  const decisions = [
+    ...decideGroupActions(inspectedOfficial, PRAZO_LIMITE_MS),
+    ...decideGroupActions(inspectedExame, PRAZO_EXAME_MS),
+  ];
   const results = [];
 
   for (const decision of decisions) {
@@ -662,10 +691,17 @@ async function main() {
     );
 
     // IMPORTANTE: NENHUM comentário público e NENHUMA label com nota no PR!
-    await adicionarLabelsNoPr(prNumber, [`turma:${student.turma}`, "status:avaliado"]);
+    const isExameEval = Boolean(evalData.isExame || chave.startsWith("E26-"));
+    await adicionarLabelsNoPr(prNumber, [
+      `turma:${student.turma}`,
+      ...(isExameEval ? ["modalidade:exame"] : []),
+      "status:avaliado",
+    ]);
 
     // Faz merge na branch main (sem nota no título do commit)
-    const mergeTitle = `Entrega Oficial ${chave} — ${student.nomeCompleto} (RA ${student.ra})`;
+    const mergeTitle = isExameEval
+      ? `Entrega Exame/Recuperação ${chave} — ${student.nomeCompleto} (RA ${student.ra})`
+      : `Entrega Oficial ${chave} — ${student.nomeCompleto} (RA ${student.ra})`;
     const mergeOutcome = await mesclarPrNoMain(prNumber, mergeTitle);
     if (mergeOutcome.merged) {
       await fetch(`${API_BASE}/api/projetos2026/avaliar`, {
