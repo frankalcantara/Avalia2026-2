@@ -1,10 +1,10 @@
-name: Encerrar Entregas e Avaliar Turma
+name: Encerrar Entregas, Avaliar Turma e Merge
 
 on:
   workflow_dispatch:
     inputs:
       turma:
-        description: 'Turma para avaliar (os merges são sempre manuais)'
+        description: 'Turma para avaliar e fazer merge (2A, 2B, 2C peso 7,5 | 3A peso 7,75)'
         required: true
         default: 'todas'
         type: choice
@@ -13,9 +13,12 @@ on:
           - '2A'
           - '2B'
           - '2C'
-          - '2D'
           - '3A'
-          - '3B'
+      reavaliar:
+        description: 'Forçar reavaliação de alunos já avaliados (padrão: pular já avaliados)'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -25,7 +28,7 @@ permissions:
 
 jobs:
   avaliar-e-encerrar:
-    name: Avaliar com IA (sem merge — merge é manual)
+    name: Avaliar Turma, Enviar Parecer por E-mail e Fazer Merge
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório oficial (main)
@@ -39,7 +42,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Executar Avaliação em Lote (sem merge)
+      - name: Executar Avaliação Automática e Merge por Turma
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -48,4 +51,6 @@ jobs:
           DEEPSEEK_MODEL: ${{ vars.DEEPSEEK_MODEL || 'deepseek-flash' }}
           PROJETOS_API_BASE: ${{ vars.PROJETOS_API_BASE || 'https://frank-active-reader.frank-alcantara.workers.dev' }}
           TURMA_FILTRO: ${{ github.event.inputs.turma || 'todas' }}
+          FORCE_REEVALUATE: ${{ github.event.inputs.reavaliar || 'false' }}
+          PRAZO_LIMITE_ISO: ${{ vars.PRAZO_LIMITE_ISO || '2026-11-20T23:59:59-03:00' }}
         run: node .github/scripts/encerrar-avaliacoes.mjs
