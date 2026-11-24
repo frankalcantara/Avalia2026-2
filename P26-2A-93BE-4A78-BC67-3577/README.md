@@ -1,0 +1,86 @@
+# Projeto #3: Batalha Naval Tático
+
+- **Modalidade:** Projeto Oficial Sorteado (Valendo 100 pontos)
+- **Estudante:** Gabriel Benato Batistel Correa
+- **Turma:** 2A
+- **Chave Única:** `P26-2A-93BE-4A78-BC67-3577`
+- **URL_CLOUDFLARE:** `https://p26-2a-93be-4a78-bc67-3577.pages.dev`
+
+---
+
+## Especificação do Projeto
+
+Implemente o clássico jogo de Batalha Naval em duas fases: posicionamento da frota em uma malha 10x10 e combate por coordenadas. O cliente em JavaScript vanilla deve gerenciar a interação de posicionamento horizontal e vertical das embarcações e disparar requisições fetch para o backend na Cloudflare a cada bombardeio realizado.
+
+A autenticação via Discord OAuth2 vincula cada jogador às suas partidas ativas no Cloudflare D1. As funções serverless devem validar se as embarcações foram posicionadas dentro dos limites da matriz e processar os disparos ocultando a matriz do oponente, retornando ao cliente apenas se o tiro resultou em "água", "acerto" ou "navio afundado", atualizando o placar geral ao término do confronto.
+
+---
+
+## Como o jogo funciona
+
+1. **Login:** Discord OAuth2 (`identify`); `user_id`, nome e avatar ficam no D1 e a sessão é um token aleatório em cookie `HttpOnly`.
+2. **Posicionamento:** 5 navios (5, 4, 3, 3 e 2 casas) na malha 10x10, na horizontal ou vertical. O servidor valida limites, sobreposição e tamanhos.
+3. **Combate:** o jogador atira contra o computador; a frota do computador é sorteada e fica **somente no servidor**. A API responde apenas `agua`, `acerto` ou `afundado`, e o computador revida no mesmo pedido.
+4. **Placar geral:** ao fim de cada partida, vitórias e derrotas são gravadas no D1 e listadas na página (`/api/scores`).
+
+## Rodando localmente
+
+```powershell
+cd P26-2A-93BE-4A78-BC67-3577
+# Crie .dev.vars (NÃO versionado) com DISCORD_CLIENT_ID e DISCORD_CLIENT_SECRET
+npx.cmd wrangler d1 migrations apply DB --local
+npx.cmd wrangler pages dev
+```
+
+Acesse `http://localhost:8788` (use `localhost`, não `127.0.0.1`) e cadastre `http://localhost:8788/api/auth/discord/callback` como Redirect no Discord. Testes das regras: `node tests/regras.test.mjs`.
+
+Agentes, harness e skills utilizados: veja [`AGENTS.md`](./AGENTS.md).
+
+---
+
+## Deploy realizado (Cloudflare Pages + D1 + Discord OAuth2)
+
+Publicado por *upload direto* com o Wrangler (o repositório já estava vinculado a outro projeto Pages do laboratório anterior):
+
+```powershell
+npx.cmd wrangler d1 migrations apply DB --remote
+npx.cmd wrangler pages project create p26-2a-93be-4a78-bc67-3577 --production-branch main
+npx.cmd wrangler pages secret put DISCORD_CLIENT_ID --project-name p26-2a-93be-4a78-bc67-3577
+npx.cmd wrangler pages secret put DISCORD_CLIENT_SECRET --project-name p26-2a-93be-4a78-bc67-3577
+npx.cmd wrangler pages deploy public --project-name p26-2a-93be-4a78-bc67-3577 --branch main
+```
+
+O binding `DB` do D1 vem do `wrangler.jsonc`. Os secrets do Discord ficam só na Cloudflare (nunca no Git). Redirect cadastrado no Discord: `https://p26-2a-93be-4a78-bc67-3577.pages.dev/api/auth/discord/callback`.
+
+## Alternativa: publicar via Git no Cloudflare Pages
+
+1. No painel da Cloudflare (**Workers & Pages** → **Create** → **Pages** → **Connect to Git**), selecione o seu fork do repositório `Avalia2026-2`.
+2. Configure os parâmetros de build apontando para esta subpasta:
+   - **Root directory (Diretório raiz):** `P26-2A-93BE-4A78-BC67-3577`
+   - **Build command:** *(deixe em branco — HTML/CSS/JS puro)*
+   - **Build output directory:** `public`
+3. Crie o banco de dados D1 e aplique a migração inicial (no terminal do laboratório usando Scoop):
+   ```powershell
+   cd P26-2A-93BE-4A78-BC67-3577
+   npx.cmd wrangler d1 create db-p26-2a-93be-4a78-bc67-3577
+   # Copie o database_id gerado para o arquivo wrangler.jsonc e execute:
+   npx.cmd wrangler d1 migrations apply DB --remote
+   ```
+4. **Vincule o Banco D1 ao seu Cloudflare Pages (Obrigatório para ativar env.DB):**
+   - No painel da Cloudflare: acesse seu projeto Pages → **Settings** → **Functions** → **D1 database bindings**.
+   - Clique em **Add binding**:
+     - **Variable name:** `DB`
+     - **D1 database:** selecione o banco que você criou (`db-p26-2a-93be-4a78-bc67-3577`).
+5. **Configuração do Discord OAuth2 (Obrigatório para autenticação real):**
+   - Acesse o **Discord Developer Portal** (https://discord.com/developers/applications) e crie uma nova Application.
+   - Na aba **OAuth2**:
+     - Copie o **Client ID** e gere o **Client Secret**.
+     - Em **Redirects**, adicione a URL exata do deploy:
+       `https://p26-2a-93be-4a78-bc67-3577.pages.dev/api/auth/discord/callback`
+   - No painel do seu projeto no Cloudflare Pages:
+     - Acesse **Settings** → **Environment variables**.
+     - Adicione as variáveis de ambiente:
+       - `DISCORD_CLIENT_ID`
+       - `DISCORD_CLIENT_SECRET`
+6. Atualize o campo **URL_CLOUDFLARE** no topo deste `README.md` com o endereço público gerado pela Cloudflare.
+7. Na raiz do repositório, execute `node validar-local.mjs P26-2A-93BE-4A78-BC67-3577` para validar todos os critérios antes de fazer o commit e abrir o Pull Request.
