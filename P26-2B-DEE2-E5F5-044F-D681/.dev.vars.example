@@ -1,0 +1,3 @@
+# Copie para .dev.vars (não vai para o GitHub) e preencha com os dados do Discord Developer Portal
+DISCORD_CLIENT_ID=seu_client_id
+DISCORD_CLIENT_SECRET=seu_client_secret

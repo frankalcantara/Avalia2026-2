@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Vitrine de Achados e Perdidos do Campus: reporte objetos perdidos ou encontrados na universidade e combine a devolução pelo Discord.">
+  <meta name="theme-color" content="#1d4ed8">
+  <title>Achados e Perdidos do Campus</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%8E%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <div class="topo-interno">
+      <a class="marca" href="/" aria-label="Achados e Perdidos do Campus — página inicial">
+        <span class="marca-icone" aria-hidden="true">🔎</span>
+        <span class="marca-texto">Achados e Perdidos <span class="marca-sub">do Campus</span></span>
+      </a>
+
+      <nav class="abas" aria-label="Seções">
+        <button type="button" class="aba" id="abaVitrine" data-aba="vitrine" aria-current="page">Vitrine</button>
+        <button type="button" class="aba" id="abaReivindicacoes" data-aba="reivindicacoes">
+          Minhas reivindicações
+          <span class="aba-contador" id="contadorPendentes" hidden></span>
+        </button>
+      </nav>
+
+      <div class="usuario" id="areaUsuario">
+        <!-- Preenchido pelo app.js; fallback sem JavaScript: -->
+        <a class="btn btn-discord" href="/api/auth/discord">Entrar com Discord</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo" tabindex="-1">
+    <div class="aviso" id="avisoAuth" role="alert" hidden></div>
+
+    <!-- ============ VITRINE ============ -->
+    <section id="secVitrine" class="secao" aria-labelledby="tituloVitrine">
+      <div class="secao-cabecalho">
+        <div>
+          <h1 id="tituloVitrine">Vitrine de achados e perdidos</h1>
+          <p class="secao-desc">Perdeu algo no campus ou encontrou um objeto? Cadastre aqui e combine a devolução pelo Discord.</p>
+        </div>
+        <button type="button" class="btn btn-primario" id="btnNovoItem">
+          <span aria-hidden="true">＋</span> Cadastrar item
+        </button>
+      </div>
+
+      <form class="filtros" id="formFiltros" role="search" aria-label="Filtrar itens" novalidate>
+        <div class="filtro-busca">
+          <label for="busca" class="rotulo">Buscar</label>
+          <input type="search" id="busca" class="campo" placeholder="Título, local, descrição ou autor…" autocomplete="off" maxlength="60">
+        </div>
+
+        <fieldset class="filtro-grupo">
+          <legend class="rotulo">Tipo</legend>
+          <div class="chips" id="filtroTipo"></div>
+        </fieldset>
+
+        <fieldset class="filtro-grupo">
+          <legend class="rotulo">Categoria</legend>
+          <div class="chips" id="filtroCategoria"></div>
+        </fieldset>
+
+        <fieldset class="filtro-grupo">
+          <legend class="rotulo">Status</legend>
+          <div class="chips" id="filtroStatus"></div>
+        </fieldset>
+
+        <div class="filtros-rodape">
+          <div class="filtro-meus" id="filtroMeusWrap" hidden>
+            <input type="checkbox" id="filtroMeus">
+            <label for="filtroMeus">Só meus itens <span class="chip-contagem" id="contagemMeus"></span></label>
+          </div>
+          <p class="resultado" id="resultadoContagem" aria-live="polite" aria-atomic="true"></p>
+          <button type="button" class="btn btn-link" id="btnLimparFiltros">Limpar filtros</button>
+        </div>
+      </form>
+
+      <div id="listaItens" class="grade-itens" aria-busy="true" aria-labelledby="tituloVitrine">
+        <p class="estado-carregando">Carregando itens…</p>
+      </div>
+    </section>
+
+    <!-- ============ MINHAS REIVINDICAÇÕES ============ -->
+    <section id="secReivindicacoes" class="secao" aria-labelledby="tituloReivindicacoes" hidden>
+      <div class="secao-cabecalho">
+        <div>
+          <h1 id="tituloReivindicacoes">Minhas reivindicações</h1>
+          <p class="secao-desc">Aqui ficam os contatos do Discord das duas partes. Combine a devolução por mensagem e, depois de entregar o objeto, marque o caso como encerrado.</p>
+        </div>
+        <button type="button" class="btn btn-secundario" id="btnAtualizarReivindicacoes">Atualizar</button>
+      </div>
+
+      <div id="conteudoReivindicacoes" aria-live="polite" aria-busy="false"></div>
+    </section>
+  </main>
+
+  <!-- ============ DIÁLOGO: CADASTRAR ITEM ============ -->
+  <dialog id="dlgItem" class="dialogo" aria-labelledby="dlgItemTitulo">
+    <form id="formItem" class="dialogo-form" novalidate>
+      <div class="dialogo-cabecalho">
+        <h2 id="dlgItemTitulo">Cadastrar item</h2>
+        <button type="button" class="btn-fechar" data-fechar aria-label="Fechar">×</button>
+      </div>
+
+      <p class="erro-geral" id="erroGeralItem" role="alert" hidden></p>
+
+      <fieldset class="campo-grupo">
+        <legend class="rotulo">O que aconteceu? <span class="obrigatorio" aria-hidden="true">*</span></legend>
+        <div class="tipo-escolha">
+          <input type="radio" name="tipo" id="tipoPerdi" value="perdi" aria-describedby="erro-tipo">
+          <label for="tipoPerdi" class="tipo-opcao tipo-perdi">
+            <span class="tipo-opcao-titulo">Perdi</span>
+            <span class="tipo-opcao-desc">Estou procurando um objeto</span>
+          </label>
+          <input type="radio" name="tipo" id="tipoEncontrei" value="encontrei" aria-describedby="erro-tipo">
+          <label for="tipoEncontrei" class="tipo-opcao tipo-encontrei">
+            <span class="tipo-opcao-titulo">Encontrei</span>
+            <span class="tipo-opcao-desc">Achei um objeto e quero devolver</span>
+          </label>
+        </div>
+        <p class="erro-campo" id="erro-tipo"></p>
+      </fieldset>
+
+      <div class="campo-grupo">
+        <label for="itemCategoria" class="rotulo">Categoria <span class="obrigatorio" aria-hidden="true">*</span></label>
+        <select id="itemCategoria" name="categoria" class="campo" required aria-describedby="erro-categoria">
+          <option value="">Selecione…</option>
+          <option value="eletronicos">💻 Eletrônicos</option>
+          <option value="documentos">🪪 Documentos</option>
+          <option value="garrafas">🥤 Garrafas</option>
+          <option value="vestuario">👕 Vestuário</option>
+        </select>
+        <p class="erro-campo" id="erro-categoria"></p>
+      </div>
+
+      <div class="campo-grupo">
+        <label for="itemTitulo" class="rotulo">Título <span class="obrigatorio" aria-hidden="true">*</span></label>
+        <input type="text" id="itemTitulo" name="titulo" class="campo" required minlength="3" maxlength="80"
+               placeholder="Ex.: Garrafa térmica azul com adesivos" aria-describedby="cont-titulo erro-titulo">
+        <div class="campo-info"><span class="contador" id="cont-titulo" data-max="80" data-min="3">0/80</span></div>
+        <p class="erro-campo" id="erro-titulo"></p>
+      </div>
+
+      <div class="campo-grupo">
+        <label for="itemLocal" class="rotulo">Local exato <span class="obrigatorio" aria-hidden="true">*</span></label>
+        <input type="text" id="itemLocal" name="local" class="campo" required minlength="3" maxlength="120"
+               placeholder="Ex.: Bloco B, sala 204, embaixo da última fileira" aria-describedby="cont-local erro-local">
+        <div class="campo-info"><span class="contador" id="cont-local" data-max="120" data-min="3">0/120</span></div>
+        <p class="erro-campo" id="erro-local"></p>
+      </div>
+
+      <div class="campo-grupo">
+        <label for="itemData" class="rotulo">Data <span class="obrigatorio" aria-hidden="true">*</span></label>
+        <input type="date" id="itemData" name="data_ocorrencia" class="campo campo-data" required aria-describedby="dica-data erro-data_ocorrencia">
+        <p class="dica" id="dica-data">Quando você perdeu ou encontrou o objeto (até 12 meses atrás).</p>
+        <p class="erro-campo" id="erro-data_ocorrencia"></p>
+      </div>
+
+      <div class="campo-grupo">
+        <label for="itemDescricao" class="rotulo">Descrição detalhada <span class="obrigatorio" aria-hidden="true">*</span></label>
+        <textarea id="itemDescricao" name="descricao" class="campo" rows="5" required minlength="10" maxlength="1000"
+                  placeholder="Cor, marca, marcas de uso, conteúdo… Evite expor dados sensíveis (ex.: número completo de documentos)."
+                  aria-describedby="cont-descricao erro-descricao"></textarea>
+        <div class="campo-info"><span class="contador" id="cont-descricao" data-max="1000" data-min="10">0/1000</span></div>
+        <p class="erro-campo" id="erro-descricao"></p>
+      </div>
+
+      <div class="dialogo-acoes">
+        <button type="button" class="btn btn-secundario" data-fechar>Cancelar</button>
+        <button type="submit" class="btn btn-primario" id="btnSalvarItem">Publicar item</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ DIÁLOGO: REIVINDICAR ============ -->
+  <dialog id="dlgReivindicar" class="dialogo" aria-labelledby="dlgReivTitulo">
+    <form id="formReivindicar" class="dialogo-form" novalidate>
+      <div class="dialogo-cabecalho">
+        <h2 id="dlgReivTitulo">Reivindicar item</h2>
+        <button type="button" class="btn-fechar" data-fechar aria-label="Fechar">×</button>
+      </div>
+
+      <div class="reiv-resumo" id="reivResumo"></div>
+      <p class="erro-geral" id="erroGeralReiv" role="alert" hidden></p>
+
+      <div class="campo-grupo">
+        <label for="reivMensagem" class="rotulo" id="reivRotulo">Mensagem para quem publicou <span class="obrigatorio" aria-hidden="true">*</span></label>
+        <textarea id="reivMensagem" name="mensagem" class="campo" rows="5" required minlength="10" maxlength="500"
+                  aria-describedby="reivDica cont-mensagem erro-mensagem"></textarea>
+        <p class="dica" id="reivDica"></p>
+        <div class="campo-info"><span class="contador" id="cont-mensagem" data-max="500" data-min="10">0/500</span></div>
+        <p class="erro-campo" id="erro-mensagem"></p>
+      </div>
+
+      <p class="nota-privacidade">Ao enviar, o seu @ do Discord e o de quem publicou ficam registrados na reivindicação para que vocês combinem a devolução.</p>
+
+      <div class="dialogo-acoes">
+        <button type="button" class="btn btn-secundario" data-fechar>Cancelar</button>
+        <button type="submit" class="btn btn-primario" id="btnEnviarReiv">Enviar reivindicação</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ DIÁLOGO: CONFIRMAÇÃO ============ -->
+  <dialog id="dlgConfirmar" class="dialogo dialogo-pequeno" aria-labelledby="dlgConfTitulo" aria-describedby="dlgConfTexto">
+    <form method="dialog" class="dialogo-form">
+      <div class="dialogo-cabecalho">
+        <h2 id="dlgConfTitulo">Confirmar</h2>
+      </div>
+      <p id="dlgConfTexto" class="conf-texto"></p>
+      <div class="dialogo-acoes">
+        <button type="submit" value="nao" class="btn btn-secundario" id="dlgConfNao">Voltar</button>
+        <button type="submit" value="sim" class="btn btn-primario" id="dlgConfSim">Confirmar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Mensagens (toasts) -->
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <footer class="rodape" id="projectFooter">
+    <div class="rodape-interno">
+      <p><strong>Achados e Perdidos do Campus</strong></p>
+      <p>Chave: <code>P26-2B-DEE2-E5F5-044F-D681</code></p>
+      <p>Projeto #34 · Turma 2B · Artur de Souza Tereza</p>
+      <p>Licença MIT</p>
+    </div>
+  </footer>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
