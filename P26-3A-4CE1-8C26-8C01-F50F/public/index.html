@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Salve links, organize suas leituras em coleções e compartilhe suas descobertas.">
+  <title>Bookmark Manager — Sua biblioteca de links</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Pular para o conteúdo</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="Bookmark Manager, início"><span class="brand-mark" aria-hidden="true"></span><span>Bookmark<span class="brand-light"> Manager</span></span></a>
+      <div class="profile" id="sessionProfile" hidden>
+        <span class="avatar" aria-hidden="true"><span id="avatarInitials"></span><img id="profileAvatar" width="42" height="42" alt="" hidden referrerpolicy="no-referrer"></span>
+        <div class="profile-info"><strong id="profileUsername"></strong><small id="profileUserId"></small></div>
+        <button class="button button-quiet" id="logoutButton" type="button">Sair</button>
+      </div>
+      <span class="header-note" id="guestHeader">Guarde hoje. Descubra depois.</span>
+    </div>
+  </header>
+  <main class="main-shell" id="mainContent" tabindex="-1">
+    <noscript><p class="notice notice-error">Ative o JavaScript para entrar e gerenciar seus links.</p></noscript>
+    <div class="notice" id="globalMessage" role="status" aria-live="polite" aria-atomic="true" tabindex="-1" hidden></div>
+    <p class="loading-state" id="sessionLoading" role="status">Verificando sua sessão…</p>
+    <section class="error-state panel" id="sessionError" aria-labelledby="sessionErrorTitle" hidden>
+      <p class="eyebrow">Conexão indisponível</p><h1 id="sessionErrorTitle">Não foi possível verificar sua sessão</h1>
+      <p id="sessionErrorMessage">Confira sua conexão e tente novamente.</p>
+      <button class="button button-primary" id="retrySessionButton" type="button">Tentar novamente</button>
+    </section>
+    <section class="welcome" id="welcomeScreen" aria-labelledby="welcomeTitle" hidden>
+      <div class="welcome-copy">
+        <p class="eyebrow">Seu espaço de descobertas</p><h1 id="welcomeTitle">Bons links merecem<br>um lugar para ficar.</h1>
+        <p class="welcome-description">Troque as abas esquecidas por uma biblioteca organizada. Salve o que importa, acompanhe suas leituras e compartilhe coleções com a turma.</p>
+        <a class="button button-primary button-large" href="/api/auth/discord">Entrar com Discord <span aria-hidden="true">↗</span></a>
+        <p class="helper">Use sua conta do Discord para acessar sua biblioteca.</p>
+      </div>
+      <div class="welcome-art" aria-hidden="true">
+        <div class="art-label">DA DESCOBERTA À LEITURA</div>
+        <div class="art-sheet"><span class="art-bookmark"></span><span class="art-heading">Um link. Uma nova ideia.</span><span class="art-line"></span><span class="art-line art-line-short"></span><div class="art-statuses"><span>Para Ler</span><span>Lendo</span><span>Concluído</span></div></div>
+        <p>Organize em coleções.<br>Aprenda no seu ritmo.</p>
+      </div>
+      <ol class="welcome-steps">
+        <li><span>01</span><strong>Guarde suas referências</strong><p>URL, título e suas próprias anotações, juntos.</p></li>
+        <li><span>02</span><strong>Encontre seu próximo link</strong><p>Filtre por coleção e etapa de leitura.</p></li>
+        <li><span>03</span><strong>Compartilhe o caminho</strong><p>Torne uma coleção pública quando quiser.</p></li>
+      </ol>
+    </section>
+    <section id="workspace" aria-labelledby="libraryTitle" hidden>
+      <div class="page-heading">
+        <div><p class="eyebrow">Um lugar para suas descobertas</p><h1 id="libraryTitle">Minha biblioteca<span class="accent">.</span></h1><p class="muted">Organize seus links e dê espaço à próxima ideia.</p></div>
+        <button class="button button-secondary" id="refreshButton" type="button">Atualizar biblioteca</button>
+      </div>
+      <div class="workspace-grid">
+        <aside class="panel collections-panel" aria-labelledby="collectionsTitle">
+          <div class="section-heading"><h2 id="collectionsTitle">Coleções</h2><span class="count" id="collectionCount">0</span></div>
+          <form id="collectionForm">
+            <label for="collectionName">Nova coleção</label>
+            <div class="inline-form"><input id="collectionName" name="name" type="text" required placeholder="Ex.: Desenvolvimento web" aria-describedby="collectionNameError"><button class="button button-primary" id="createCollectionButton" type="submit">Criar</button></div>
+            <small class="field-error" id="collectionNameError" data-field-error="name" hidden></small>
+          </form>
+          <p class="helper" id="collectionFeedback" role="status"></p>
+          <p class="empty-hint" id="noCollectionsHint" hidden>Comece criando sua primeira coleção. Depois, adicione os links que quer guardar.</p>
+          <ul class="collection-list" id="collectionList" aria-label="Suas coleções"></ul>
+          <p class="sidebar-note">Só você vê coleções privadas. As públicas podem ser acessadas por qualquer pessoa com o link.</p>
+        </aside>
+        <div class="library-content">
+          <details class="panel composer" id="addBookmarkPanel" open>
+            <summary>Adicionar link <span class="summary-symbol" aria-hidden="true">+</span></summary>
+            <p class="helper" id="bookmarkCollectionHint">Crie uma coleção para começar a salvar links.</p>
+            <form id="bookmarkForm">
+              <fieldset id="bookmarkFields" disabled>
+                <legend class="sr-only">Dados do novo link</legend>
+                <div class="form-grid">
+                  <div class="field"><label for="bookmarkUrl">URL <span class="required-label">(obrigatório)</span></label><input id="bookmarkUrl" name="url" type="url" inputmode="url" required placeholder="https://exemplo.com/artigo" aria-describedby="bookmarkUrlError"><small class="field-error" id="bookmarkUrlError" data-field-error="url" hidden></small></div>
+                  <div class="field"><label for="bookmarkTitle">Título <span class="required-label">(obrigatório)</span></label><input id="bookmarkTitle" name="title" type="text" required placeholder="Como você quer lembrar deste link?" aria-describedby="bookmarkTitleError"><small class="field-error" id="bookmarkTitleError" data-field-error="title" hidden></small></div>
+                  <div class="field field-wide"><label for="bookmarkSummary">Resumo <span class="required-label">(opcional)</span></label><textarea id="bookmarkSummary" name="summary" rows="2" placeholder="O que vale a pena guardar sobre esta leitura?" aria-describedby="bookmarkSummaryError"></textarea><small class="field-error" id="bookmarkSummaryError" data-field-error="summary" hidden></small></div>
+                  <div class="field"><label for="bookmarkCollection">Coleção</label><select id="bookmarkCollection" name="collection_id" required aria-describedby="bookmarkCollectionError"><option value="">Selecione uma coleção</option></select><small class="field-error" id="bookmarkCollectionError" data-field-error="collection_id" hidden></small></div>
+                  <div class="field"><label for="bookmarkStatus">Status de leitura</label><select id="bookmarkStatus" name="status" aria-describedby="bookmarkStatusError"><option value="para_ler">Para Ler</option><option value="lendo">Lendo</option><option value="concluido">Concluído</option></select><small class="field-error" id="bookmarkStatusError" data-field-error="status" hidden></small></div>
+                </div>
+                <div class="form-actions"><span class="helper">Um bom link é o começo.</span><button class="button button-primary" type="submit">Salvar link <span aria-hidden="true">↗</span></button></div>
+              </fieldset>
+            </form>
+          </details>
+          <section class="bookmarks-section" aria-labelledby="bookmarksTitle">
+            <div class="section-heading"><h2 id="bookmarksTitle">Seus links</h2><span class="count" id="bookmarkCount">0</span></div>
+            <form class="filters" id="filterForm" aria-label="Filtrar links">
+              <div class="field"><label for="filterCollection">Coleção</label><select id="filterCollection" name="collection_id"><option value="">Todas as coleções</option></select></div>
+              <div class="field"><label for="filterStatus">Status de leitura</label><select id="filterStatus" name="status"><option value="">Todos os status</option><option value="para_ler">Para Ler</option><option value="lendo">Lendo</option><option value="concluido">Concluído</option></select></div>
+              <button class="button button-quiet" id="clearFiltersButton" type="button">Limpar filtros</button>
+            </form>
+            <p class="helper" id="bookmarkFeedback" role="status" aria-live="polite"></p>
+            <div class="empty-state" id="bookmarksEmpty" hidden><span class="empty-mark" aria-hidden="true">↗</span><h3 id="bookmarksEmptyTitle">Sua biblioteca está começando</h3><p id="bookmarksEmptyDescription">Salve seu primeiro link no formulário acima.</p></div>
+            <ul class="bookmark-list" id="bookmarkList" aria-label="Links salvos"></ul>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+  <dialog id="editDialog" class="modal" aria-labelledby="editDialogTitle">
+    <div class="modal-heading"><div><p class="eyebrow">Sua referência</p><h2 id="editDialogTitle">Editar link</h2></div><button class="button button-quiet" id="closeEditButton" type="button" aria-label="Fechar edição">Fechar</button></div>
+    <div class="notice notice-error" id="editMessage" role="alert" tabindex="-1" hidden></div>
+    <form id="editBookmarkForm">
+      <fieldset id="editFields">
+        <legend class="sr-only">Editar dados do link</legend>
+        <div class="form-grid">
+          <div class="field field-wide"><label for="editUrl">URL (obrigatório)</label><input id="editUrl" name="url" type="url" inputmode="url" required aria-describedby="editUrlError"><small class="field-error" id="editUrlError" data-field-error="url" hidden></small></div>
+          <div class="field field-wide"><label for="editTitle">Título (obrigatório)</label><input id="editTitle" name="title" type="text" required aria-describedby="editTitleError"><small class="field-error" id="editTitleError" data-field-error="title" hidden></small></div>
+          <div class="field field-wide"><label for="editSummary">Resumo (opcional)</label><textarea id="editSummary" name="summary" rows="3" aria-describedby="editSummaryError"></textarea><small class="field-error" id="editSummaryError" data-field-error="summary" hidden></small></div>
+          <div class="field"><label for="editCollection">Coleção</label><select id="editCollection" name="collection_id" required aria-describedby="editCollectionError"></select><small class="field-error" id="editCollectionError" data-field-error="collection_id" hidden></small></div>
+          <div class="field"><label for="editStatus">Status de leitura</label><select id="editStatus" name="status" aria-describedby="editStatusError"><option value="para_ler">Para Ler</option><option value="lendo">Lendo</option><option value="concluido">Concluído</option></select><small class="field-error" id="editStatusError" data-field-error="status" hidden></small></div>
+        </div>
+        <div class="form-actions"><button class="button button-secondary" id="cancelEditButton" type="button">Cancelar</button><button class="button button-primary" type="submit">Salvar alterações</button></div>
+      </fieldset>
+    </form>
+  </dialog>
+  <dialog id="deleteDialog" class="modal modal-small" aria-labelledby="deleteDialogTitle" aria-describedby="deleteDialogDescription">
+    <h2 id="deleteDialogTitle">Confirmar exclusão</h2><p id="deleteDialogDescription"></p>
+    <form method="dialog" class="form-actions"><button class="button button-secondary" value="cancel" autofocus>Cancelar</button><button class="button button-danger" value="confirm">Excluir</button></form>
+  </dialog>
+  <dialog id="shareDialog" class="modal modal-small" aria-labelledby="shareDialogTitle">
+    <h2 id="shareDialogTitle">Compartilhar coleção</h2><p class="helper">A cópia automática não está disponível. Selecione e copie o endereço abaixo.</p>
+    <label for="shareUrl">Link público</label><input id="shareUrl" type="url" readonly>
+    <form method="dialog" class="form-actions"><button class="button button-primary">Fechar</button></form>
+  </dialog>
+  <footer class="site-footer"><span>Bookmark Manager · Leituras que ficam.</span><span>Chave Única: <code>P26-3A-4CE1-8C26-8C01-F50F</code> · Licença MIT</span></footer>
+</body>
+</html>
