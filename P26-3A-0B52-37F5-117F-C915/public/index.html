@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf7ef">
+  <title>Entrelinhas · Acervo de citações</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a href="#acervo" class="skip">Pular para o acervo</a>
+  <header><div class="bar wrap">
+    <a href="/" class="brand" aria-label="Entrelinhas, início"><span class="mark" aria-hidden="true">❧</span> Entrelinhas</a>
+    <div class="account"><img id="avatar" width="30" height="30" alt="" hidden><span id="username"></span><a class="login" href="/api/auth/discord" id="login">Entrar com Discord</a><button class="login" id="logout" hidden>Sair</button></div>
+  </div></header>
+  <main class="wrap">
+    <p id="auth-notice" role="alert" hidden></p>
+    <section class="hero" aria-labelledby="title">
+      <div class="intro"><p class="eyebrow">Caderno de leitura da turma</p><h1 id="title">Acervo de<br><em>citações.</em></h1>
+      <p class="lead">Guarde trechos de livros, artigos e palestras junto das reflexões que eles despertam.</p>
+      <button type="button" class="primary" id="compose"><span aria-hidden="true">＋</span> Registrar citação</button></div>
+      <div class="shelf" aria-hidden="true"><i class="book b1"></i><i class="book b2"></i><i class="book b3"></i><i class="book b4"></i><i class="book b5"></i><i class="book b6"></i></div>
+    </section>
+    <section id="acervo" aria-labelledby="shelf-title">
+      <div class="section-top"><h2 id="shelf-title">As leituras</h2><button type="button" id="random" class="secondary"><span aria-hidden="true">⤨</span> Citação aleatória</button></div>
+      <div class="toolbar"><div class="scopes" role="group" aria-label="Selecionar acervo">
+        <button type="button" id="public" aria-pressed="true">Da turma</button><button type="button" id="mine" aria-pressed="false">Meu acervo</button></div>
+        <label class="search"><span class="lens" aria-hidden="true"></span><span class="sr">Buscar por autor ou tema</span><input type="search" id="search" placeholder="Buscar por autor ou tema"></label>
+      </div>
+      <p class="status" id="status" role="status">Carregando citações…</p><div id="cards" class="cards"></div>
+    </section>
+  </main>
+  <footer><div class="wrap footer"><span>Entrelinhas · Commonplace Book</span><span>Projeto 41 · <code>P26-3A-0B52-37F5-117F-C915</code></span></div></footer>
+  <dialog id="editor" aria-labelledby="editor-title"><div class="dialog-top"><h2 id="editor-title">Registrar citação</h2><button type="button" class="close" aria-label="Fechar" data-close>×</button></div>
+    <form id="entry"><label>Trecho original<textarea name="text" maxlength="3000" required rows="4"></textarea></label>
+      <div class="row"><label>Autor original<input name="author" maxlength="160" required></label><label>Tipo de fonte<select name="kind"><option value="livro">Livro</option><option value="artigo">Artigo científico</option><option value="palestra">Palestra</option></select></label></div>
+      <div class="row"><label>Obra de referência<input name="source" maxlength="240" required></label><label id="page-label"><span>Página</span><input name="page" maxlength="40" required></label></div>
+      <label>Tema<input name="theme" maxlength="100" required></label><label>Minha reflexão (opcional)<textarea name="note" maxlength="2000" rows="3"></textarea></label>
+      <label>Visibilidade<select name="visibility"><option value="private">Privada · só eu</option><option value="public">Pública · compartilhar com a turma</option></select></label>
+      <p id="form-error" role="alert" class="error"></p><button class="primary" type="submit">Salvar citação</button>
+    </form></dialog>
+  <dialog id="detail" aria-labelledby="detail-title"><div class="dialog-top"><h2 id="detail-title">Citação aleatória</h2><button type="button" class="close" aria-label="Fechar" data-close>×</button></div><div id="detail-body"></div></dialog>
+</body>
+</html>
