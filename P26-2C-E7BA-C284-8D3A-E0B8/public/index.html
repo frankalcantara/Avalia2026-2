@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clube de Leitura — P26-2C-E7BA-C284-8D3A-E0B8</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <strong class="brand">Clube de Leitura</strong>
+      <div id="userArea"></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="notice" class="notice" role="status" hidden></div>
+
+    <section id="viewLoading" class="panel page-state" role="status" aria-live="polite">
+      <span class="loading-mark" aria-hidden="true"></span>
+      <div>
+        <h1>Carregando o clube...</h1>
+        <p>Estamos buscando sua sessão e os dados da rodada.</p>
+      </div>
+    </section>
+
+    <section id="viewError" class="panel page-state" role="alert" hidden>
+      <h1>Não foi possível carregar o clube</h1>
+      <p id="loadErrorMessage">Tente novamente em instantes.</p>
+      <button id="retryLoad" class="btn" type="button">Tentar novamente</button>
+    </section>
+
+    <section id="viewNoBook" class="panel" role="status" hidden>
+      <h1>Nenhum livro ativo nesta rodada</h1>
+      <p>A próxima leitura ainda não foi configurada. Você pode tentar novamente mais tarde.</p>
+      <button id="retryBookLoad" class="btn" type="button">Verificar novamente</button>
+    </section>
+
+    <section id="viewGuest" class="panel" hidden>
+      <h1>Leia junto, sem spoiler</h1>
+      <p>Entre com o Discord, inscreva-se no livro da rodada e registre o capítulo em que está. As discussões de cada capítulo só abrem para quem já chegou lá.</p>
+      <a class="btn" href="/api/auth/discord">Entrar com Discord</a>
+    </section>
+
+    <div id="viewApp" hidden>
+      <section class="panel">
+        <p class="label">Livro da rodada</p>
+        <h1 id="bookTitle"></h1>
+        <div id="bookActions"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Pista de leitura</h2>
+        <div id="track" class="track"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Fórum por capítulo</h2>
+        <div id="tabs" class="tabs" role="group" aria-label="Selecionar capítulo"></div>
+        <p id="forumStatus" class="empty" role="status" aria-live="polite"></p>
+        <ul id="posts" class="posts"></ul>
+        <form id="postForm" class="post-form" hidden>
+          <label for="postText">Sua mensagem no capítulo <span id="postChapter"></span></label>
+          <textarea id="postText" maxlength="2000" rows="3" required></textarea>
+          <button class="btn" type="submit">Publicar</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer id="projectFooter">
+    Chave Única de Auditoria: <code>P26-2C-E7BA-C284-8D3A-E0B8</code> · Turma 2C · Licenciado sob MIT
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
