@@ -1,0 +1,1 @@
+{"name":"flashcards-spaced-repetition","version":"1.0.0","type":"module","license":"MIT","scripts":{"test":"node --test tests/sm2.test.mjs","dev":"wrangler pages dev public --d1=DB","deploy":"wrangler pages deploy public"}}
