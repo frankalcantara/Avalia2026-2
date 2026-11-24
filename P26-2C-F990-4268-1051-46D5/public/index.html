@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notas acadêmicas em Markdown</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">Notas acadêmicas</a>
+    <div class="session" id="session"></div>
+  </header>
+
+  <div class="shell">
+    <aside class="library" aria-label="Biblioteca de notas">
+      <div class="guest" id="guestBox" hidden>
+        <h2>Guarde suas notas na nuvem</h2>
+        <p>Entre com o Discord para salvar, buscar e organizar suas anotações com tags. O editor ao lado já funciona sem login.</p>
+        <a class="btn primary" href="/api/auth/discord">Entrar com Discord</a>
+      </div>
+
+      <div class="tools" id="libraryTools" hidden>
+        <button class="btn primary block" id="newBtn" type="button">Nova nota</button>
+        <label class="sr-only" for="searchInput">Buscar notas</label>
+        <input class="field" id="searchInput" type="search" placeholder="Buscar por título, texto ou tag" autocomplete="off">
+        <div class="chips" id="tagFilter" role="group" aria-label="Filtrar por tag"></div>
+        <ul class="note-list" id="noteList"></ul>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <div class="meta">
+        <label class="sr-only" for="titleInput">Título da nota</label>
+        <input class="field title" id="titleInput" type="text" maxlength="120" placeholder="Título da nota" autocomplete="off">
+        <div class="tag-editor" id="tagEditor">
+          <ul class="chips" id="draftTags" aria-label="Tags da nota"></ul>
+          <label class="sr-only" for="tagInput">Adicionar tag</label>
+          <input class="tag-input" id="tagInput" type="text" placeholder="Adicionar tag e pressionar Enter" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="panes">
+        <section class="pane">
+          <h2 class="pane-title">Markdown</h2>
+          <textarea class="editor" id="editor" spellcheck="false" aria-label="Texto em Markdown"></textarea>
+        </section>
+        <section class="pane">
+          <h2 class="pane-title">Pré-visualização</h2>
+          <article class="sheet" id="preview" aria-live="polite"></article>
+        </section>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="saveBtn" type="button">Salvar nota</button>
+        <button class="btn danger" id="deleteBtn" type="button">Excluir nota</button>
+        <p class="status" id="status" role="status"></p>
+      </div>
+    </main>
+  </div>
+
+  <footer id="projectFooter">
+    Chave Única de Auditoria: <code>P26-2C-F990-4268-1051-46D5</code> · Turma 2C · Licenciado sob MIT
+  </footer>
+
+  <script src="/markdown.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
