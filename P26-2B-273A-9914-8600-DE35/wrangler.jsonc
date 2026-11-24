@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "projeto-p26-2b-273a-9914-8600-de35",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  // Valores publicos. O Client ID do Discord aparece na URL de autorizacao que
+  // o navegador monta, entao esconder nao protege nada. O Client Secret NAO
+  // entra aqui: vive como segredo no Cloudflare e como variavel de ambiente na
+  // maquina de desenvolvimento.
+  "vars": {
+    "DISCORD_CLIENT_ID": "1569518286117544067"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2b-273a-9914-8600-de35",
+      "database_id": "23baa3ac-920c-429a-8e8e-b3d94a823f27"
+    }
+  ]
+}

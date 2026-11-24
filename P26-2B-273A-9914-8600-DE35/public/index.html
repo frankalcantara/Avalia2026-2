@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resumos e Snippets da Turma 2B</title>
+  <meta name="description" content="Biblioteca colaborativa de resumos teóricos e trechos de código da turma 2B.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!--
+    Cabecalho. O bloco da direita tem dois estados mutuamente exclusivos:
+    deslogado (botao de entrar) e logado (avatar, nome e sair). Quem decide
+    qual aparece e o /api/auth/eu, nao o HTML — por isso os dois nascem
+    escondidos e o app.js revela um deles depois da resposta.
+  -->
+  <header class="cabecalho">
+    <div class="cabecalho__marca">
+      <h1>Resumos &amp; Snippets</h1>
+      <p class="cabecalho__sub">Biblioteca colaborativa da turma 2B</p>
+    </div>
+
+    <div class="cabecalho__conta">
+      <a id="entrar" class="botao botao--discord oculto" href="/api/auth/discord">
+        Entrar com Discord
+      </a>
+
+      <div id="perfil" class="perfil oculto">
+        <img id="perfil-avatar" class="perfil__avatar" alt="" width="36" height="36">
+        <span id="perfil-nome" class="perfil__nome"></span>
+        <button id="sair" class="botao botao--discreto" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="conteudo">
+
+    <!--
+      Formulario de submissao. Fica desabilitado enquanto ninguem entrou: o
+      servidor recusaria com 401 de qualquer jeito, mas deixar o formulario
+      ativo so para receber um erro depois e desperdicio do tempo de quem usa.
+    -->
+    <section class="cartao" aria-labelledby="titulo-form">
+      <h2 id="titulo-form">Publicar</h2>
+
+      <p id="aviso-login" class="aviso oculto">
+        Entre com o Discord para publicar e votar. A leitura é livre.
+      </p>
+
+      <form id="form-publicacao" class="form">
+        <div class="form__linha">
+          <div class="campo">
+            <label for="campo-tipo">Tipo</label>
+            <select id="campo-tipo" name="tipo" required>
+              <option value="resumo">Resumo</option>
+              <option value="snippet">Snippet</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="campo-categoria">Linguagem ou matéria</label>
+            <!-- As opcoes vem do servidor: a lista de categorias e definida em
+                 functions/_lib/categorias.js e devolvida pelo GET. Repetir a
+                 lista aqui criaria dois lugares para manter em sincronia. -->
+            <select id="campo-categoria" name="categoria" required></select>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="campo-titulo">Título</label>
+          <input id="campo-titulo" name="titulo" type="text" maxlength="120"
+                 placeholder="Ex.: Diferença entre let, const e var" required>
+        </div>
+
+        <div class="campo">
+          <label for="campo-conteudo">Conteúdo</label>
+          <textarea id="campo-conteudo" name="conteudo" rows="8" maxlength="5000"
+                    placeholder="Cole aqui o resumo ou o trecho de código." required></textarea>
+          <p class="campo__dica"><span id="contador">0</span>/5000</p>
+        </div>
+
+        <div class="form__acoes">
+          <button id="publicar" class="botao botao--primario" type="submit">Publicar</button>
+          <p id="form-mensagem" class="mensagem" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </section>
+
+    <!-- Busca e filtro -->
+    <section class="cartao" aria-labelledby="titulo-busca">
+      <h2 id="titulo-busca">Biblioteca</h2>
+
+      <div class="filtros">
+        <div class="campo campo--cresce">
+          <label for="campo-busca">Buscar</label>
+          <input id="campo-busca" type="search" autocomplete="off"
+                 placeholder="Título, conteúdo ou categoria">
+        </div>
+
+        <div class="campo">
+          <label for="filtro-categoria">Categoria</label>
+          <select id="filtro-categoria">
+            <option value="">Todas</option>
+          </select>
+        </div>
+      </div>
+
+      <p id="lista-estado" class="mensagem" role="status" aria-live="polite">Carregando…</p>
+
+      <!-- As publicacoes chegam aqui, ordenadas pelo servidor. -->
+      <ul id="lista" class="lista"></ul>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    <p>Projeto #19 — Repositório de Resumos e Snippets da Turma</p>
+    <p>Guilherme Tyszkouski · RA 2025207312 · Turma 2B</p>
+    <p class="rodape__chave">Chave Única: <code>P26-2B-273A-9914-8600-DE35</code></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
