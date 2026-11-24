@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commonplace Book · Acervo de citações</title>
+  <meta name="description" content="Acervo pessoal e coletivo de citações e notas de leitura.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Tela de login -->
+  <main id="login-view" class="login" hidden>
+    <h1>Commonplace Book</h1>
+    <p class="login__lead">Guarde o trecho exato, de quem é, de onde veio e o que você pensou sobre ele. Torne públicas as que valem a conversa.</p>
+    <p id="login-error" class="login__error" role="alert" hidden></p>
+    <a class="btn btn--primary" href="/api/auth/login">Entrar com Discord</a>
+  </main>
+
+  <!-- Aplicação -->
+  <div id="app-view" hidden>
+    <header class="top">
+      <h1 class="top__title">Commonplace Book</h1>
+      <div class="top__user">
+        <img id="user-avatar" alt="" width="32" height="32">
+        <span id="user-name"></span>
+        <button id="logout" class="btn btn--quiet" type="button">Sair</button>
+      </div>
+    </header>
+
+    <section class="toolbar" aria-label="Ferramentas">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tab-mine" aria-selected="true" data-scope="mine">Meu acervo</button>
+        <button role="tab" id="tab-public" aria-selected="false" data-scope="public">Feed da turma</button>
+      </div>
+      <label class="search">
+        <span class="visually-hidden">Buscar por autor ou tema</span>
+        <input id="search" type="search" placeholder="Buscar por autor ou tema" autocomplete="off">
+      </label>
+      <div class="toolbar__actions">
+        <button id="random" class="btn" type="button">Citação aleatória</button>
+        <button id="new" class="btn btn--primary" type="button">Nova citação</button>
+      </div>
+    </section>
+
+    <section id="random-slot" class="random" aria-live="polite" hidden></section>
+
+    <main>
+      <p id="status" class="status" role="status"></p>
+      <div id="list" class="list"></div>
+    </main>
+  </div>
+
+  <!-- Formulário -->
+  <dialog id="form-dialog">
+    <form id="quote-form" method="dialog" novalidate>
+      <h2 id="form-title">Nova citação</h2>
+      <label>Trecho exato
+        <textarea name="text" rows="4" maxlength="2000" required></textarea>
+        <small class="err" data-err="text"></small>
+      </label>
+      <div class="row">
+        <label>Autor original
+          <input name="author" maxlength="200" required>
+          <small class="err" data-err="author"></small>
+        </label>
+        <label>Página
+          <input name="page" maxlength="30" required>
+          <small class="err" data-err="page"></small>
+        </label>
+      </div>
+      <label>Obra de referência
+        <input name="work" maxlength="300" required>
+        <small class="err" data-err="work"></small>
+      </label>
+      <label>Tema <span class="opt">(opcional)</span>
+        <input name="theme" maxlength="80" placeholder="ex.: memória, liberdade, método">
+        <small class="err" data-err="theme"></small>
+      </label>
+      <label>Minhas anotações
+        <textarea name="notes" rows="4" maxlength="2000"></textarea>
+        <small class="err" data-err="notes"></small>
+      </label>
+      <label class="check">
+        <input type="checkbox" name="is_public">
+        Pública: aparece no feed da turma
+      </label>
+      <p id="form-error" class="err" role="alert"></p>
+      <div class="form__actions">
+        <button type="button" id="cancel" class="btn btn--quiet">Cancelar</button>
+        <button type="submit" class="btn btn--primary" id="save">Salvar citação</button>
+      </div>
+    </form>
+  </dialog>
+
+  <footer class="foot">
+    Chave única: <code>P26-2C-3AFD-2561-AB58-B488</code>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
