@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#25263a">
+  <title>Sudoku — Projeto #4</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="Sudoku, início">
+        <span class="brand-mark" aria-hidden="true">9</span>
+        <span>Sudoku <span class="brand-detail">· Projeto #4</span></span>
+      </a>
+      <section class="discord-profile" aria-label="Perfil do Discord">
+        <span class="profile-label" id="profileLabel">Perfil Discord</span>
+        <div class="discord-actions">
+          <div class="discord-badge" id="discordProfile">
+            <span class="discord-avatar" aria-hidden="true">✦</span>
+            <a id="discordLoginLink" href="/api/auth/discord">
+              <span>Entrar com Discord OAuth2</span>
+            </a>
+            <span id="discordUserText" hidden></span>
+          </div>
+          <button class="logout-button" id="logoutButton" type="button" hidden>Sair da Conta</button>
+        </div>
+      </section>
+    </div>
+  </header>
+
+  <main>
+    <section class="game-shell" aria-labelledby="pageTitle">
+      <div class="game-heading">
+        <div>
+          <span class="eyebrow">Desafio de Sudoku</span>
+          <h1 id="pageTitle">Sudoku</h1>
+          <p class="intro">Preencha cada linha, coluna e bloco com os números de 1 a 9.</p>
+        </div>
+        <div class="timer-card" aria-label="Tempo de partida">
+          <span class="timer-label">TEMPO</span>
+          <time id="gameTimer" datetime="PT0S">00:00</time>
+        </div>
+      </div>
+
+      <div class="game-layout">
+        <section class="board-panel" aria-label="Tabuleiro de Sudoku">
+          <div class="board-frame">
+            <div class="sudoku-board" id="sudokuBoard" role="grid" aria-label="Tabuleiro Sudoku 9 por 9" aria-describedby="keyboardHint"></div>
+          </div>
+          <p class="board-status" id="gameStatus" role="status" aria-live="polite">Carregando partida...</p>
+          <section class="victory-panel" id="victoryPanel" aria-labelledby="victoryTitle" hidden>
+            <span class="victory-emblem" aria-hidden="true">✦</span>
+            <div class="victory-copy" role="status" aria-live="polite">
+              <span class="victory-eyebrow">Desafio concluído</span>
+              <h2 id="victoryTitle">Excelente partida!</h2>
+              <p>Seu Sudoku foi validado. Seu tempo oficial:</p>
+            </div>
+            <time class="victory-time" id="victoryTime">00:00</time>
+          </section>
+          <p class="keyboard-hint" id="keyboardHint">
+            Use as setas para navegar, 1–9 para preencher e Delete para apagar. Pressione N para alternar as notas.
+          </p>
+        </section>
+
+        <aside class="game-controls" aria-label="Controles da partida">
+          <section class="control-card">
+            <h2>Partida</h2>
+            <label class="field-label" for="difficultySelect">Dificuldade</label>
+            <select id="difficultySelect" class="control-select" aria-describedby="difficultyHint">
+              <option value="facil">Fácil</option>
+              <option value="medio">Médio</option>
+              <option value="dificil">Difícil</option>
+            </select>
+            <p class="difficulty-hint" id="difficultyHint">Escolha a dificuldade antes de iniciar uma partida.</p>
+            <button class="button button-primary" id="newGameBtn" type="button">Novo jogo</button>
+            <div class="timer-detail">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span id="gameModeLabel">Aguardando autenticação Discord</span>
+            </div>
+          </section>
+
+          <section class="control-card number-control-card" aria-label="Controles rápidos do tabuleiro">
+            <h2>Números</h2>
+            <div class="number-pad" id="numberPad" aria-label="Inserir número">
+              <button class="number-button" type="button" data-number="1" aria-label="Inserir 1">1</button>
+              <button class="number-button" type="button" data-number="2" aria-label="Inserir 2">2</button>
+              <button class="number-button" type="button" data-number="3" aria-label="Inserir 3">3</button>
+              <button class="number-button" type="button" data-number="4" aria-label="Inserir 4">4</button>
+              <button class="number-button" type="button" data-number="5" aria-label="Inserir 5">5</button>
+              <button class="number-button" type="button" data-number="6" aria-label="Inserir 6">6</button>
+              <button class="number-button" type="button" data-number="7" aria-label="Inserir 7">7</button>
+              <button class="number-button" type="button" data-number="8" aria-label="Inserir 8">8</button>
+              <button class="number-button" type="button" data-number="9" aria-label="Inserir 9">9</button>
+            </div>
+            <div class="action-row">
+              <button class="button button-secondary" id="notesBtn" type="button" aria-pressed="false">✎ <span>Notas</span></button>
+              <button class="button button-secondary" id="eraseBtn" type="button">⌫ <span>Apagar</span></button>
+              <button class="button button-secondary" id="saveProgressBtn" type="button">Salvar</button>
+            </div>
+          </section>
+
+          <section class="control-card check-card">
+            <h2>Pronto?</h2>
+            <p>Confira se todas as casas estão preenchidas corretamente.</p>
+            <button class="button button-check" id="checkBtn" type="button">Verificar Sudoku</button>
+          </section>
+        </aside>
+      </div>
+
+      <section class="ranking-panel" aria-labelledby="rankingTitle">
+        <div class="ranking-heading">
+          <div>
+            <span class="eyebrow">Comunidade</span>
+            <h2 id="rankingTitle">Ranking</h2>
+          </div>
+          <span class="ranking-tag" id="rankingTag">Aguardando partida</span>
+        </div>
+        <p class="ranking-empty" id="rankingStatus" role="status" aria-live="polite">O ranking será carregado ao iniciar uma partida.</p>
+        <ol class="ranking-list" id="rankingList" aria-label="Posições do ranking" aria-live="polite">
+          <li class="ranking-placeholder">
+            <span class="ranking-placeholder-icon" aria-hidden="true">—</span>
+            <span>Inicie uma partida para consultar os melhores tempos.</span>
+          </li>
+        </ol>
+      </section>
+    </section>
+
+    <section class="records-panel" aria-labelledby="recordsTitle">
+      <div class="records-heading">
+        <div>
+          <span class="eyebrow">Conexão</span>
+          <h2 id="recordsTitle">Cloudflare Pages + D1</h2>
+        </div>
+        <span class="api-tag">API de diagnóstico</span>
+      </div>
+      <div class="form-row">
+        <label class="visually-hidden" for="recordInput">Conteúdo do registro</label>
+        <input class="input-text" id="recordInput" type="text" maxlength="500" placeholder="Digite um registro para gravar no D1">
+        <button class="button button-primary" id="sendBtn" type="button">Registrar</button>
+      </div>
+      <p class="record-status" id="statusMessage" role="status" aria-live="polite"></p>
+      <ul class="records-list" id="recordsList" aria-live="polite">
+        <li>Carregando status da API serverless...</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer id="projectFooter">
+    <span>Chave Única de Auditoria</span>
+    <code>P26-2B-8F20-6829-E280-0237</code>
+    <span>· Turma 2B · Licenciado sob MIT</span>
+    <span>· Desenvolvido por Gustavo Henrique Igerski das Neves</span>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
