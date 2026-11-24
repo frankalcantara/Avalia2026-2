@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111116">
+  <meta name="description" content="Organize seus estudos com ciclos Pomodoro e acompanhe suas métricas semanais.">
+  <title>FocusFlow — Pomodoro de estudos</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#inicio" aria-label="FocusFlow, início">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" focusable="false">
+            <path d="M16 3.5a12.5 12.5 0 1 0 12.5 12.5" />
+            <path d="M16 9v7l5 3" />
+            <path d="M21.5 4.5h6v6" />
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>FocusFlow</strong>
+          <span>Estudo com intenção</span>
+        </span>
+      </a>
+
+      <nav class="primary-nav" id="appNav" aria-label="Navegação principal" hidden>
+        <a href="#foco">Foco</a>
+        <a href="#disciplinas">Disciplinas</a>
+        <a href="#metricas">Métricas</a>
+        <a href="#configuracoes">Configurações</a>
+      </nav>
+
+      <div class="account-area">
+        <a class="button button-discord" id="loginButton" href="/api/auth/discord">Entrar com Discord</a>
+        <div class="profile" id="userProfile" hidden>
+          <span class="avatar-frame">
+            <img id="userAvatar" alt="" referrerpolicy="no-referrer">
+            <span class="avatar-fallback" id="avatarFallback" aria-hidden="true">●</span>
+          </span>
+          <span class="profile-copy">
+            <strong id="userDisplayName"></strong>
+            <span id="userTag"></span>
+          </span>
+          <button class="button button-quiet button-small" id="logoutButton" type="button">Sair</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <div class="notice" id="notice" role="status" aria-live="polite" hidden></div>
+
+    <section class="login-layout" id="loginView" aria-labelledby="loginTitle">
+      <div class="login-copy">
+        <span class="eyebrow"><span class="status-dot"></span> Seu espaço de concentração</span>
+        <h1 id="loginTitle">Um ciclo de cada vez.<br><span>Um objetivo por sessão.</span></h1>
+        <p>Planeje seus blocos de foco, escolha uma disciplina e acompanhe seu progresso semanal com dados registrados na sua conta.</p>
+        <a class="button button-primary button-large" href="/api/auth/discord">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M19.7 5.2A18.7 18.7 0 0 0 15.1 3.8l-.6 1.2a17.2 17.2 0 0 0-5 0l-.6-1.2a18.7 18.7 0 0 0-4.6 1.4C1.4 9.5.6 13.7 1 17.8a18.8 18.8 0 0 0 5.7 2.9l1.2-2a12 12 0 0 1-1.9-.9l.5-.4a13.4 13.4 0 0 0 11 0l.5.4a12 12 0 0 1-1.9.9l1.2 2a18.8 18.8 0 0 0 5.7-2.9c.5-4.8-.8-8.9-3.3-12.6ZM8.8 14.8c-1.1 0-2-.9-2-2.1s.9-2.1 2-2.1 2 .9 2 2.1-.9 2.1-2 2.1Zm6.4 0c-1.1 0-2-.9-2-2.1s.9-2.1 2-2.1 2 .9 2 2.1-.9 2.1-2 2.1Z" />
+          </svg>
+          Continuar com Discord
+        </a>
+        <p class="login-note">Sua identidade e seus estudos ficam vinculados à sua sessão autenticada.</p>
+      </div>
+      <div class="login-art" aria-hidden="true">
+        <div class="art-orbit orbit-one"></div>
+        <div class="art-orbit orbit-two"></div>
+        <div class="art-core"><span></span></div>
+        <div class="art-caption"><span class="art-caption-dot"></span> foco em andamento</div>
+      </div>
+    </section>
+
+    <div class="app-view" id="appView" hidden>
+      <section class="page-heading" aria-labelledby="welcomeTitle">
+        <div>
+          <span class="eyebrow">PAINEL DE ESTUDOS</span>
+          <h1 id="welcomeTitle">Seu próximo passo começa agora.</h1>
+          <p>Encontre um ritmo que funcione para você e mantenha o foco no que importa.</p>
+        </div>
+        <button class="button button-quiet" id="refreshButton" type="button">
+          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M16.5 7A7 7 0 0 0 4 5.2L2.5 7M2.5 3.5V7H6M3.5 13A7 7 0 0 0 16 14.8l1.5-1.8m0 3.5V13H14" />
+          </svg>
+          Atualizar dados
+        </button>
+      </section>
+
+      <section class="dashboard-grid" id="foco" aria-label="Temporizador Pomodoro">
+        <article class="panel timer-panel">
+          <div class="panel-topline">
+            <div>
+              <span class="eyebrow">TEMPORIZADOR</span>
+              <h2 id="modeLabel">Foco</h2>
+            </div>
+            <span class="state-pill" id="timerStatePill"><span class="state-dot"></span> Pronto</span>
+          </div>
+
+          <div class="timer-wrap">
+            <svg class="timer-ring" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+              <circle class="timer-track" cx="120" cy="120" r="102"></circle>
+              <circle class="timer-progress" id="timerProgress" cx="120" cy="120" r="102"></circle>
+            </svg>
+            <div class="timer-center">
+              <span class="timer-time" id="timeDisplay" role="timer" aria-label="25 minutos restantes">25:00</span>
+              <span class="timer-caption" id="timerCaption">TEMPO DE FOCO</span>
+            </div>
+          </div>
+
+          <p class="timer-message" id="timerMessage" aria-live="polite">Escolha uma disciplina para começar.</p>
+          <div class="timer-actions">
+            <button class="button button-primary button-large" id="startFocusButton" type="button">Iniciar foco</button>
+            <button class="button button-danger button-large" id="cancelFocusButton" type="button" hidden>Cancelar foco</button>
+            <button class="button button-secondary button-large" id="skipBreakButton" type="button" hidden>Pular descanso</button>
+          </div>
+          <p class="timer-footnote" id="timerFootnote">Ciclos iniciados são registrados no servidor e não podem ser pausados.</p>
+        </article>
+
+        <aside class="panel routine-panel" aria-labelledby="routineTitle">
+          <div class="panel-topline">
+            <div>
+              <span class="eyebrow">SUA SESSÃO</span>
+              <h2 id="routineTitle">Prepare o foco</h2>
+            </div>
+            <span class="routine-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M12 3.5v3M12 17.5v3M3.5 12h3m11 0h3M5.99 5.99l2.12 2.12m7.78 7.78 2.12 2.12m0-12.02-2.12 2.12m-7.78 7.78-2.12 2.12" />
+                <circle cx="12" cy="12" r="4.5" />
+              </svg>
+            </span>
+          </div>
+
+          <label class="field-label" for="subjectSelect">Disciplina</label>
+          <select class="field-control" id="subjectSelect" disabled>
+            <option value="">Carregando disciplinas...</option>
+          </select>
+
+          <div class="session-progress">
+            <div class="session-progress-heading">
+              <span>Focos nesta série</span>
+              <strong id="cycleCount">0 de 4</strong>
+            </div>
+            <div class="cycle-dots" id="cycleDots" role="img" aria-label="0 de 4 focos concluídos"></div>
+            <p class="muted-copy">Um descanso longo acontece após a quantidade configurada de focos.</p>
+          </div>
+
+          <div class="routine-divider"></div>
+          <div class="routine-note">
+            <span class="note-icon" aria-hidden="true">i</span>
+            <p>O servidor confirma cada foco concluído. Descansos são controlados apenas neste dispositivo.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="panel section-panel" id="disciplinas" aria-labelledby="subjectsTitle">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">ORGANIZAÇÃO</span>
+            <h2 id="subjectsTitle">Suas disciplinas</h2>
+            <p>Separe seus estudos por matéria e escolha uma para o próximo foco.</p>
+          </div>
+        </div>
+        <form class="inline-form" id="subjectForm">
+          <label class="visually-hidden" for="newSubjectName">Nome da nova disciplina</label>
+          <input class="field-control" id="newSubjectName" name="name" type="text" maxlength="80" placeholder="Ex.: Biologia" required>
+          <button class="button button-primary" type="submit" id="addSubjectButton">Adicionar disciplina</button>
+        </form>
+        <p class="form-hint" id="subjectFormHint">Use até 80 caracteres. Nomes duplicados não são permitidos.</p>
+        <p class="inline-error" id="subjectsError" role="status" hidden></p>
+        <ul class="subject-list" id="subjectList" aria-live="polite"></ul>
+        <p class="empty-state" id="subjectsEmpty" hidden>Nenhuma disciplina cadastrada. Adicione uma para iniciar seu primeiro foco.</p>
+      </section>
+
+      <section class="metrics-section" id="metricas" aria-labelledby="metricsTitle">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">PROGRESSO REAL</span>
+            <h2 id="metricsTitle">Sua semana de estudos</h2>
+            <p id="weekRange">Métricas carregadas diretamente do servidor.</p>
+          </div>
+        </div>
+        <div class="metric-cards">
+          <article class="panel metric-card">
+            <span class="metric-icon metric-icon-violet" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="8.5" /><path d="M12 7v5l3.5 2" /></svg>
+            </span>
+            <span class="metric-label">Tempo estudado</span>
+            <strong class="metric-value" id="weeklyHours">—</strong>
+            <span class="metric-footnote">somente ciclos concluídos</span>
+          </article>
+          <article class="panel metric-card">
+            <span class="metric-icon metric-icon-blue" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false"><path d="M5 19V9m7 10V5m7 14v-7" /></svg>
+            </span>
+            <span class="metric-label">Focos concluídos</span>
+            <strong class="metric-value" id="weeklyCycles">—</strong>
+            <span class="metric-footnote">nesta semana</span>
+          </article>
+        </div>
+        <article class="panel breakdown-panel">
+          <div class="breakdown-heading">
+            <div>
+              <h3>Tempo por disciplina</h3>
+              <p>Distribuição do tempo registrado nesta semana.</p>
+            </div>
+            <span class="breakdown-total" id="breakdownTotal"></span>
+          </div>
+          <div class="breakdown-list" id="breakdownList"></div>
+          <p class="empty-state" id="metricsEmpty" hidden>Nenhum foco concluído nesta semana.</p>
+          <p class="inline-error" id="metricsError" role="status" hidden></p>
+          <p class="history-note">O contrato disponível oferece métricas semanais agregadas, não histórico detalhado de sessões.</p>
+        </article>
+      </section>
+
+      <section class="panel section-panel settings-panel" id="configuracoes" aria-labelledby="settingsTitle">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">PREFERÊNCIAS</span>
+            <h2 id="settingsTitle">Configurações do temporizador</h2>
+            <p>Preferências salvas neste navegador; não alteram ciclos já iniciados.</p>
+          </div>
+        </div>
+        <form id="settingsForm">
+          <div class="settings-grid">
+            <div class="settings-field">
+              <label class="field-label" for="focusMinutes">Foco</label>
+              <div class="number-control"><input class="field-control" id="focusMinutes" name="focus" type="number" min="1" max="120" step="1" required><span>min</span></div>
+            </div>
+            <div class="settings-field">
+              <label class="field-label" for="shortBreakMinutes">Descanso curto</label>
+              <div class="number-control"><input class="field-control" id="shortBreakMinutes" name="shortBreak" type="number" min="1" max="30" step="1" required><span>min</span></div>
+            </div>
+            <div class="settings-field">
+              <label class="field-label" for="longBreakMinutes">Descanso longo</label>
+              <div class="number-control"><input class="field-control" id="longBreakMinutes" name="longBreak" type="number" min="1" max="60" step="1" required><span>min</span></div>
+            </div>
+            <div class="settings-field">
+              <label class="field-label" for="longBreakAfter">Focos até descanso longo</label>
+              <div class="number-control"><input class="field-control" id="longBreakAfter" name="longBreakAfter" type="number" min="2" max="8" step="1" required><span>focos</span></div>
+            </div>
+          </div>
+          <div class="settings-footer">
+            <p class="form-hint" id="settingsStatus" aria-live="polite">As horas estudadas nunca são armazenadas localmente.</p>
+            <button class="button button-secondary" type="submit">Salvar preferências</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span><strong>Projeto #13</strong> · João Vytor Kruger · RA 2026108220</span>
+      <span>Chave <code>P26-2B-6518-18DF-1E0D-2810</code> · Licença MIT</span>
+    </div>
+  </footer>
+</body>
+</html>

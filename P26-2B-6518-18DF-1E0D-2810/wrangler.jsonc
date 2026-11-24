@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "projeto-p26-2b-6518-18df-1e0d-2810",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2b-6518-18df-1e0d-2810",
+      "database_id": "a54bfd7f-0997-4920-869f-55414c4e491d",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
