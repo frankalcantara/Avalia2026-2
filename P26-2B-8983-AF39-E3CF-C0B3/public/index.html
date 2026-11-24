@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5ef">
+  <title>Panela — receitas para compartilhar</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Panela, início">
+      <span class="brand-mark" aria-hidden="true">P</span>
+      <span>panela<span class="brand-period">.</span></span>
+    </a>
+    <div class="account-area" id="accountArea">
+      <a class="button button-discord" id="discordLoginLink" href="/api/auth/discord">
+        <span class="discord-icon" aria-hidden="true">◉</span>
+        Entrar com Discord
+      </a>
+      <div class="profile" id="profile" hidden>
+        <img class="avatar" id="profileAvatar" alt="" hidden>
+        <span class="profile-name" id="profileName"></span>
+        <button class="button button-quiet button-small" id="logoutButton" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="pageTitle">
+      <p class="eyebrow"><span aria-hidden="true">✳</span> O seu caderno de cozinha</p>
+      <h1 id="pageTitle">Receitas boas<br><span>ficam melhores juntas.</span></h1>
+      <p class="intro-copy">Descubra pratos, guarde os seus favoritos e compartilhe aquele que todo mundo pede de novo.</p>
+      <a class="button button-dark intro-cta" href="/api/auth/discord" id="introLoginLink">Entre para participar <span aria-hidden="true">↗</span></a>
+    </section>
+
+    <div class="notice" id="notice" role="status" aria-live="polite" hidden></div>
+
+    <nav class="tabs" aria-label="Seções do livro de receitas">
+      <button class="tab is-active" type="button" data-view="catalog" aria-selected="true">Explorar receitas</button>
+      <button class="tab" type="button" data-view="favorites" aria-selected="false">Meu livro <span class="tab-icon" aria-hidden="true">♡</span></button>
+      <button class="tab" type="button" data-view="create" aria-selected="false">Compartilhar receita <span aria-hidden="true">+</span></button>
+    </nav>
+
+    <section class="view" id="catalogView" aria-labelledby="catalogHeading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Feito para encontrar</p>
+          <h2 id="catalogHeading">O que vai pra mesa?</h2>
+        </div>
+        <span class="result-count" id="resultCount" aria-live="polite"></span>
+      </div>
+      <form class="search-panel" id="searchForm">
+        <label class="search-field search-name">
+          <span>Nome da receita</span>
+          <input id="searchQuery" name="q" type="search" placeholder="Ex.: bolo de cenoura">
+        </label>
+        <label class="search-field">
+          <span>Ingrediente</span>
+          <input id="searchIngredient" name="ingredient" type="search" placeholder="Ex.: chocolate">
+        </label>
+        <label class="search-field search-time">
+          <span>Até quanto tempo?</span>
+          <span class="time-input"><input id="searchMaxTime" name="maxTime" type="number" min="1" step="1" inputmode="numeric" placeholder="45"><span>min</span></span>
+        </label>
+        <button class="button button-dark search-button" type="submit">Buscar <span aria-hidden="true">⌕</span></button>
+      </form>
+
+      <section class="detail-panel" id="detailPanel" aria-label="Detalhes da receita" hidden></section>
+      <div class="recipe-grid" id="recipeGrid" aria-live="polite" aria-busy="false"></div>
+    </section>
+
+    <section class="view" id="favoritesView" aria-labelledby="favoritesHeading" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Guardadas com carinho</p>
+          <h2 id="favoritesHeading">Meu livro de receitas</h2>
+        </div>
+      </div>
+      <div class="recipe-grid" id="favoritesGrid" aria-live="polite" aria-busy="false"></div>
+    </section>
+
+    <section class="view" id="createView" aria-labelledby="createHeading" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Uma receita sua</p>
+          <h2 id="createHeading">Compartilhe o sabor</h2>
+          <p class="section-copy">Conte os detalhes para que outra pessoa consiga preparar também.</p>
+        </div>
+      </div>
+      <div class="login-prompt" id="createLoginPrompt" hidden>
+        <span class="prompt-icon" aria-hidden="true">✳</span>
+        <h3>Receitas ficam melhores compartilhadas.</h3>
+        <p>Entre com o Discord para publicar a sua e montar seu livro pessoal.</p>
+        <a class="button button-discord" href="/api/auth/discord">Entrar com Discord</a>
+      </div>
+      <form class="recipe-form" id="recipeForm" hidden>
+        <div class="form-grid">
+          <label class="form-field form-wide">
+            <span>Nome da receita <b aria-hidden="true">*</b></span>
+            <input id="recipeTitle" name="title" type="text" maxlength="120" required placeholder="Ex.: lasanha de domingo">
+          </label>
+          <label class="form-field form-wide">
+            <span>Uma breve descrição</span>
+            <textarea id="recipeDescription" name="description" rows="3" maxlength="600" placeholder="O que torna esse prato especial?"></textarea>
+          </label>
+          <label class="form-field">
+            <span>Tempo de preparo <b aria-hidden="true">*</b></span>
+            <span class="time-input"><input id="recipePrepTime" name="prepTime" type="number" min="1" step="1" required inputmode="numeric" placeholder="60"><span>min</span></span>
+          </label>
+          <label class="form-field">
+            <span>Rendimento <b aria-hidden="true">*</b></span>
+            <span class="time-input"><input id="recipeServings" name="servings" type="number" min="1" step="1" required inputmode="numeric" placeholder="4"><span>porções</span></span>
+          </label>
+        </div>
+
+        <fieldset class="builder-section">
+          <legend><span class="step-number">1</span> Ingredientes</legend>
+          <p class="builder-help">Informe a quantidade numérica e a unidade separadamente.</p>
+          <div class="ingredient-builder" id="ingredientBuilder"></div>
+          <button class="button button-outline" id="addIngredientButton" type="button">+ Adicionar ingrediente</button>
+        </fieldset>
+
+        <fieldset class="builder-section">
+          <legend><span class="step-number">2</span> Modo de preparo</legend>
+          <p class="builder-help">Escreva cada etapa na ordem em que deve ser feita.</p>
+          <ol class="step-builder" id="stepBuilder"></ol>
+          <button class="button button-outline" id="addStepButton" type="button">+ Adicionar etapa</button>
+        </fieldset>
+        <div class="form-actions">
+          <p class="form-note">Campos com <b>*</b> são obrigatórios.</p>
+          <button class="button button-dark" id="submitRecipeButton" type="submit">Publicar receita <span aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer>P26-2B-8983-AF39-E3CF-C0B3</footer>
+</body>
+</html>
