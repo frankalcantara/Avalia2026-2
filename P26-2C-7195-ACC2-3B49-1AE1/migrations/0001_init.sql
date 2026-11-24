@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS discord_users (
+    user_id TEXT PRIMARY KEY,
+    username TEXT NOT NULL,
+    avatar TEXT
+);
+
+CREATE TABLE IF NOT EXISTS habits (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL,
+    title TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS habit_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    habit_id INTEGER NOT NULL,
+    completed_date TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
