@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sistema de Enquetes e Votação Verificada com login pelo Discord.">
+  <meta name="color-scheme" content="light dark">
+  <title>Enquetes Verificadas</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="cabecalho">
+    <div class="container cabecalho-inner">
+      <a class="marca" href="#/" aria-label="Enquetes Verificadas, página inicial">
+        <span class="marca-icone" aria-hidden="true">✓</span>
+        <span>Enquetes <span class="marca-destaque">Verificadas</span></span>
+      </a>
+      <div id="usuario" class="usuario" hidden>
+        <img id="avatar" class="avatar" alt="" width="32" height="32">
+        <span id="nome" class="nome"></span>
+        <button id="sair" class="btn btn-secundario btn-pequeno" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" class="container" tabindex="-1">
+    <noscript>Ative o JavaScript para usar o sistema de enquetes.</noscript>
+  </main>
+
+  <footer class="rodape">
+    <div class="container">
+      <p><strong>P26-2A-0FC2-F5F9-5A1B-0D19</strong></p>
+      <p>Vinicius Kichel Derganho · Turma 2A · Licença MIT</p>
+    </div>
+  </footer>
+</body>
+</html>
