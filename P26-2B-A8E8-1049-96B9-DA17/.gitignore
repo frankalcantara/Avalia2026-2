@@ -1,0 +1,14 @@
+# Segredos locais: nunca versionar
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+.env
+.env.*
+!.env.example
+
+# Estado e cache do Wrangler (D1 local, conta Cloudflare)
+.wrangler/
+
+node_modules/
+.DS_Store
+Thumbs.db
