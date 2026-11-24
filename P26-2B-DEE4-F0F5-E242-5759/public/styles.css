@@ -1,0 +1,139 @@
+﻿:root {
+  color-scheme: light;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #142e2a;
+  background: #f4f7f3;
+  line-height: 1.5;
+  --green: #145849;
+  --muted: #49625d;
+  --border: #d5e2da;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; }
+h1, h2, h3, p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid #a64c14; outline-offset: 3px; }
+.hero a:focus-visible { outline-color: #fff; }
+
+.shell { width: min(100% - 2rem, 72rem); margin-inline: auto; }
+.topbar { background: #fff; border-bottom: 1px solid var(--border); }
+.topbar-inner, .panel-heading, .profile, nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+.topbar-inner, .panel-heading { justify-content: space-between; }
+.topbar-inner { padding-block: 1rem; }
+.brand { font-weight: 800; text-decoration: none; }
+.profile { overflow-wrap: anywhere; }
+.profile img { border-radius: 50%; background: #e4efe8; }
+.profile small { display: block; color: var(--muted); }
+
+.hero {
+  margin-top: clamp(1rem, 3vw, 2.5rem);
+  padding: clamp(1.25rem, 5vw, 4rem);
+  border-radius: 1.5rem;
+  background: linear-gradient(115deg, #103831, #17634f);
+  color: #fff;
+}
+.hero h1 {
+  max-width: 19ch;
+  font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: -.045em;
+  line-height: 1.05;
+}
+.hero p { margin-block: 1rem 1.5rem; color: #e1f2e9; }
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  margin-block: 1rem 2rem;
+}
+.driver-column { display: grid; gap: 1rem; min-width: 0; }
+.panel {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  padding: clamp(1rem, 3vw, 1.75rem);
+  scroll-margin-top: 1rem;
+}
+h2 { font-size: 1.35rem; line-height: 1.2; }
+.hint { margin-top: .4rem; color: var(--muted); }
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+  margin-block: 1rem;
+}
+.fields .button { grid-column: 1 / -1; justify-self: start; }
+label { display: grid; gap: .35rem; font-weight: 650; }
+input {
+  min-width: 0;
+  width: 100%;
+  min-height: 44px;
+  padding: .55rem .65rem;
+  border: 1px solid #849d95;
+  border-radius: .6rem;
+  color: inherit;
+  background: #fff;
+  font: inherit;
+  font-weight: 400;
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: .55rem .9rem;
+  background: var(--green);
+  border: 1px solid transparent;
+  border-radius: .65rem;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button:hover { background: #0d4439; }
+.button:disabled { opacity: .65; cursor: default; }
+.discord { background: #4338a1; }
+.discord:hover { background: #362d85; }
+.light, .secondary { color: #153f35; background: #e8f4ed; }
+.light:hover, .secondary:hover { background: #cfeadd; }
+.outline { background: transparent; border-color: #b5d8cc; }
+#driver-login { margin-top: 1rem; }
+
+.message { color: var(--muted); margin-block: .75rem 0; }
+.message:empty { margin: 0; }
+.message[data-kind="error"] { color: #a12525; }
+.message[data-kind="success"] { color: #176038; }
+.rides { list-style: none; margin: 0; padding: 0; }
+.ride {
+  margin-top: .75rem;
+  padding: .9rem;
+  border: 1px solid var(--border);
+  border-radius: .8rem;
+  background: #f8fbf9;
+  overflow-wrap: anywhere;
+}
+.ride h3 { font-size: 1.05rem; }
+.ride .button, .ride details { margin-top: .65rem; }
+.ride summary { cursor: pointer; font-weight: 700; }
+.ride p { color: var(--muted); }
+.passengers { padding-inline-start: 1.25rem; }
+.passengers li { margin-top: .4rem; }
+footer { padding-block: 1rem 2rem; border-top: 1px solid var(--border); color: var(--muted); }
+footer code { overflow-wrap: anywhere; }
+
+@media (max-width: 54rem) {
+  .workspace { grid-template-columns: 1fr; }
+}
+@media (max-width: 32rem) {
+  .fields { grid-template-columns: 1fr; }
+  .fields .button { justify-self: stretch; }
+}

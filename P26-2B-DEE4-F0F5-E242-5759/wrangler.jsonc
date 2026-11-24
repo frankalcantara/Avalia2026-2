@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "projeto-p26-2b-dee4-f0f5-e242-5759",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "vars": {
+    "DISCORD_CLIENT_ID": "1572732055161274379"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-caronas-oficial",
+      "database_id": "12bf7477-ee39-4433-8aa7-4f25bb356520"
+    }
+  ]
+}
