@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServiceDesk Pro • Rastreador de Chamados Internos</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title-row">
+            <h1 class="brand-title">ServiceDesk Pro</h1>
+            <span class="version-tag">v2.0 • D1 Cloud</span>
+          </div>
+          <p class="brand-subtitle">Central Corporativa de Solicitações &amp; Chamados • Projeto #38</p>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <button type="button" id="btn-theme-toggle" class="btn-icon-only" title="Alternar tema claro/escuro" aria-label="Alternar tema">
+          <svg id="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <span id="db-status-badge" class="status-pill status-loading">Verificando D1...</span>
+
+        <div id="auth-area" class="auth-area">
+          <a href="/api/auth/discord" class="btn btn-discord" id="btn-discord-login">
+            Entrar com Discord
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <!-- Hero Executivo + Indicador de Taxa de Resolução -->
+    <section class="hero-card" aria-label="Visão geral da operação">
+      <div class="hero-copy">
+        <span class="hero-eyebrow">OPERAÇÕES &amp; SUPORTE INTERNO</span>
+        <h2 class="hero-heading">Gestão inteligente de chamados em tempo real</h2>
+        <p class="hero-text">Abra solicitações, classifique prioridades críticas e acompanhe a resolução da fila sincronizada diretamente no Cloudflare D1.</p>
+      </div>
+
+      <div class="sla-box">
+        <div class="sla-header">
+          <span>Taxa de Resolução</span>
+          <strong id="sla-percent">0%</strong>
+        </div>
+        <div class="sla-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="sla-track">
+          <div class="sla-fill" id="sla-fill" style="width: 0%"></div>
+        </div>
+        <span class="sla-caption" id="sla-caption">0 de 0 chamados concluídos</span>
+      </div>
+    </section>
+
+    <!-- Banner de sessão local caso OAuth2 ainda não tenha chaves no ambiente -->
+    <section id="local-session-bar" class="local-banner hidden" aria-label="Sessão local de diagnóstico">
+      <div class="local-banner-info">
+        <strong>Modo de Diagnóstico Local:</strong>
+        <span>Identifique-se como operador para registrar e gerenciar chamados no banco local.</span>
+      </div>
+      <div class="local-banner-form">
+        <input type="text" id="local-username-input" placeholder="Seu nome ou @usuario" maxlength="40" />
+        <button type="button" class="btn btn-secondary" id="btn-save-local-user">Definir Operador</button>
+      </div>
+    </section>
+
+    <!-- Painel de Métricas (KPIs) -->
+    <section class="kpi-grid" aria-label="Resumo dos chamados">
+      <article class="kpi-card">
+        <div class="kpi-top">
+          <span class="kpi-label">Total de Chamados</span>
+          <span class="kpi-icon kpi-icon-neutral" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+          </span>
+        </div>
+        <strong class="kpi-value" id="kpi-total">0</strong>
+        <span class="kpi-foot">Registros no Cloudflare D1</span>
+      </article>
+
+      <article class="kpi-card kpi-open">
+        <div class="kpi-top">
+          <span class="kpi-label">Abertos</span>
+          <span class="kpi-icon kpi-icon-blue" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+          </span>
+        </div>
+        <strong class="kpi-value" id="kpi-abertos">0</strong>
+        <span class="kpi-foot">Aguardando triagem</span>
+      </article>
+
+      <article class="kpi-card kpi-progress">
+        <div class="kpi-top">
+          <span class="kpi-label">Em Andamento</span>
+          <span class="kpi-icon kpi-icon-amber" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </span>
+        </div>
+        <strong class="kpi-value" id="kpi-andamento">0</strong>
+        <span class="kpi-foot">Em atendimento técnico</span>
+      </article>
+
+      <article class="kpi-card kpi-done">
+        <div class="kpi-top">
+          <span class="kpi-label">Concluídos</span>
+          <span class="kpi-icon kpi-icon-green" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+        </div>
+        <strong class="kpi-value" id="kpi-concluidos">0</strong>
+        <span class="kpi-foot">Solicitações resolvidas</span>
+      </article>
+
+      <article class="kpi-card kpi-urgent">
+        <div class="kpi-top">
+          <span class="kpi-label">Urgentes Ativos</span>
+          <span class="kpi-icon kpi-icon-red" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </span>
+        </div>
+        <strong class="kpi-value" id="kpi-urgentes">0</strong>
+        <span class="kpi-foot">Prioridade máxima</span>
+      </article>
+    </section>
+
+    <!-- Grade Principal: Formulário à esquerda + Lista de Chamados à direita -->
+    <div class="workspace-grid">
+      <aside class="panel form-panel">
+        <div class="panel-header">
+          <h2>Abrir Nova Solicitação</h2>
+          <p>Preencha os dados para registrar um chamado na fila interna.</p>
+        </div>
+
+        <form id="chamado-form" class="ticket-form" novalidate>
+          <div class="form-group">
+            <label for="titulo">Assunto / Título do Chamado *</label>
+            <input
+              type="text"
+              id="titulo"
+              name="titulo"
+              placeholder="Ex.: Falha no acesso à VPN corporativa"
+              minlength="4"
+              maxlength="120"
+              required
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="categoria">Categoria *</label>
+              <select id="categoria" name="categoria" required>
+                <option value="TI & Suporte">TI &amp; Suporte</option>
+                <option value="Infraestrutura">Infraestrutura</option>
+                <option value="Acessos & Contas">Acessos &amp; Contas</option>
+                <option value="Sistemas & Software">Sistemas &amp; Software</option>
+                <option value="Administrativo">Administrativo</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="prioridade">Prioridade *</label>
+              <select id="prioridade" name="prioridade" required>
+                <option value="Baixa">Baixa</option>
+                <option value="Média" selected>Média</option>
+                <option value="Alta">Alta</option>
+                <option value="Urgente">Urgente</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="descricao">Descrição Detalhada *</label>
+            <textarea
+              id="descricao"
+              name="descricao"
+              rows="5"
+              placeholder="Descreva o problema, o equipamento ou sistema afetado e o impacto..."
+              minlength="10"
+              maxlength="1000"
+              required
+            ></textarea>
+            <small class="char-hint"><span id="desc-count">0</span>/1000 caracteres</small>
+          </div>
+
+          <div id="form-feedback" class="feedback-box hidden" role="status"></div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="btn-submit-chamado">
+            Registrar Chamado
+          </button>
+        </form>
+      </aside>
+
+      <section class="panel list-panel" aria-label="Fila de chamados">
+        <div class="panel-header list-header">
+          <div>
+            <h2>Fila de Solicitações</h2>
+            <p>Acompanhe, filtre e atualize o andamento dos chamados.</p>
+          </div>
+
+          <div class="filters-bar">
+            <input
+              type="search"
+              id="filtro-busca"
+              placeholder="Buscar título, descrição ou autor..."
+              aria-label="Buscar chamados"
+            />
+            <select id="filtro-status" aria-label="Filtrar por status">
+              <option value="">Todos os Status</option>
+              <option value="Aberto">Aberto</option>
+              <option value="Em Andamento">Em Andamento</option>
+              <option value="Concluído">Concluído</option>
+            </select>
+            <select id="filtro-prioridade" aria-label="Filtrar por prioridade">
+              <option value="">Todas Prioridades</option>
+              <option value="Urgente">Urgente</option>
+              <option value="Alta">Alta</option>
+              <option value="Média">Média</option>
+              <option value="Baixa">Baixa</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="chamados-list" class="tickets-list">
+          <div class="empty-state">Carregando chamados do banco de dados...</div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>Rastreador de Solicitações e Chamados Internos (Issue Tracker) • Cloudflare Pages + D1 + Discord OAuth2</span>
+      <span class="project-key">Chave do Projeto: <strong>P26-2B-2D44-2B7F-3524-711D</strong></span>
+    </div>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
