@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Filmes e Séries da Turma</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="container topbar-content">
+            <h1>🎬 Catálogo da Turma</h1>
+            <div id="auth-area" class="auth-area">
+                <a href="/api/auth/login" class="btn btn-discord">Entrar com Discord</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="controls-bar">
+            <div class="sort-group">
+                <label for="sort-select">Ordenar por:</label>
+                <select id="sort-select">
+                    <option value="recent">Mais Recentes</option>
+                    <option value="rating">Melhor Avaliados</option>
+                    <option value="popular">Mais Avaliações</option>
+                </select>
+            </div>
+            <button id="btn-open-new-movie" class="btn btn-primary hidden">+ Adicionar Filme / Série</button>
+        </section>
+
+        <section id="new-movie-panel" class="card hidden">
+            <h2>Cadastrar Novo Filme ou Série</h2>
+            <form id="new-movie-form" class="form-grid">
+                <input type="text" id="movie-title" placeholder="Título do filme ou série *" required>
+                <input type="url" id="movie-poster" placeholder="URL da imagem do pôster (opcional)">
+                <textarea id="movie-desc" rows="2" placeholder="Sinopse ou descrição curta"></textarea>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salvar no Catálogo</button>
+                    <button type="button" id="btn-cancel-movie" class="btn btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="movies-grid" class="movies-grid" aria-live="polite">
+            <p class="loading-msg">Carregando catálogo...</p>
+        </section>
+    </main>
+
+    <dialog id="review-modal" class="modal">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2 id="modal-movie-title">Avaliar Título</h2>
+                <button id="btn-close-modal" class="btn-close" aria-label="Fechar">&times;</button>
+            </header>
+            <p id="modal-movie-desc" class="modal-desc"></p>
+
+            <form id="review-form" class="review-form">
+                <input type="hidden" id="review-movie-id">
+                <label for="review-rating">Sua Nota (1 a 5 estrelas):</label>
+                <select id="review-rating" required>
+                    <option value="5">⭐⭐⭐⭐⭐ (5 - Excelente)</option>
+                    <option value="4">⭐⭐⭐⭐ (4 - Muito Bom)</option>
+                    <option value="3">⭐⭐⭐ (3 - Bom)</option>
+                    <option value="2">⭐⭐ (2 - Regular)</option>
+                    <option value="1">⭐ (1 - Fraco)</option>
+                </select>
+                <label for="review-text">Seu Comentário:</label>
+                <textarea id="review-text" rows="3" placeholder="O que achou deste filme ou série?"></textarea>
+                <button type="submit" id="btn-submit-review" class="btn btn-primary">Salvar Avaliação</button>
+                <p id="login-warning" class="warning-text hidden">Faça login com o Discord para publicar ou editar sua nota.</p>
+            </form>
+
+            <hr>
+            <h3>Avaliações da Turma</h3>
+            <ul id="reviews-list" class="reviews-list"></ul>
+        </div>
+    </dialog>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Projeto #25 — Catálogo de Filmes e Séries com Avaliações da Turma</p>
+            <p class="unique-key">Chave Única: <strong>P26-2C-D843-80EC-2D28-37C7</strong></p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
