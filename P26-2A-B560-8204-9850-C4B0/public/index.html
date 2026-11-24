@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caderno de Receitas · Projeto #28 — P26-2A-B560-8204-9850-C4B0</title>
+  <meta name="description" content="Livro de receitas colaborativo com escalonador de porções em tempo real. Publicado no Cloudflare Pages sobre Cloudflare D1 com login Discord. Chave Única P26-2A-B560-8204-9850-C4B0.">
+  <meta name="author" content="Leonardo Mulhenhoff Borim">
+  <meta name="theme-color" content="#fdf8f1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1310" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo principal</a>
+
+  <header class="topbar" role="banner">
+    <div class="topbar__inner">
+      <a class="brand" href="/" aria-label="Caderno de Receitas — página inicial">
+        <svg class="brand__mark" viewBox="0 0 32 32" width="34" height="34" aria-hidden="true" focusable="false">
+          <path d="M5 14h22v3a11 11 0 0 1-22 0Z" fill="currentColor" opacity="0.16"></path>
+          <path d="M5 14h22v3a11 11 0 0 1-11 11 11 11 0 0 1-11-11Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path>
+          <path d="M3 14h26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          <path d="M12 9.5c0-2.5 2-2.5 2-5M18 9.5c0-2.5 2-2.5 2-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+        </svg>
+        <span class="brand__text">
+          <span class="brand__name">Caderno de Receitas</span>
+          <span class="brand__tagline">Projeto #28 · escalonador de porções</span>
+        </span>
+      </a>
+
+      <div id="profileArea" class="profile" aria-live="polite">
+        <span class="profile__skeleton" aria-hidden="true"></span>
+        <span class="sr-only">Carregando perfil do Discord…</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo" class="layout" tabindex="-1">
+    <section class="hero" aria-labelledby="heroTitle">
+      <p class="hero__eyebrow">Livro colaborativo · Cloudflare Pages + D1</p>
+      <h1 id="heroTitle" class="hero__title">Receitas que crescem junto com a sua fome</h1>
+      <p class="hero__text">
+        Publique seus pratos, busque por nome, ingrediente ou tempo de preparo e ajuste as porções:
+        as quantidades de todos os ingredientes são recalculadas na hora, direto no navegador,
+        sem recarregar a página e sem novas requisições ao servidor.
+      </p>
+      <p class="hero__key">Chave Única: <code>P26-2A-B560-8204-9850-C4B0</code></p>
+    </section>
+
+    <nav class="tabs" aria-label="Escopo das receitas">
+      <div class="tablist" role="tablist" aria-label="Escopo das receitas">
+        <button class="tab" id="tab-all" type="button" role="tab" aria-selected="true" aria-controls="panelList" data-scope="all">Explorar</button>
+        <button class="tab" id="tab-mine" type="button" role="tab" aria-selected="false" aria-controls="panelList" data-scope="mine" tabindex="-1">Minhas receitas</button>
+        <button class="tab" id="tab-favorites" type="button" role="tab" aria-selected="false" aria-controls="panelList" data-scope="favorites" tabindex="-1">Meu livro</button>
+      </div>
+      <p class="tabs__hint" id="tabsHint">Explorando todas as receitas publicadas pela comunidade.</p>
+    </nav>
+
+    <section id="panelList" class="panel" role="tabpanel" aria-labelledby="tab-all" tabindex="0">
+      <form id="searchForm" class="filters" role="search" novalidate>
+        <div class="filters__field">
+          <label for="filterQuery">Prato</label>
+          <input id="filterQuery" name="q" type="search" placeholder="Ex.: risoto, bolo de cenoura" autocomplete="off" enterkeyhint="search">
+        </div>
+        <div class="filters__field">
+          <label for="filterIngredient">Ingrediente</label>
+          <input id="filterIngredient" name="ingredient" type="search" placeholder="Ex.: abóbora, manjericão" autocomplete="off" enterkeyhint="search">
+        </div>
+        <div class="filters__field filters__field--time">
+          <label for="filterMaxTime">Tempo máximo</label>
+          <select id="filterMaxTime" name="maxTime">
+            <option value="">Qualquer tempo</option>
+            <option value="15">Até 15 min</option>
+            <option value="30">Até 30 min</option>
+            <option value="45">Até 45 min</option>
+            <option value="60">Até 60 min</option>
+            <option value="120">Até 120 min</option>
+          </select>
+        </div>
+        <button id="clearFilters" class="btn btn--ghost filters__clear" type="button">Limpar filtros</button>
+      </form>
+
+      <div class="results-head">
+        <p id="resultsCount" class="results-count" role="status" aria-live="polite">Carregando receitas…</p>
+        <span id="loadingBadge" class="loading-badge" hidden>Atualizando…</span>
+      </div>
+
+      <div id="authGate" class="state state--gate" hidden></div>
+
+      <div id="skeletonGrid" class="recipes-grid" aria-hidden="true" hidden></div>
+
+      <div id="recipesGrid" class="recipes-grid" aria-busy="false"></div>
+
+      <div id="emptyState" class="state" hidden></div>
+      <div id="errorState" class="state state--error" hidden></div>
+
+      <div class="load-more-wrap">
+        <button id="loadMoreBtn" class="btn btn--ghost" type="button" hidden>Carregar mais receitas</button>
+      </div>
+    </section>
+  </main>
+
+  <footer id="projectFooter" class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <p class="footer__key">Chave Única: <code>P26-2A-B560-8204-9850-C4B0</code></p>
+      <p class="footer__meta">
+        Livro de Receitas Colaborativo com Escalonador de Porções · Projeto #28 ·
+        Autor: <strong>Leonardo Mulhenhoff Borim</strong> (RA 2026107646) ·
+        <span id="footerYear">2026</span> · Licença MIT
+      </p>
+      <p class="footer__status">
+        <span id="footerStatus" aria-live="polite">Verificando status da API…</span>
+        · <a href="/api/status">Status da API (JSON)</a>
+      </p>
+    </div>
+  </footer>
+
+  <button id="newRecipeBtn" class="fab" type="button" hidden>
+    <span class="fab__icon" aria-hidden="true">+</span>
+    <span>Nova receita</span>
+  </button>
+
+  <dialog id="recipeDialog" class="dialog dialog--wide" aria-labelledby="detailTitle">
+    <div class="dialog__shell">
+      <header class="dialog__head">
+        <div class="dialog__heading">
+          <p class="dialog__eyebrow" id="detailMeta">Receita</p>
+          <h2 class="dialog__title" id="detailTitle">Carregando receita…</h2>
+        </div>
+        <button type="button" class="icon-btn" data-close-dialog aria-label="Fechar detalhes da receita">×</button>
+      </header>
+
+      <div class="dialog__body" id="detailBody">
+        <p id="detailLoading" class="loading-line">Carregando receita…</p>
+
+        <div id="detailError" class="state state--error" hidden>
+          <p id="detailErrorText" class="state__text"></p>
+          <button type="button" class="btn btn--ghost" id="detailRetry">Tentar novamente</button>
+        </div>
+
+        <div id="detailContent" hidden>
+          <p id="detailDescription" class="detail__desc"></p>
+          <div id="detailAuthor" class="detail__author"></div>
+
+          <div class="detail__actions">
+            <button id="detailFavoriteBtn" type="button" class="btn btn--ghost" aria-pressed="false">☆ Favoritar</button>
+            <button id="detailDeleteBtn" type="button" class="btn btn--danger" hidden>Excluir receita</button>
+          </div>
+
+          <section class="scaler" aria-labelledby="scalerHeading">
+            <div class="scaler__top">
+              <h3 id="scalerHeading" class="scaler__title">Escalonador de porções</h3>
+              <p id="scalerSummary" class="scaler__summary">Porções: 1 (base 1)</p>
+            </div>
+
+            <div class="scaler__controls">
+              <button type="button" id="scalerDec" class="stepper" aria-label="Diminuir porções">−</button>
+              <div class="scaler__input-wrap">
+                <label for="scalerInput" class="scaler__label">Porções desejadas</label>
+                <input id="scalerInput" class="scaler__input" type="number" inputmode="decimal" min="0.5" max="200" step="0.5" value="1" aria-describedby="scalerHint">
+              </div>
+              <button type="button" id="scalerInc" class="stepper" aria-label="Aumentar porções">+</button>
+            </div>
+
+            <p id="scalerHint" class="scaler__hint">As quantidades são recalculadas aqui mesmo, sem recarregar a página e sem novas requisições.</p>
+            <div class="scaler__presets" id="scalerPresets" role="group" aria-label="Multiplicadores rápidos de porção"></div>
+            <p class="scaler__factor">Fator aplicado: <strong id="scalerFactor">×1</strong></p>
+          </section>
+
+          <div class="detail__columns">
+            <section aria-labelledby="ingredientsHeading">
+              <h3 id="ingredientsHeading" class="detail__subtitle">Ingredientes</h3>
+              <ul id="detailIngredients" class="ingredients"></ul>
+            </section>
+            <section aria-labelledby="stepsHeading">
+              <h3 id="stepsHeading" class="detail__subtitle">Modo de preparo</h3>
+              <ol id="detailSteps" class="steps"></ol>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="createDialog" class="dialog dialog--wide" aria-labelledby="createTitle">
+    <form id="createForm" class="form" novalidate>
+      <header class="dialog__head">
+        <div class="dialog__heading">
+          <p class="dialog__eyebrow">Publicar no Cloudflare D1</p>
+          <h2 class="dialog__title" id="createTitle">Nova receita</h2>
+        </div>
+        <button type="button" class="icon-btn" data-close-dialog aria-label="Fechar formulário de nova receita">×</button>
+      </header>
+
+      <div class="dialog__body">
+        <div class="field">
+          <label for="fieldTitle">Título</label>
+          <input id="fieldTitle" name="title" type="text" maxlength="120" autocomplete="off" placeholder="Ex.: Risoto de abóbora com sálvia" aria-describedby="hint-title err-title" required>
+          <p id="hint-title" class="hint">Entre 3 e 120 caracteres.</p>
+          <p id="err-title" class="field-error" data-error-for="fieldTitle" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="fieldDescription">Descrição</label>
+          <textarea id="fieldDescription" name="description" rows="3" maxlength="600" placeholder="Conte o que torna a receita especial…" aria-describedby="hint-description err-description" required></textarea>
+          <p id="hint-description" class="hint">Entre 10 e 600 caracteres.</p>
+          <p id="err-description" class="field-error" data-error-for="fieldDescription" hidden></p>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="fieldPrep">Tempo de preparo (min)</label>
+            <input id="fieldPrep" name="prepMinutes" type="number" inputmode="numeric" min="1" max="1440" step="1" placeholder="30" aria-describedby="hint-prep err-prep" required>
+            <p id="hint-prep" class="hint">1 a 1440 minutos.</p>
+            <p id="err-prep" class="field-error" data-error-for="fieldPrep" hidden></p>
+          </div>
+          <div class="field">
+            <label for="fieldServings">Rendimento (porções)</label>
+            <input id="fieldServings" name="baseServings" type="number" inputmode="numeric" min="1" max="100" step="1" placeholder="4" aria-describedby="hint-servings err-servings" required>
+            <p id="hint-servings" class="hint">1 a 100 porções.</p>
+            <p id="err-servings" class="field-error" data-error-for="fieldServings" hidden></p>
+          </div>
+        </div>
+
+        <fieldset class="fieldset">
+          <legend>Ingredientes</legend>
+          <p class="hint">Quantidade e unidade ficam em campos separados para permitir o escalonamento exato.</p>
+          <div id="ingredientRows" class="rows"></div>
+          <button type="button" id="addIngredientBtn" class="btn btn--ghost btn--sm">+ Adicionar ingrediente</button>
+          <p id="err-ingredients" class="field-error" data-error-for="ingredients" hidden></p>
+        </fieldset>
+
+        <fieldset class="fieldset">
+          <legend>Modo de preparo</legend>
+          <p class="hint">A numeração dos passos é automática.</p>
+          <ol id="stepRows" class="rows rows--steps"></ol>
+          <button type="button" id="addStepBtn" class="btn btn--ghost btn--sm">+ Adicionar passo</button>
+          <p id="err-steps" class="field-error" data-error-for="steps" hidden></p>
+        </fieldset>
+
+        <p id="createFormStatus" class="form-status" role="status" aria-live="polite"></p>
+      </div>
+
+      <footer class="dialog__foot">
+        <button type="button" class="btn btn--ghost" data-close-dialog>Cancelar</button>
+        <button type="submit" id="createSubmit" class="btn btn--primary">Publicar receita</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div id="toastRegion" class="toasts" role="status" aria-live="polite" aria-atomic="false"></div>
+
+  <noscript>
+    <p class="noscript">Este caderno de receitas precisa de JavaScript ativado para buscar e escalonar as porções.</p>
+  </noscript>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

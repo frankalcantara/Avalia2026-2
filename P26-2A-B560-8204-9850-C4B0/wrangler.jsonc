@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "p26-2a-b560-8204-9850-c4b0",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2a-b560-8204-9850-c4b0",
+      "database_id": "192a40e0-36e2-4ced-8079-16effa6774a9",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "DISCORD_CLIENT_ID": "1572323898404634664",
+    "ALLOWED_ORIGINS": "https://p26-2a-b560-8204-9850-c4b0.pages.dev"
+  }
+}
