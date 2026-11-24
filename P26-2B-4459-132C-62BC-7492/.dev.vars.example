@@ -1,0 +1,5 @@
+# Copie para .dev.vars (ignorado pelo git) para rodar localmente com `npm run dev`
+DISCORD_CLIENT_ID=seu_client_id
+DISCORD_CLIENT_SECRET=seu_client_secret
+# Opcional. Padrão: <origem>/api/auth/callback
+# DISCORD_REDIRECT_URI=http://localhost:8788/api/auth/callback
