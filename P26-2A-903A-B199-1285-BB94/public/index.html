@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eventos &amp; RSVP — P26-2A-903A-B199-1285-BB94</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+  <header>
+    <div class="container header-content">
+      <div class="brand">
+        <span class="badge-key">RSVP</span>
+        <h1>Gestão de Eventos Acadêmicos</h1>
+      </div>
+      <div id="auth-area"></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="create-section" class="card hidden">
+      <h2>Criar Novo Evento</h2>
+      <form id="create-form" class="form-grid">
+        <div class="field">
+          <label for="titulo">Título do Evento</label>
+          <input id="titulo" type="text" name="titulo" required placeholder="Ex: Workshop de Sistemas" />
+        </div>
+        <div class="field">
+          <label for="local">Local / Sala</label>
+          <input id="local" type="text" name="local" required placeholder="Ex: Laboratório 4" />
+        </div>
+        <div class="field">
+          <label for="capacidade_maxima">Capacidade Máxima</label>
+          <input id="capacidade_maxima" type="number" name="capacidade_maxima" min="1" required placeholder="Ex: 20" />
+        </div>
+        <div class="field">
+          <label for="data">Data</label>
+          <input id="data" type="date" name="data" required />
+        </div>
+        <div class="field">
+          <label for="horario">Horário</label>
+          <input id="horario" type="time" name="horario" required />
+        </div>
+        <div class="field" style="justify-content: flex-end;">
+          <button type="submit" class="btn btn-primary">Publicar Evento</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <div class="events-header">
+        <h2>Eventos Disponíveis</h2>
+        <button id="btn-refresh" type="button" class="btn btn-outline">Atualizar lista</button>
+      </div>
+      <div id="events-grid" class="events-grid">
+        <p class="meta">Carregando eventos...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      Sistema de Eventos e RSVP &bull; Chave Única: <code>P26-2A-903A-B199-1285-BB94</code>
+    </div>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
