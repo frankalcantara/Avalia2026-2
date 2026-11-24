@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kudos Board — Reconheça quem faz a diferença</title>
+  <meta name="description" content="Mural de reconhecimento entre colegas: envie e receba kudos.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#mural">Ir para o mural</a>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">🎉</span>
+      <div>
+        <h1>Kudos Board</h1>
+        <p class="tagline">Reconheça quem faz a diferença</p>
+      </div>
+    </div>
+    <div class="auth">
+      <a id="login-btn" class="btn btn-discord" href="/api/auth/login" hidden>Entrar com Discord</a>
+      <div id="user-box" class="user-box" hidden>
+        <img id="user-avatar" class="avatar" alt="" width="36" height="36">
+        <span id="user-name" class="user-name"></span>
+        <button id="logout-btn" class="btn btn-ghost" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <main class="container">
+    <section id="form-section" class="panel" aria-labelledby="form-title" hidden>
+      <h2 id="form-title">Enviar um kudo</h2>
+      <form id="kudo-form" novalidate>
+        <div class="field">
+          <label for="to-user">Para quem?</label>
+          <select id="to-user" name="to_user_id" required>
+            <option value="">Selecione uma pessoa…</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="badge">Selo</label>
+          <select id="badge" name="badge" required>
+            <option value="">Selecione um selo…</option>
+          </select>
+        </div>
+        <div class="field field-wide">
+          <label for="message">Mensagem</label>
+          <textarea id="message" name="message" rows="3" maxlength="280" required placeholder="Conte o que essa pessoa fez de especial…"></textarea>
+          <div class="counter" id="counter" aria-hidden="true">0/280</div>
+        </div>
+        <div class="actions">
+          <button id="send-btn" class="btn btn-primary" type="submit">Enviar kudo</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="mural" class="board" aria-labelledby="board-title">
+      <div class="board-head">
+        <h2 id="board-title">Mural</h2>
+        <div class="filters">
+          <div class="tabs" role="group" aria-label="Filtro de kudos">
+            <button type="button" class="tab is-active" data-filter="all" aria-pressed="true">Todos</button>
+            <button type="button" class="tab" data-filter="received" aria-pressed="false">Recebidos</button>
+            <button type="button" class="tab" data-filter="sent" aria-pressed="false">Enviados</button>
+          </div>
+          <div class="field-inline" id="profile-wrap" hidden>
+            <label for="profile">Perfil</label>
+            <select id="profile"></select>
+          </div>
+        </div>
+      </div>
+      <div id="grid" class="grid" aria-busy="false"></div>
+      <p id="empty" class="empty" hidden>Nenhum kudo por aqui ainda. Que tal começar elogiando alguém?</p>
+      <div class="more"><button id="more-btn" class="btn btn-ghost" type="button" hidden>Carregar mais</button></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Feito com carinho para valorizar pessoas.</p>
+    <p>Chave Única: <code>P26-2A-1287-4690-B0AE-03F3</code></p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
