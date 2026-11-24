@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "p26-2a-b12e-0cfd-70ca-18e1",
+  "compatibility_date": "2026-10-01",
+  "pages_build_output_dir": "./public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "db-p26-2a-b12e-0cfd-70ca-18e1",
+      "database_id": "aedb59c0-5825-48d7-a5bb-796b93ad68a0"
+    }
+  ]
+}
