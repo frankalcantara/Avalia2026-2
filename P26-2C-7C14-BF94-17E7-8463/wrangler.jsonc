@@ -1,0 +1,19 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "projeto-p26-2c-7c14-bf94-17e7-8463",
+	"compatibility_date": "2026-03-01",
+	"pages_build_output_dir": "./public",
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "db-p26-2c-7c14-bf94-17e7-8463",
+			"database_id": "e6ba50ba-1068-4242-8aeb-6aae9578394e"
+		},
+		{
+			"binding": "db_p26_2c_7c14_bf94_17e7_8463",
+			"database_name": "db-p26-2c-7c14-bf94-17e7-8463",
+			"database_id": "e6ba50ba-1068-4242-8aeb-6aae9578394e",
+			"remote": true
+		}
+	]
+}
