@@ -1,0 +1,16 @@
+{
+  "name": "p26-2c-9700-d26e-48a3-4886",
+  "version": "1.0.0",
+  "description": "- **Modalidade:** Projeto Oficial Sorteado (Valendo 100 pontos) - **Estudante:** Rodrigo Minhuk Ciorcero - **Turma:** 2C - **Chave Única:** `P26-2C-9700-D26E-48A3-4886` - **URL_CLOUDFLARE:** `https://p26-2c-9700-d26e-48a3-4886.pages.dev` *(Atualize com a URL pública real do seu deploy na Cloudflare antes de abrir o Pull Request)*",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "wrangler": "^4.164.0"
+  }
+}
