@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Fórum de dúvidas técnicas com respostas e soluções aceitas.">
+  <title>Fórum de Dúvidas — Projeto #22</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="Página inicial do fórum">
+        <span class="brand-mark" aria-hidden="true">?</span>
+        <span>Fórum de Dúvidas</span>
+      </a>
+      <div class="account">
+        <span id="accountLabel" class="account-label">Verificando sessão…</span>
+        <a id="loginLink" class="button button-discord" href="/api/auth/discord">Entrar com Discord</a>
+        <button id="logoutButton" class="button button-secondary" type="button" hidden>Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <p class="eyebrow">Projeto oficial #22</p>
+      <h1>Aprenda em comunidade.</h1>
+      <p>Compartilhe uma dúvida técnica, ajude outros estudantes e marque a resposta que resolveu sua pergunta.</p>
+      <p id="connectionStatus" class="connection-status" role="status">Conectando à aplicação…</p>
+    </section>
+
+    <section class="layout">
+      <aside class="panel ask-panel">
+        <h2>Faça uma pergunta</h2>
+        <p class="muted">Entre com Discord para publicar no fórum.</p>
+        <form id="questionForm" hidden>
+          <label for="questionTitle">Título</label>
+          <input id="questionTitle" name="title" maxlength="180" required placeholder="Qual é a sua dúvida?">
+          <label for="questionContent">Detalhes</label>
+          <textarea id="questionContent" name="content" maxlength="15000" rows="6" required placeholder="Descreva o problema e o que você já tentou."></textarea>
+          <button class="button button-primary" type="submit">Publicar pergunta</button>
+        </form>
+        <a id="askLoginLink" class="button button-discord" href="/api/auth/discord">Entrar para perguntar</a>
+      </aside>
+
+      <section class="questions-section" aria-labelledby="questionsHeading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Comunidade</p>
+            <h2 id="questionsHeading">Perguntas recentes</h2>
+          </div>
+          <label class="filter-label" for="statusFilter">
+            <span class="visually-hidden">Filtrar perguntas por estado</span>
+            <select id="statusFilter">
+              <option value="">Todas</option>
+              <option value="open">Abertas</option>
+              <option value="resolved">Resolvidas</option>
+            </select>
+          </label>
+        </div>
+        <p id="message" class="message" role="status" aria-live="polite"></p>
+        <div id="questionsList" class="questions-list">
+          <p class="empty-state">Carregando perguntas…</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <span>Chave Única: <code>P26-2B-9844-B28F-C0A4-FF33</code></span>
+    <span>Turma 2B · Licença MIT</span>
+    <nav class="footer-links" aria-label="Documentos do fórum">
+      <a href="/termos">Termos de Serviço</a>
+      <a href="/privacidade">Política de Privacidade</a>
+    </nav>
+  </footer>
+</body>
+</html>

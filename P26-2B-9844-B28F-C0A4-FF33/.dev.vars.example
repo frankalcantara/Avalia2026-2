@@ -1,0 +1,6 @@
+# Copy this file to .dev.vars and fill values from your Discord application.
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+SESSION_SECRET=
+# Optional. Set only if you registered a redirect URI other than the current host.
+# DISCORD_REDIRECT_URI=http://127.0.0.1:8788/api/auth/discord/callback
