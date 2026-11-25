@@ -98,7 +98,6 @@ Após confirmar o recebimento do e-mail de sorteio em [`https://frankalcantara.c
 
 ---
 
-
 ## 📊 Rubrica Oficial de Avaliação (100 Pontos)
 
 | Critério e Requisitos Obrigatórios | Pontuação |
