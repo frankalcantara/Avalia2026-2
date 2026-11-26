@@ -1,8 +1,0 @@
-/.dev.vars
-/.dev.vars.*
-/.env
-/.env.*
-/node_modules/
-/.npm-cache/
-/.local/
-/.wrangler/
