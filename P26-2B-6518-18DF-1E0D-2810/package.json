@@ -1,8 +1,0 @@
-{
-  "name": "projeto-p26-2b-6518-18df-1e0d-2810",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "test": "node --experimental-sqlite --test"
-  }
-}

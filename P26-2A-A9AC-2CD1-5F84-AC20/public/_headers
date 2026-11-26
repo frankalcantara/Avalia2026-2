@@ -1,4 +1,0 @@
-/*
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; img-src 'self' https://cdn.discordapp.com; frame-ancestors 'none'; base-uri 'self'

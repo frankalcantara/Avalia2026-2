@@ -1,6 +1,0 @@
-# Credenciais Discord OAuth2 para desenvolvimento local (copie para .dev.vars)
-DISCORD_CLIENT_ID=seu_discord_client_id
-DISCORD_CLIENT_SECRET=seu_discord_client_secret
-DISCORD_REDIRECT_URI=http://localhost:8788/api/auth/callback
-# Opcional: segredo dedicado para assinatura HMAC dos cookies de sessão
-SESSION_SECRET=troque_por_um_segredo_aleatorio_forte

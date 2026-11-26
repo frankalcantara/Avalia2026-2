@@ -1,4 +1,0 @@
-# Copie este arquivo para .dev.vars (que NAO vai para o GitHub) e preencha.
-DISCORD_CLIENT_ID=1571985782024184029
-DISCORD_CLIENT_SECRET=cole-aqui-o-client-secret
-SESSION_SECRET=cole-aqui-um-valor-longo-e-aleatorio
